@@ -1,0 +1,555 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum AuthRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+  SUPPORT
+}
+
+enum DocumentType {
+  LOGO
+  BANNER
+  IMAGE
+  VIDEO
+  AUDIO
+  PDF
+  DOCUMENT
+  OTHER
+}
+
+enum DocumentCategory {
+  GENERAL
+  STATEMENT
+  TAX_FORM
+  REPORT
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+  ACCOUNTANT_READONLY
+}
+
+enum SourceFileType {
+  XLS
+  XLSX
+  CSV
+  PDF
+  IMAGE
+}
+
+enum ImportBatchStatus {
+  UPLOADED
+  DETECTING
+  NEEDS_MAPPING
+  PROCESSING
+  NEEDS_REVIEW
+  COMMITTED
+  PARTIALLY_COMMITTED
+  FAILED
+}
+
+enum StagedTransactionStatus {
+  PENDING_REVIEW
+  ACCEPTED
+  REJECTED
+  COMMITTED
+}
+
+enum AssetClass {
+  EQUITY
+  ETF
+  BOND
+  FUND
+  CRYPTO
+  CASH
+  COMMODITY
+  REAL_ESTATE
+  OTHER
+}
+
+enum TransactionType {
+  BUY
+  SELL
+  DIVIDEND
+  INTEREST
+  FEE
+  TAX_WITHHOLDING
+  FX_CONVERSION
+  CORPORATE_ACTION
+  DEPOSIT
+  WITHDRAWAL
+}
+
+enum CorporateActionType {
+  SPLIT
+  REVERSE_SPLIT
+  MERGER
+  SPINOFF
+  DIVIDEND_REINVESTMENT
+  OTHER
+}
+
+enum MarketDataSource {
+  MANUAL
+  PROVIDER
+  IMPORTED
+}
+
+enum CostBasisMethod {
+  FIFO
+  LIFO
+  AVERAGE_COST
+}
+
+enum TaxComputationStatus {
+  DRAFT
+  FINALIZED
+}
+
+enum TaxFormFormat {
+  PDF
+  CSV
+  JSON
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  COMMIT
+  FINALIZE
+  EXPORT
+  LOGIN
+  OTHER
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  phone    String? @unique
+  password String
+
+  role       AuthRole
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  password_reset_tokens PasswordResetToken[]
+  memberships           Membership[]
+
+  @@index([email])
+  @@index([phone])
+  @@index([id])
+  @@map("users")
+}
+
+model PasswordResetToken {
+  id         String    @id @default(uuid())
+  token_hash String    @unique
+  user_uuid  String
+  expires_at DateTime
+  used_at    DateTime?
+  created_at DateTime  @default(now())
+
+  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+
+  @@index([user_uuid])
+  @@index([expires_at])
+  @@map("password_reset_tokens")
+}
+
+model Document {
+  id                String           @id @default(uuid())
+  user_uuid         String
+  org_uuid          String?
+  import_batch_uuid String?
+  filename          String
+  mimetype          String
+  size              Int
+  url               String
+  path              String
+  type              DocumentType     @default(LOGO)
+  category          DocumentCategory @default(GENERAL)
+  created_at        DateTime         @default(now())
+
+  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  import_batch ImportBatch?  @relation("ImportBatchDocuments", fields: [import_batch_uuid], references: [id], onDelete: SetNull)
+
+  source_for_import_batches ImportBatch[] @relation("ImportBatchSourceDocument")
+  tax_forms                 TaxForm[]
+
+  @@index([user_uuid])
+  @@index([org_uuid])
+  @@index([import_batch_uuid])
+  @@index([id])
+  @@map("documents")
+}
+
+model Organization {
+  id            String   @id @default(uuid())
+  name          String
+  base_currency String   @default("USD")
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  memberships           Membership[]
+  accounts              Account[]
+  mapping_templates     MappingTemplate[]
+  import_batches        ImportBatch[]
+  transactions          Transaction[]
+  custom_instruments    Instrument[]
+  tax_year_computations TaxYearComputation[]
+  documents             Document[]
+  audit_logs            AuditLog[]
+
+  @@index([id])
+  @@map("organizations")
+}
+
+model Membership {
+  id          String         @id @default(uuid())
+  org_uuid    String
+  user_uuid   String
+  role        MembershipRole @default(MEMBER)
+  invited_at  DateTime       @default(now())
+  accepted_at DateTime?
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @updatedAt
+
+  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([org_uuid, user_uuid])
+  @@index([user_uuid])
+  @@map("memberships")
+}
+
+model Account {
+  id           String   @id @default(uuid())
+  org_uuid     String
+  name         String
+  currency     String
+  jurisdiction String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+
+  import_batches        ImportBatch[]
+  transactions          Transaction[]
+  lots                  Lot[]
+  position_snapshots    PositionSnapshot[]
+  tax_year_computations TaxYearComputation[]
+
+  @@index([org_uuid])
+  @@map("accounts")
+}
+
+model MappingTemplate {
+  id                  String         @id @default(uuid())
+  org_uuid            String?
+  name                String
+  file_type           SourceFileType
+  detection_signature Json
+  column_mapping      Json
+  version             Int            @default(1)
+  created_at          DateTime       @default(now())
+  updated_at          DateTime       @updatedAt
+
+  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+
+  import_batches ImportBatch[]
+
+  @@index([org_uuid])
+  @@index([file_type])
+  @@map("mapping_templates")
+}
+
+model ImportBatch {
+  id                    String            @id @default(uuid())
+  org_uuid              String
+  account_uuid          String
+  source_document_uuid  String
+  mapping_template_uuid String?
+  status                ImportBatchStatus @default(UPLOADED)
+  error_summary         String?
+  committed_at          DateTime?
+  created_at            DateTime          @default(now())
+  updated_at            DateTime          @updatedAt
+
+  organization     Organization     @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  account          Account          @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+  source_document  Document         @relation("ImportBatchSourceDocument", fields: [source_document_uuid], references: [id], onDelete: Restrict)
+  mapping_template MappingTemplate? @relation(fields: [mapping_template_uuid], references: [id], onDelete: SetNull)
+
+  staged_transactions StagedTransaction[]
+  transactions        Transaction[]
+  documents           Document[]          @relation("ImportBatchDocuments")
+
+  @@index([org_uuid])
+  @@index([account_uuid])
+  @@index([status])
+  @@map("import_batches")
+}
+
+model StagedTransaction {
+  id                       String                  @id @default(uuid())
+  import_batch_uuid        String
+  row_index                Int
+  raw_data                 Json
+  mapped_data              Json?
+  status                   StagedTransactionStatus @default(PENDING_REVIEW)
+  validation_errors        Json?
+  resolved_instrument_uuid String?
+  created_at               DateTime                @default(now())
+  updated_at               DateTime                @updatedAt
+
+  import_batch        ImportBatch @relation(fields: [import_batch_uuid], references: [id], onDelete: Cascade)
+  resolved_instrument Instrument? @relation(fields: [resolved_instrument_uuid], references: [id], onDelete: SetNull)
+
+  committed_transaction Transaction?
+
+  @@index([import_batch_uuid])
+  @@index([status])
+  @@map("staged_transactions")
+}
+
+model Instrument {
+  id          String     @id @default(uuid())
+  org_uuid    String?
+  isin        String?
+  ticker      String?
+  name        String?
+  asset_class AssetClass @default(OTHER)
+  currency    String
+  exchange    String?
+  is_custom   Boolean    @default(false)
+  created_at  DateTime   @default(now())
+  updated_at  DateTime   @updatedAt
+
+  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+
+  staged_transactions StagedTransaction[]
+  transactions        Transaction[]
+  corporate_actions   CorporateAction[]
+  lots                Lot[]
+  position_snapshots  PositionSnapshot[]
+  price_snapshots     PriceSnapshot[]
+
+  @@unique([isin])
+  @@index([org_uuid])
+  @@index([ticker])
+  @@map("instruments")
+}
+
+model Transaction {
+  id                             String          @id @default(uuid())
+  org_uuid                       String
+  account_uuid                   String
+  instrument_uuid                String?
+  type                           TransactionType
+  trade_date                     DateTime
+  settlement_date                DateTime?
+  quantity                       Decimal?        @db.Decimal(30, 10)
+  price                          Decimal?        @db.Decimal(30, 10)
+  amount                         Decimal         @db.Decimal(30, 10)
+  fee                            Decimal         @default(0) @db.Decimal(30, 10)
+  tax_withheld                   Decimal         @default(0) @db.Decimal(30, 10)
+  currency                       String
+  fx_rate                        Decimal?        @db.Decimal(30, 10)
+  amount_base_currency           Decimal?        @db.Decimal(30, 10)
+  broker_ref                     String?
+  import_batch_uuid              String?
+  source_staged_transaction_uuid String?         @unique
+  is_correction                  Boolean         @default(false)
+  supersedes_uuid                String?         @unique
+  created_at                     DateTime        @default(now())
+  updated_at                     DateTime        @updatedAt
+
+  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  account      Account      @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+  instrument   Instrument?  @relation(fields: [instrument_uuid], references: [id], onDelete: SetNull)
+  import_batch ImportBatch? @relation(fields: [import_batch_uuid], references: [id], onDelete: SetNull)
+
+  source_staged_transaction StagedTransaction? @relation(fields: [source_staged_transaction_uuid], references: [id], onDelete: SetNull)
+
+  supersedes    Transaction? @relation("TransactionSupersedes", fields: [supersedes_uuid], references: [id], onDelete: SetNull)
+  superseded_by Transaction? @relation("TransactionSupersedes")
+
+  opened_lots Lot[]
+
+  @@index([org_uuid])
+  @@index([account_uuid])
+  @@index([instrument_uuid])
+  @@index([trade_date])
+  @@map("transactions")
+}
+
+model CorporateAction {
+  id              String              @id @default(uuid())
+  instrument_uuid String
+  type            CorporateActionType
+  effective_date  DateTime
+  ratio           Decimal?            @db.Decimal(30, 10)
+  details         Json?
+  created_at      DateTime            @default(now())
+
+  instrument Instrument @relation(fields: [instrument_uuid], references: [id], onDelete: Cascade)
+
+  @@index([instrument_uuid])
+  @@index([effective_date])
+  @@map("corporate_actions")
+}
+
+model Lot {
+  id                    String    @id @default(uuid())
+  account_uuid          String
+  instrument_uuid       String
+  open_transaction_uuid String
+  quantity_remaining    Decimal   @db.Decimal(30, 10)
+  cost_basis_per_unit   Decimal   @db.Decimal(30, 10)
+  opened_at             DateTime
+  closed_at             DateTime?
+  created_at            DateTime  @default(now())
+  updated_at            DateTime  @updatedAt
+
+  account          Account     @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+  instrument       Instrument  @relation(fields: [instrument_uuid], references: [id], onDelete: Cascade)
+  open_transaction Transaction @relation(fields: [open_transaction_uuid], references: [id], onDelete: Cascade)
+
+  @@index([account_uuid])
+  @@index([instrument_uuid])
+  @@map("lots")
+}
+
+model PositionSnapshot {
+  id              String   @id @default(uuid())
+  account_uuid    String
+  instrument_uuid String
+  as_of_date      DateTime
+  quantity        Decimal  @db.Decimal(30, 10)
+  cost_basis      Decimal  @db.Decimal(30, 10)
+  market_value    Decimal? @db.Decimal(30, 10)
+  computed_at     DateTime @default(now())
+
+  account    Account    @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+  instrument Instrument @relation(fields: [instrument_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([account_uuid, instrument_uuid, as_of_date])
+  @@map("position_snapshots")
+}
+
+model PriceSnapshot {
+  id              String           @id @default(uuid())
+  instrument_uuid String
+  date            DateTime
+  price           Decimal          @db.Decimal(30, 10)
+  currency        String
+  source          MarketDataSource @default(PROVIDER)
+  created_at      DateTime         @default(now())
+
+  instrument Instrument @relation(fields: [instrument_uuid], references: [id], onDelete: Cascade)
+
+  @@unique([instrument_uuid, date, source])
+  @@map("price_snapshots")
+}
+
+model FxRateSnapshot {
+  id             String           @id @default(uuid())
+  base_currency  String
+  quote_currency String
+  date           DateTime
+  rate           Decimal          @db.Decimal(30, 10)
+  source         MarketDataSource @default(PROVIDER)
+  created_at     DateTime         @default(now())
+
+  @@unique([base_currency, quote_currency, date, source])
+  @@map("fx_rate_snapshots")
+}
+
+model TaxJurisdictionModule {
+  id                           String            @id @default(uuid())
+  country_code                 String            @unique
+  name                         String
+  version                      String
+  is_active                    Boolean           @default(true)
+  default_cost_basis_method    CostBasisMethod   @default(FIFO)
+  supported_cost_basis_methods CostBasisMethod[]
+  created_at                   DateTime          @default(now())
+  updated_at                   DateTime          @updatedAt
+
+  @@map("tax_jurisdiction_modules")
+}
+
+model TaxYearComputation {
+  id                  String               @id @default(uuid())
+  org_uuid            String
+  account_uuid        String?
+  country_code        String
+  tax_year            Int
+  cost_basis_method   CostBasisMethod      @default(FIFO)
+  status              TaxComputationStatus @default(DRAFT)
+  version             Int                  @default(1)
+  result              Json
+  input_snapshot_hash String
+  finalized_at        DateTime?
+  created_at          DateTime             @default(now())
+  updated_at          DateTime             @updatedAt
+
+  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  account      Account?     @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+
+  tax_forms TaxForm[]
+
+  @@index([org_uuid, account_uuid, country_code, tax_year])
+  @@map("tax_year_computations")
+}
+
+model TaxForm {
+  id                        String        @id @default(uuid())
+  tax_year_computation_uuid String
+  form_type                 String
+  document_uuid             String
+  format                    TaxFormFormat @default(PDF)
+  generated_at              DateTime      @default(now())
+
+  tax_year_computation TaxYearComputation @relation(fields: [tax_year_computation_uuid], references: [id], onDelete: Cascade)
+  document             Document           @relation(fields: [document_uuid], references: [id], onDelete: Restrict)
+
+  @@index([tax_year_computation_uuid])
+  @@map("tax_forms")
+}
+
+model AuditLog {
+  id          String      @id @default(uuid())
+  org_uuid    String?
+  user_uuid   String?
+  entity_type String
+  entity_uuid String
+  action      AuditAction
+  before      Json?
+  after       Json?
+  created_at  DateTime    @default(now())
+
+  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: SetNull)
+
+  @@index([org_uuid])
+  @@index([entity_type, entity_uuid])
+  @@index([created_at])
+  @@map("audit_logs")
+}
