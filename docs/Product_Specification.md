@@ -22,12 +22,16 @@ invest-tax lets an investor upload the statements they already receive from thei
 
 ## 3. Statement Ingestion
 
-**Supported inputs (MVP):** XLS/XLSX/CSV. **v1 adds:** PDF (text-based and AI-assisted structured extraction) and image/scan (OCR). Multiple files can be uploaded in one batch.
+**Supported inputs:** XLS/XLSX/CSV (deterministic mapping-template parsing) and PDF (AI-assisted extraction — shipped ahead of the original v1 schedule; there is no separate text/table-heuristic pass, every PDF goes through the AI extractor described below). **Still not supported:** image/scan (OCR) ingestion.
 
 **Flow:**
 1. User uploads one or more files to an Account.
-2. The system fingerprints each file (sheet/column headers for spreadsheets, text signature for PDFs) against a library of **mapping templates** — reusable definitions of "these columns/positions mean these canonical fields." Global templates ship with the product (starting with the format demonstrated by `docs/report-2025.xlsx`'s `ExecTrades`/`SecIncome` sheets); user-specific templates can be created when no match is found.
-3. If a confident match is found, the file is parsed automatically. If not, the user is guided through a mapping wizard to define (and save, for reuse) a new template.
+2. For XLS/XLSX/CSV, the system fingerprints each file (sheet/column headers) against a library of **mapping templates** — reusable definitions of "these columns/positions mean these canonical fields." Global templates ship with the product (starting with the format demonstrated by `docs/report-2025.xlsx`'s `ExecTrades`/`SecIncome` sheets); user-specific templates can be created when no match is found. PDFs skip fingerprinting entirely and always go to AI-assisted extraction (step 3c).
+3. Three ways a file's rows become staged data, in order of preference:
+   - **(a) Confident template match** — the file is parsed automatically and deterministically (no AI cost).
+   - **(b) Mapping wizard** — for a spreadsheet format with no match: the system previews the file's sheets/headers/sample rows, an AI-assisted "propose a mapping" step suggests a `detection_signature`/`column_mapping` for review and editing, and saving it both stages this file's rows and creates a reusable template so the same format never needs the wizard again.
+   - **(c) Direct AI extraction** — for any file (any spreadsheet format, or PDF), a one-off "extract with AI" action stages rows straight from the AI extractor without creating or requiring a template. This is the only path for PDFs, and an escape hatch for a spreadsheet that isn't worth turning into a reusable template.
+   All AI-assisted steps are quota-checked and cost-logged per user (see §8).
 4. Parsed rows are **staged**, not committed — the user sees a review table with every row, its parsed interpretation, and any validation problems (unresolvable instrument, ambiguous date format, missing required field, likely duplicate).
 5. The user corrects, accepts, or rejects staged rows (including re-resolving an instrument, fixing a mis-mapped column for the whole batch, or re-running the parse after adjusting the mapping).
 6. On confirmation, accepted rows are committed as permanent, immutable transactions. Rows still flagged as problems can be left out and fixed later — **partial commit is allowed**, an entire batch is never blocked by a few bad rows.
@@ -72,7 +76,7 @@ invest-tax lets an investor upload the statements they already receive from thei
 ## 8. Notifications & Admin/Ops
 
 - Notifications: import completed / needs review / failed; tax year opened / deadline approaching; portfolio digest (periodic summary email).
-- Admin tooling: a triage view for failed or low-confidence parses across users (to spot patterns and improve global mapping templates), curation of the global mapping-template library, and visibility into AI-assisted-extraction usage/cost (the existing AI integration already tracks token cost per call).
+- Admin tooling: a triage view for failed or low-confidence parses across users (to spot patterns and improve global mapping templates), curation of the global mapping-template library, and visibility into AI-assisted-extraction usage/cost — a per-call log (user, feature, tokens, cost, linked import batch) plus aggregate stats (total cost, call count, cost by feature) over a rolling window. Every AI-assisted feature (PDF extraction, mapping suggestion, direct spreadsheet extraction) also enforces a per-user daily cost quota, so one user's usage can't run away unbounded.
 
 ## 9. Security, Privacy & Compliance
 

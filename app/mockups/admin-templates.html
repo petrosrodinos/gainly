@@ -17,7 +17,7 @@
       <div class="page-header">
         <div>
           <div class="page-title">Mapping templates</div>
-          <div class="page-subtitle">Global templates ship with the product and auto-detect broker formats; user-specific templates are created when no match is found (product spec §3).</div>
+          <div class="page-subtitle">Global templates ship with the product and auto-detect spreadsheet broker formats (XLS/XLSX/CSV); user-specific templates are created via the mapping wizard when no match is found (product spec §3). PDFs never use a template — they're always AI-extracted directly.</div>
         </div>
         <button class="btn btn-primary" onclick="openDialog('dlg-new-template')">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
@@ -61,14 +61,15 @@
         <div class="field">
           <label class="field-label">File type</label>
           <select class="select">
-            <option>CSV</option><option>XLS</option><option>XLSX</option><option>PDF</option><option>IMAGE</option>
+            <option>CSV</option><option>XLS</option><option>XLSX</option>
           </select>
+          <span class="field-hint">PDF/image aren't offered — PDFs are always AI-extracted directly and never match a template; scans aren't supported yet.</span>
         </div>
       </div>
       <div class="field">
         <label class="field-label">Detection signature</label>
-        <textarea class="textarea" placeholder="Sheet/column headers (spreadsheets) or text signature (PDFs) used to fingerprint matching files, e.g. header row: Date, Ticker, Side, Qty, Price, Fee"></textarea>
-        <span class="field-hint">Used to auto-match uploaded files against this template before falling back to the mapping wizard.</span>
+        <textarea class="textarea" placeholder="Sheet name + required header cells used to fingerprint matching files, e.g. header row: Date, Ticker, Side, Qty, Price, Fee"></textarea>
+        <span class="field-hint">Used to auto-match uploaded spreadsheets against this template before falling back to the (AI-assisted) mapping wizard.</span>
       </div>
       <div class="field">
         <label class="field-label">Column mapping</label>

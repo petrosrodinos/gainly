@@ -17,7 +17,7 @@
       <div class="page-header">
         <div>
           <div class="page-title">Mapping wizard</div>
-          <div class="page-subtitle" id="page-subtitle">No reusable template matched this file with enough confidence — tell us what each column means.</div>
+          <div class="page-subtitle" id="page-subtitle">No reusable template matched this file. AI has proposed a starting mapping below from the detected columns — review, correct, and save it as a reusable template.</div>
         </div>
       </div>
 
@@ -33,11 +33,15 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div class="card">
-          <div class="card-header bordered">
-            <div class="card-title">Column mapping</div>
-            <div class="card-description">Detected columns from isa_statement_scan.pdf (extracted table)</div>
+          <div class="card-header bordered flex items-center justify-between gap-3">
+            <div>
+              <div class="card-title flex items-center gap-2">Column mapping <span class="badge badge-info">✨ AI-suggested</span></div>
+              <div class="card-description">Detected columns from revolut_trading_export.csv (header row)</div>
+            </div>
+            <button class="btn btn-outline btn-sm" id="btn-regenerate"></button>
           </div>
           <div class="card-content space-y-3" id="mapping-rows"></div>
+          <div class="card-content flex items-center gap-2 text-xs" style="border-top:1px solid var(--border); color:var(--muted-foreground)" id="ai-cost-note"></div>
         </div>
 
         <div class="card">
@@ -58,7 +62,7 @@
           <div class="card-content" style="border-top:1px solid var(--border)">
             <div class="field">
               <label class="field-label">Template name</label>
-              <input class="input" value="isa_statement_scan — custom layout" />
+              <input class="input" value="revolut_trading_export — custom layout" />
             </div>
             <label class="flex items-center gap-2 text-xs mt-3" style="color:var(--muted-foreground)">
               <input type="checkbox" class="checkbox" checked /> Save as a reusable template for future uploads of this format
@@ -68,9 +72,16 @@
       </div>
 
       <div class="card mt-4">
-        <div class="card-footer justify-between">
-          <a href="import-upload.html" class="btn btn-outline">Back</a>
-          <a href="import-review.html?batch=ib_5" class="btn btn-primary" id="btn-run-parse"></a>
+        <div class="card-footer flex-col items-stretch gap-3">
+          <div class="flex items-center justify-between">
+            <a href="import-upload.html" class="btn btn-outline">Back</a>
+            <a href="import-review.html?batch=ib_7" class="btn btn-primary" id="btn-run-parse"></a>
+          </div>
+          <div class="separator"></div>
+          <div class="flex items-center justify-between gap-3 text-xs" style="color:var(--muted-foreground)">
+            <span>Not worth a reusable template? Skip mapping and let AI extract this file's rows directly, once.</span>
+            <a href="import-review.html?batch=ib_7" class="btn btn-ghost btn-sm flex-shrink-0" id="btn-extract-once"></a>
+          </div>
         </div>
       </div>
     </main>
@@ -84,7 +95,10 @@
 <script>
   mountLayout({ active: "imports", title: "Mapping wizard", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Imports", href: "imports.html" }, { label: "Mapping wizard" }] });
 
-  document.getElementById("btn-run-parse").innerHTML = icon("refresh") + "Run parse";
+  document.getElementById("btn-run-parse").innerHTML = icon("check") + "Save &amp; apply mapping";
+  document.getElementById("btn-regenerate").innerHTML = icon("refresh") + "Regenerate suggestion";
+  document.getElementById("btn-extract-once").innerHTML = icon("cpu") + "Extract with AI instead";
+  document.getElementById("ai-cost-note").innerHTML = `${icon("cpu")} This suggestion used ~2,100 tokens (~$0.0098) of today's AI quota. Saving it as a template means future files in this format never need AI again.`;
 
   const CANONICAL_FIELDS = [
     "Trade date", "Settlement date", "Instrument (ISIN or ticker)", "Transaction type",

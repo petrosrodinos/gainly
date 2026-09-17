@@ -86,8 +86,9 @@ const IMPORT_BATCHES = [
   { id: "ib_2", account_id: "acc_2", filename: "trading212_export_aug.xlsx", file_type: "XLSX", status: "COMMITTED", rows: 18, flagged: 0, created_at: "2026-08-30 18:44", uploaded_by: "Petros Rodinos", committed_at: "2026-08-30 19:02" },
   { id: "ib_3", account_id: "acc_1", filename: "report-2025.xlsx", file_type: "XLSX", status: "COMMITTED", rows: 142, flagged: 2, created_at: "2026-02-01 10:03", uploaded_by: "Petros Rodinos", committed_at: "2026-02-01 10:20" },
   { id: "ib_4", account_id: "acc_3", filename: "binance_trades_q3.csv", file_type: "CSV", status: "PARTIALLY_COMMITTED", rows: 24, flagged: 4, created_at: "2026-09-09 08:15", uploaded_by: "Petros Rodinos", committed_at: "2026-09-09 08:40" },
-  { id: "ib_5", account_id: "acc_2", filename: "isa_statement_scan.pdf", file_type: "PDF", status: "NEEDS_MAPPING", rows: 0, flagged: 0, created_at: "2026-09-14 21:30", uploaded_by: "Petros Rodinos" },
+  { id: "ib_5", account_id: "acc_2", filename: "isa_statement_scan.pdf", file_type: "PDF", status: "NEEDS_REVIEW", rows: 9, flagged: 2, created_at: "2026-09-14 21:30", uploaded_by: "Petros Rodinos" },
   { id: "ib_6", account_id: "acc_1", filename: "ibkr_2024_full_year.csv", file_type: "CSV", status: "FAILED", rows: 0, flagged: 0, created_at: "2026-09-05 12:00", uploaded_by: "Petros Rodinos", error: "Header row not found within first 40 rows — file may be malformed or password-protected." },
+  { id: "ib_7", account_id: "acc_1", filename: "revolut_trading_export.csv", file_type: "CSV", status: "NEEDS_MAPPING", rows: 0, flagged: 0, created_at: "2026-09-15 14:20", uploaded_by: "Petros Rodinos" },
 ];
 
 const MAPPING_TEMPLATES = [
@@ -150,12 +151,14 @@ const AI_USAGE = [
   { date: "2026-09-14", user: "petros@hosperly.com", feature: "PDF statement extraction", tokens_in: 6410, tokens_out: 940, cost_usd: 0.0332, batch: "ib_5" },
   { date: "2026-08-02", user: "anna@example.com", feature: "Mapping suggestion", tokens_in: 2100, tokens_out: 310, cost_usd: 0.0098, batch: "ib_x1" },
   { date: "2026-07-28", user: "marius@example.com", feature: "PDF statement extraction", tokens_in: 11200, tokens_out: 1560, cost_usd: 0.0564, batch: "ib_x2" },
+  { date: "2026-07-15", user: "anna@example.com", feature: "Direct extraction (no template)", tokens_in: 4380, tokens_out: 720, cost_usd: 0.0247, batch: "ib_x3" },
 ];
 
 const ADMIN_TRIAGE = [
-  { id: "ib_5", user: "petros@hosperly.com", filename: "isa_statement_scan.pdf", status: "NEEDS_MAPPING", reason: "No layout template matched; AI-assisted extraction pending confirmation.", created_at: "2026-09-14" },
+  { id: "ib_5", user: "petros@hosperly.com", filename: "isa_statement_scan.pdf", status: "NEEDS_REVIEW", reason: "AI-extracted directly (PDFs never use mapping templates) — 2 rows below confidence threshold.", created_at: "2026-09-14" },
   { id: "ib_6", user: "petros@hosperly.com", filename: "ibkr_2024_full_year.csv", status: "FAILED", reason: "Header row not found within first 40 rows.", created_at: "2026-09-05" },
-  { id: "ib_x1", user: "anna@example.com", filename: "swedbank_export.csv", status: "NEEDS_MAPPING", reason: "New broker format, no existing template match ≥ 0.6 confidence.", created_at: "2026-09-10" },
+  { id: "ib_7", user: "petros@hosperly.com", filename: "revolut_trading_export.csv", status: "NEEDS_MAPPING", reason: "New broker format, no existing template match. AI mapping suggestion available.", created_at: "2026-09-15" },
+  { id: "ib_x1", user: "anna@example.com", filename: "swedbank_export.csv", status: "NEEDS_MAPPING", reason: "New broker format, no existing template match. AI mapping suggestion available.", created_at: "2026-09-10" },
   { id: "ib_x2", user: "marius@example.com", filename: "scan_2026_07.pdf", status: "NEEDS_REVIEW", reason: "6 rows below extraction confidence threshold.", created_at: "2026-07-28" },
 ];
 

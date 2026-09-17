@@ -88,6 +88,7 @@
           <div class="dropdown">
             <button class="btn btn-ghost btn-icon" aria-label="More actions">${icon("moreHorizontal")}</button>
             <div class="dropdown-menu">
+              ${row.status === "NEEDS_MAPPING" ? `<div class="dropdown-item" onclick="showToast('AI mapping suggested', 'Review it on the batch\\'s mapping wizard.')">${icon("cpu")}Suggest mapping with AI</div><div class="dropdown-sep"></div>` : ""}
               <div class="dropdown-label">Reassign template</div>
               ${MAPPING_TEMPLATES.map((t) => `<div class="dropdown-item" onclick="showToast('Template reassigned', '${t.name}')">${t.name}</div>`).join("")}
               <div class="dropdown-sep"></div>
