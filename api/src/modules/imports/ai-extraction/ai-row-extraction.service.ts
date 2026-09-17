@@ -1,14 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import pdfParse = require('pdf-parse');
+import { Injectable } from '@nestjs/common';
 import { AiService } from '@/integrations/ai/services/ai.service';
 import { AiModels, AiProviders } from '@/integrations/ai/interfaces/ai.interface';
 import { AiUsageService } from '@/modules/ai-usage/ai-usage.service';
-import { AiUsageFeatures } from '@/modules/ai-usage/interfaces/ai-usage.interface';
+import { AiUsageFeature } from '@/modules/ai-usage/interfaces/ai-usage.interface';
 import { CanonicalRow, InstrumentHint } from '../interfaces/canonical-row.interface';
-import { PdfExtractedRow, PdfExtractedRowSchema } from './pdf-ai-row.schema';
+import { ExtractedRow, ExtractedRowSchema } from './extracted-row.schema';
 
-const MAX_STATEMENT_CHARS = 20000;
-const MODEL = AiModels.openai.gpt4oMini;
+export const MAX_STATEMENT_CHARS = 20000;
+export const EXTRACTION_MODEL = AiModels.openai.gpt4oMini;
 
 const EXTRACTION_SYSTEM_PROMPT = `You extract investment transactions from broker/platform statement text into structured rows.
 Rules:
@@ -17,7 +16,7 @@ Rules:
 - All monetary/quantity fields are plain decimal strings (no currency symbols, no thousands separators), always positive magnitudes.
 - Dates are ISO format (YYYY-MM-DD).`;
 
-function toCanonicalRow(row: PdfExtractedRow): CanonicalRow {
+function toCanonicalRow(row: ExtractedRow): CanonicalRow {
     const instrumentHint: InstrumentHint | undefined =
         row.instrument_isin || row.instrument_ticker || row.instrument_name
             ? { isin: row.instrument_isin ?? null, ticker: row.instrument_ticker ?? null, name: row.instrument_name ?? null }
@@ -40,49 +39,46 @@ function toCanonicalRow(row: PdfExtractedRow): CanonicalRow {
 }
 
 /**
- * PDF fallback path (DESIGN.MD §4.4): no layout mapping template exists for PDFs yet, so every
- * PDF statement goes through AI-assisted structured extraction via AiService.generateTextWithSchema.
- * Every call is quota-checked and logged through AiUsageService (spec §8).
+ * Shared AI-assisted row extraction — quota-checked and cost-logged (spec §8) regardless of
+ * which source text it was called for (PDF text, or a flattened spreadsheet dump).
  */
 @Injectable()
-export class PdfAiExtractionService {
+export class AiRowExtractionService {
     constructor(
         private readonly aiService: AiService,
         private readonly aiUsageService: AiUsageService,
     ) { }
 
-    async extract(buffer: Buffer, userUuid: string, importBatchUuid: string): Promise<CanonicalRow[]> {
+    async extractRowsFromText(
+        statementText: string,
+        userUuid: string,
+        importBatchUuid: string,
+        feature: AiUsageFeature,
+    ): Promise<CanonicalRow[]> {
         await this.aiUsageService.assertWithinDailyQuota(userUuid);
 
-        const { text } = await pdfParse(buffer);
-        if (!text || !text.trim()) {
-            throw new BadRequestException(
-                'No extractable text found in this PDF — it may be a scanned image, which is not supported yet.',
-            );
-        }
-
-        const statementText = text.length > MAX_STATEMENT_CHARS ? text.slice(0, MAX_STATEMENT_CHARS) : text;
+        const truncated = statementText.length > MAX_STATEMENT_CHARS ? statementText.slice(0, MAX_STATEMENT_CHARS) : statementText;
 
         const { response, usage } = await this.aiService.generateTextWithSchema({
             provider: AiProviders.openai,
-            model: MODEL,
-            schema: PdfExtractedRowSchema,
+            model: EXTRACTION_MODEL,
+            schema: ExtractedRowSchema,
             system: EXTRACTION_SYSTEM_PROMPT,
-            prompt: `Statement text:\n\n${statementText}`,
+            prompt: `Statement text:\n\n${truncated}`,
         });
 
         await this.aiUsageService.record({
             userUuid,
-            feature: AiUsageFeatures.PDF_EXTRACTION,
+            feature,
             provider: AiProviders.openai,
-            model: MODEL,
+            model: EXTRACTION_MODEL,
             inputTokens: usage?.inputTokens ?? 0,
             outputTokens: usage?.outputTokens ?? 0,
             costUsd: usage?.totalCost ?? 0,
             importBatchUuid,
         });
 
-        const rows = (response ?? []) as unknown as PdfExtractedRow[];
+        const rows = (response ?? []) as unknown as ExtractedRow[];
         return rows.map(toCanonicalRow);
     }
 }

@@ -1,7 +1,8 @@
 import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
-import { AuditAction, ImportBatchStatus, Prisma, StagedTransactionStatus, TransactionType } from 'generated/prisma';
+import pdfParse = require('pdf-parse');
+import { AuditAction, AuthRole, ImportBatchStatus, Prisma, StagedTransactionStatus, TransactionType } from 'generated/prisma';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
 import { IMPORT_PROCESSING_QUEUE } from '@/core/queues/queues.constants';
 import { GcsFolders } from '@/integrations/storage/gcs/config/gcs-folders.config';
@@ -9,18 +10,22 @@ import { DocumentsService } from '@/modules/documents/documents.service';
 import { AuditLogService } from '@/modules/audit-log/audit-log.service';
 import { PositionsService } from '@/modules/positions/positions.service';
 import { TemplateDetectionService } from '@/modules/mapping-templates/services/template-detection.service';
+import { MappingTemplatesService } from '@/modules/mapping-templates/mapping-templates.service';
 import { ParserFactory } from './parsers/parser.factory';
 import { detectSourceFileType } from './parsers/file-type.utils';
 import { ColumnMappingEngine } from './mapping/column-mapping.engine';
+import { AiMappingSuggestionService } from './mapping/ai-mapping-suggestion.service';
 import { StagedRowValidator } from './validation/staged-row-validator';
 import { DedupService } from './dedup/dedup.service';
 import { ImportBatchQueryType } from './dto/import-batch-query.schema';
 import { StagedTransactionQueryType } from './dto/staged-transaction-query.schema';
 import { UpdateStagedTransactionDto } from './dto/update-staged-transaction.dto';
+import { CreateMappingTemplateDto } from '@/modules/mapping-templates/dto/create-mapping-template.dto';
 import { ColumnMapping } from '@/modules/mapping-templates/interfaces/mapping-template.interface';
 import { FileSignature } from '@/modules/mapping-templates/interfaces/file-signature.interface';
 import { MappedRow } from './interfaces/canonical-row.interface';
-import { PdfAiExtractionService } from './parsers/pdf-ai-extraction.service';
+import { PdfAiExtractionService } from './ai-extraction/pdf-ai-extraction.service';
+import { SpreadsheetAiExtractionService } from './ai-extraction/spreadsheet-ai-extraction.service';
 
 @Injectable()
 export class ImportsService {
@@ -32,11 +37,14 @@ export class ImportsService {
         private readonly auditLogService: AuditLogService,
         private readonly positionsService: PositionsService,
         private readonly templateDetectionService: TemplateDetectionService,
+        private readonly mappingTemplatesService: MappingTemplatesService,
         private readonly parserFactory: ParserFactory,
         private readonly columnMappingEngine: ColumnMappingEngine,
+        private readonly aiMappingSuggestionService: AiMappingSuggestionService,
         private readonly stagedRowValidator: StagedRowValidator,
         private readonly dedupService: DedupService,
         private readonly pdfAiExtractionService: PdfAiExtractionService,
+        private readonly spreadsheetAiExtractionService: SpreadsheetAiExtractionService,
         @InjectQueue(IMPORT_PROCESSING_QUEUE) private readonly importQueue: Queue,
     ) { }
 
@@ -224,6 +232,119 @@ export class ImportsService {
         return stagedRows;
     }
 
+    private async finalizeStaging(batchUuid: string, stagedRows: Prisma.StagedTransactionCreateManyInput[], emptyMessage: string) {
+        if (stagedRows.length === 0) {
+            await this.prisma.importBatch.update({
+                where: { id: batchUuid },
+                data: { status: ImportBatchStatus.FAILED, error_summary: emptyMessage },
+            });
+            return { staged_count: 0 };
+        }
+
+        await this.prisma.$transaction([
+            this.prisma.stagedTransaction.deleteMany({ where: { import_batch_uuid: batchUuid, status: { not: StagedTransactionStatus.COMMITTED } } }),
+            this.prisma.stagedTransaction.createMany({ data: stagedRows }),
+            this.prisma.importBatch.update({ where: { id: batchUuid }, data: { status: ImportBatchStatus.NEEDS_REVIEW } }),
+        ]);
+
+        return { staged_count: stagedRows.length };
+    }
+
+    /**
+     * Structured preview of an uploaded file's sheets/headers/sample rows (or PDF text preview),
+     * so a mapping wizard can be built against it without re-uploading.
+     */
+    async getStructure(userUuid: string, batchId: string) {
+        const batch = await this.findOne(userUuid, batchId);
+        const fileType = detectSourceFileType(batch.source_document.filename, batch.source_document.mimetype);
+        const buffer = await this.documentsService.downloadBuffer(batch.source_document);
+
+        if (fileType === 'IMAGE') {
+            throw new BadRequestException('Image/scan statements are not supported yet.');
+        }
+
+        if (fileType === 'PDF') {
+            const { text } = await pdfParse(buffer);
+            return { file_type: fileType, text_preview: text.slice(0, 3000) };
+        }
+
+        const parsedFile = await this.parserFactory.forFileType(fileType).parse(buffer);
+        return {
+            file_type: fileType,
+            sheets: parsedFile.sheets.map((s) => ({
+                name: s.name,
+                header_row_index: s.header_row_index,
+                headers: s.headers.filter(Boolean),
+                sample_rows: s.rows.slice(0, 5),
+            })),
+        };
+    }
+
+    /**
+     * AI-proposed mapping template (name/detection_signature/column_mapping) for a spreadsheet
+     * that didn't match any saved template — review/edit it, then POST it via `mappingWizard` to
+     * save it as a reusable template and apply it to this batch (spec §3: "the user is guided
+     * through a mapping wizard to define (and save, for reuse) a new template").
+     */
+    async suggestMapping(userUuid: string, batchId: string) {
+        const batch = await this.findOne(userUuid, batchId);
+        const fileType = detectSourceFileType(batch.source_document.filename, batch.source_document.mimetype);
+
+        if (fileType === 'PDF' || fileType === 'IMAGE') {
+            throw new BadRequestException(
+                'Mapping templates only apply to spreadsheet-style files (XLS/XLSX/CSV) — PDFs already parse directly via AI (use /extract-with-ai).',
+            );
+        }
+
+        const buffer = await this.documentsService.downloadBuffer(batch.source_document);
+        const parsedFile = await this.parserFactory.forFileType(fileType).parse(buffer);
+        return this.aiMappingSuggestionService.suggest(parsedFile, fileType, batch.user_uuid, batchId);
+    }
+
+    /** Saves a (possibly AI-suggested, possibly hand-edited) mapping template and applies it to this batch. */
+    async mappingWizard(userUuid: string, role: AuthRole, batchId: string, dto: CreateMappingTemplateDto) {
+        await this.findOne(userUuid, batchId);
+        const template = await this.mappingTemplatesService.create(userUuid, role, dto);
+        return this.assignMappingTemplate(userUuid, batchId, template.id);
+    }
+
+    /**
+     * Bypasses the mapping-template mechanism entirely — AI-assisted extraction directly on this
+     * file's content (PDF text or a flattened spreadsheet dump), for a one-off file that isn't
+     * worth turning into a reusable template. Supported for every in-scope format except images.
+     */
+    async extractWithAi(userUuid: string, batchId: string) {
+        const batch = await this.findOne(userUuid, batchId);
+        const fileType = detectSourceFileType(batch.source_document.filename, batch.source_document.mimetype);
+
+        if (fileType === 'IMAGE') {
+            throw new BadRequestException('Image/scan statements are not supported yet.');
+        }
+
+        await this.prisma.importBatch.update({ where: { id: batchId }, data: { status: ImportBatchStatus.PROCESSING, error_summary: null } });
+
+        const buffer = await this.documentsService.downloadBuffer(batch.source_document);
+
+        const canonicalRows =
+            fileType === 'PDF'
+                ? await this.pdfAiExtractionService.extract(buffer, batch.user_uuid, batchId)
+                : await this.spreadsheetAiExtractionService.extract(
+                    await this.parserFactory.forFileType(fileType).parse(buffer),
+                    batch.user_uuid,
+                    batchId,
+                );
+
+        const mappedRows: MappedRow[] = canonicalRows.map((row, index) => ({
+            row_index: index,
+            raw: row as unknown as Record<string, string | null>,
+            mapped: row,
+            mapping_errors: [],
+        }));
+
+        const stagedRows = await this.stageMappedRows(batchId, batch.account_uuid, batch.user_uuid, mappedRows);
+        return this.finalizeStaging(batchId, stagedRows, 'AI extraction found no transaction rows in this file.');
+    }
+
     /** The actual parse -> map -> validate -> dedup -> stage pipeline (DESIGN.MD §4). Runs on the import-processing queue. */
     async processBatch(batchUuid: string) {
         const batch = await this.prisma.importBatch.findUnique({
@@ -309,19 +430,7 @@ export class ImportsService {
                 stagedRows = await this.stageMappedRows(batchUuid, batch.account_uuid, batch.user_uuid, allMappedRows);
             }
 
-            if (stagedRows.length === 0) {
-                await this.prisma.importBatch.update({
-                    where: { id: batchUuid },
-                    data: { status: ImportBatchStatus.FAILED, error_summary: 'No data rows were found in the recognized sheets.' },
-                });
-                return;
-            }
-
-            await this.prisma.$transaction([
-                this.prisma.stagedTransaction.deleteMany({ where: { import_batch_uuid: batchUuid, status: { not: StagedTransactionStatus.COMMITTED } } }),
-                this.prisma.stagedTransaction.createMany({ data: stagedRows }),
-                this.prisma.importBatch.update({ where: { id: batchUuid }, data: { status: ImportBatchStatus.NEEDS_REVIEW } }),
-            ]);
+            await this.finalizeStaging(batchUuid, stagedRows, 'No data rows were found in the recognized sheets.');
         } catch (error) {
             this.logger.error(`Import batch ${batchUuid} processing failed: ${error.message}`, error.stack);
             await this.prisma.importBatch.update({

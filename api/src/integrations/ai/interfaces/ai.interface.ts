@@ -6,7 +6,8 @@ export interface AIGenerateOptions {
     system?: string;
     prompt: string;
     schema?: z.ZodSchema;
-    output?: 'json' | 'no-schema';
+    /** 'array' (default) wraps `schema` as the per-element shape of a returned array; 'object' returns a single `schema`-shaped object. */
+    output?: 'array' | 'object';
     temperature?: number;
     maxTokens?: number;
     topP?: number;
@@ -20,7 +21,8 @@ export interface AIGenerateTextResponse {
 }
 
 export interface AIGenerateObjectResponse {
-    response: z.ZodSchema[] | null;
+    /** Shape depends on `output`: an array of `schema`-typed rows ('array', default) or a single `schema`-typed object ('object'). */
+    response: unknown;
     usage?: AICostResponse
 }
 

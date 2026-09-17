@@ -15,8 +15,11 @@ import { XlsxParser } from './parsers/xlsx.parser';
 import { CsvParser } from './parsers/csv.parser';
 import { UnsupportedParser } from './parsers/unsupported.parser';
 import { ParserFactory } from './parsers/parser.factory';
-import { PdfAiExtractionService } from './parsers/pdf-ai-extraction.service';
+import { AiRowExtractionService } from './ai-extraction/ai-row-extraction.service';
+import { PdfAiExtractionService } from './ai-extraction/pdf-ai-extraction.service';
+import { SpreadsheetAiExtractionService } from './ai-extraction/spreadsheet-ai-extraction.service';
 import { ColumnMappingEngine } from './mapping/column-mapping.engine';
+import { AiMappingSuggestionService } from './mapping/ai-mapping-suggestion.service';
 import { StagedRowValidator } from './validation/staged-row-validator';
 import { DedupService } from './dedup/dedup.service';
 import { ImportProcessor } from './processors/import.processor';
@@ -40,8 +43,11 @@ import { ImportProcessor } from './processors/import.processor';
         CsvParser,
         UnsupportedParser,
         ParserFactory,
+        AiRowExtractionService,
         PdfAiExtractionService,
+        SpreadsheetAiExtractionService,
         ColumnMappingEngine,
+        AiMappingSuggestionService,
         StagedRowValidator,
         DedupService,
         ImportProcessor,

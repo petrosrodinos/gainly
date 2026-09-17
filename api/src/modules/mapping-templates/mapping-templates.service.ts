@@ -1,12 +1,26 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { AuthRole, Prisma } from 'generated/prisma';
+import { ZodError } from 'zod';
 import { PrismaService } from '@/core/databases/prisma/prisma.service';
+import { ColumnMappingSchema, DetectionSignatureSchema } from './schemas/mapping-template.schema';
 import { CreateMappingTemplateDto } from './dto/create-mapping-template.dto';
 import { UpdateMappingTemplateDto } from './dto/update-mapping-template.dto';
 import { MappingTemplateQueryType } from './dto/mapping-template-query.schema';
 
 function isAdmin(role: AuthRole) {
     return role === 'ADMIN' || role === 'SUPER_ADMIN';
+}
+
+function assertValidMapping(detectionSignature: unknown, columnMapping: unknown) {
+    try {
+        DetectionSignatureSchema.parse(detectionSignature);
+        ColumnMappingSchema.parse(columnMapping);
+    } catch (error) {
+        if (error instanceof ZodError) {
+            throw new BadRequestException({ message: 'Invalid mapping template shape', errors: error.errors });
+        }
+        throw error;
+    }
 }
 
 @Injectable()
@@ -17,6 +31,7 @@ export class MappingTemplatesService {
         if (dto.is_global && !isAdmin(role)) {
             throw new ForbiddenException('Only admins can create global mapping templates');
         }
+        assertValidMapping(dto.detection_signature, dto.column_mapping);
 
         return this.prisma.mappingTemplate.create({
             data: {
@@ -78,6 +93,9 @@ export class MappingTemplatesService {
     async update(userId: string, role: AuthRole, id: string, dto: UpdateMappingTemplateDto) {
         const template = await this.findOne(userId, id);
         this.assertCanManage(userId, role, template);
+        if (dto.detection_signature || dto.column_mapping) {
+            assertValidMapping(dto.detection_signature ?? template.detection_signature, dto.column_mapping ?? template.column_mapping);
+        }
 
         return this.prisma.mappingTemplate.update({
             where: { id },

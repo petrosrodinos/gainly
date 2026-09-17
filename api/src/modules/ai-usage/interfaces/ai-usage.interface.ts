@@ -1,5 +1,7 @@
 export const AiUsageFeatures = {
     PDF_EXTRACTION: 'pdf-extraction',
+    FALLBACK_EXTRACTION: 'fallback-extraction',
+    MAPPING_SUGGESTION: 'mapping-suggestion',
 } as const;
 
 export type AiUsageFeature = (typeof AiUsageFeatures)[keyof typeof AiUsageFeatures];

@@ -61,14 +61,24 @@ export class AiService {
         for (let attempt = 1; attempt <= maxRetries; attempt++) {
             try {
                 const modelAdapter = this.aiConfig.getModelAdapter(options.provider, options.model);
+                const schema = options?.schema || z.any();
 
-                const { object, usage } = await generateObject({
-                    model: modelAdapter,
-                    output: 'array',
-                    schema: options?.schema || z.any(),
-                    prompt: options.prompt,
-                    system: options?.system || 'You are a helpful assistant.',
-                });
+                const { object, usage } =
+                    options.output === 'object'
+                        ? await generateObject({
+                            model: modelAdapter,
+                            output: 'object',
+                            schema,
+                            prompt: options.prompt,
+                            system: options?.system || 'You are a helpful assistant.',
+                        })
+                        : await generateObject({
+                            model: modelAdapter,
+                            output: 'array',
+                            schema,
+                            prompt: options.prompt,
+                            system: options?.system || 'You are a helpful assistant.',
+                        });
 
                 const cost = calculateAiCost({
                     provider: options.provider,

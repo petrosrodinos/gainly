@@ -15,6 +15,8 @@ import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagg
 import { JwtGuard } from '@/shared/guards/jwt.guard';
 import { CurrentUser } from '@/shared/decorators/current-user.decorator';
 import { ZodValidationPipe } from '@/shared/pipes/zod.validation.pipe';
+import { AuthRole } from 'generated/prisma';
+import { CreateMappingTemplateDto } from '@/modules/mapping-templates/dto/create-mapping-template.dto';
 import { ImportsService } from './imports.service';
 import { CreateImportDto } from './dto/create-import.dto';
 import { AssignMappingTemplateDto } from './dto/assign-mapping-template.dto';
@@ -91,6 +93,35 @@ export class ImportsController {
     @ApiOperation({ summary: 'Re-run parsing for a batch (e.g. after fixing its mapping template)' })
     reparse(@CurrentUser('id') userId: string, @Param('id') id: string) {
         return this.importsService.reparse(userId, id);
+    }
+
+    @Get(':id/structure')
+    @ApiOperation({ summary: "Preview an uploaded file's sheets/headers/sample rows (or PDF text), for building a mapping wizard" })
+    getStructure(@CurrentUser('id') userId: string, @Param('id') id: string) {
+        return this.importsService.getStructure(userId, id);
+    }
+
+    @Post(':id/suggest-mapping')
+    @ApiOperation({ summary: 'AI-propose a mapping template for a spreadsheet format with no template match yet' })
+    suggestMapping(@CurrentUser('id') userId: string, @Param('id') id: string) {
+        return this.importsService.suggestMapping(userId, id);
+    }
+
+    @Post(':id/mapping-wizard')
+    @ApiOperation({ summary: 'Save a (possibly AI-suggested, possibly edited) mapping template and apply it to this batch' })
+    mappingWizard(
+        @CurrentUser('id') userId: string,
+        @CurrentUser('role') role: AuthRole,
+        @Param('id') id: string,
+        @Body() dto: CreateMappingTemplateDto,
+    ) {
+        return this.importsService.mappingWizard(userId, role, id, dto);
+    }
+
+    @Post(':id/extract-with-ai')
+    @ApiOperation({ summary: 'Skip mapping templates entirely and extract this file directly via AI (any supported format, one-off use)' })
+    extractWithAi(@CurrentUser('id') userId: string, @Param('id') id: string) {
+        return this.importsService.extractWithAi(userId, id);
     }
 
     @Post(':id/commit')

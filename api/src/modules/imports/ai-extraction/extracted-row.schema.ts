@@ -1,11 +1,12 @@
 import { z } from 'zod';
 
 /**
- * Shape handed to AiService.generateTextWithSchema for AI-assisted PDF extraction
- * (DESIGN.MD §4.4). Mirrors CanonicalRow but flattened (no nested objects) since that's what
- * generateObject's schema-constrained output handles most reliably.
+ * Shape handed to AiService.generateTextWithSchema for AI-assisted row extraction
+ * (DESIGN.MD §4.4) — used for both PDF text and the spreadsheet fallback (no template match).
+ * Mirrors CanonicalRow but flattened (no nested objects) since that's what generateObject's
+ * schema-constrained output handles most reliably.
  */
-export const PdfExtractedRowSchema = z.object({
+export const ExtractedRowSchema = z.object({
     type: z.enum([
         'BUY',
         'SELL',
@@ -33,4 +34,4 @@ export const PdfExtractedRowSchema = z.object({
     instrument_name: z.string().optional().describe('Security name, if present'),
 });
 
-export type PdfExtractedRow = z.infer<typeof PdfExtractedRowSchema>;
+export type ExtractedRow = z.infer<typeof ExtractedRowSchema>;
