@@ -99,6 +99,11 @@ export type TaxYearComputation = $Result.DefaultSelection<Prisma.$TaxYearComputa
  */
 export type TaxForm = $Result.DefaultSelection<Prisma.$TaxFormPayload>
 /**
+ * Model AiUsageLog
+ * 
+ */
+export type AiUsageLog = $Result.DefaultSelection<Prisma.$AiUsageLogPayload>
+/**
  * Model AuditLog
  * 
  */
@@ -614,6 +619,16 @@ export class PrismaClient<
   get taxForm(): Prisma.TaxFormDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.aiUsageLog`: Exposes CRUD operations for the **AiUsageLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiUsageLogs
+    * const aiUsageLogs = await prisma.aiUsageLog.findMany()
+    * ```
+    */
+  get aiUsageLog(): Prisma.AiUsageLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
     * Example usage:
     * ```ts
@@ -1073,6 +1088,7 @@ export namespace Prisma {
     TaxJurisdictionModule: 'TaxJurisdictionModule',
     TaxYearComputation: 'TaxYearComputation',
     TaxForm: 'TaxForm',
+    AiUsageLog: 'AiUsageLog',
     AuditLog: 'AuditLog'
   };
 
@@ -1089,7 +1105,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "account" | "mappingTemplate" | "importBatch" | "stagedTransaction" | "instrument" | "transaction" | "corporateAction" | "lot" | "positionSnapshot" | "priceSnapshot" | "fxRateSnapshot" | "taxJurisdictionModule" | "taxYearComputation" | "taxForm" | "auditLog"
+      modelProps: "user" | "passwordResetToken" | "document" | "account" | "mappingTemplate" | "importBatch" | "stagedTransaction" | "instrument" | "transaction" | "corporateAction" | "lot" | "positionSnapshot" | "priceSnapshot" | "fxRateSnapshot" | "taxJurisdictionModule" | "taxYearComputation" | "taxForm" | "aiUsageLog" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2351,6 +2367,80 @@ export namespace Prisma {
           }
         }
       }
+      AiUsageLog: {
+        payload: Prisma.$AiUsageLogPayload<ExtArgs>
+        fields: Prisma.AiUsageLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiUsageLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiUsageLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AiUsageLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiUsageLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          findMany: {
+            args: Prisma.AiUsageLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>[]
+          }
+          create: {
+            args: Prisma.AiUsageLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          createMany: {
+            args: Prisma.AiUsageLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiUsageLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AiUsageLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          update: {
+            args: Prisma.AiUsageLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiUsageLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiUsageLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiUsageLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiUsageLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiUsageLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AiUsageLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiUsageLog>
+          }
+          groupBy: {
+            args: Prisma.AiUsageLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiUsageLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiUsageLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AiUsageLogCountAggregateOutputType> | number
+          }
+        }
+      }
       AuditLog: {
         payload: Prisma.$AuditLogPayload<ExtArgs>
         fields: Prisma.AuditLogFieldRefs
@@ -2550,6 +2640,7 @@ export namespace Prisma {
     taxJurisdictionModule?: TaxJurisdictionModuleOmit
     taxYearComputation?: TaxYearComputationOmit
     taxForm?: TaxFormOmit
+    aiUsageLog?: AiUsageLogOmit
     auditLog?: AuditLogOmit
   }
 
@@ -2638,6 +2729,7 @@ export namespace Prisma {
     custom_instruments: number
     transactions: number
     tax_year_computations: number
+    ai_usage_logs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2648,6 +2740,7 @@ export namespace Prisma {
     custom_instruments?: boolean | UserCountOutputTypeCountCustom_instrumentsArgs
     transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
     tax_year_computations?: boolean | UserCountOutputTypeCountTax_year_computationsArgs
+    ai_usage_logs?: boolean | UserCountOutputTypeCountAi_usage_logsArgs
   }
 
   // Custom InputTypes
@@ -2708,6 +2801,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountTax_year_computationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaxYearComputationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAi_usage_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageLogWhereInput
   }
 
 
@@ -2857,12 +2957,14 @@ export namespace Prisma {
     staged_transactions: number
     transactions: number
     documents: number
+    ai_usage_logs: number
   }
 
   export type ImportBatchCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     staged_transactions?: boolean | ImportBatchCountOutputTypeCountStaged_transactionsArgs
     transactions?: boolean | ImportBatchCountOutputTypeCountTransactionsArgs
     documents?: boolean | ImportBatchCountOutputTypeCountDocumentsArgs
+    ai_usage_logs?: boolean | ImportBatchCountOutputTypeCountAi_usage_logsArgs
   }
 
   // Custom InputTypes
@@ -2895,6 +2997,13 @@ export namespace Prisma {
    */
   export type ImportBatchCountOutputTypeCountDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DocumentWhereInput
+  }
+
+  /**
+   * ImportBatchCountOutputType without action
+   */
+  export type ImportBatchCountOutputTypeCountAi_usage_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageLogWhereInput
   }
 
 
@@ -3227,6 +3336,7 @@ export namespace Prisma {
     custom_instruments?: boolean | User$custom_instrumentsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     tax_year_computations?: boolean | User$tax_year_computationsArgs<ExtArgs>
+    ai_usage_logs?: boolean | User$ai_usage_logsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3269,6 +3379,7 @@ export namespace Prisma {
     custom_instruments?: boolean | User$custom_instrumentsArgs<ExtArgs>
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     tax_year_computations?: boolean | User$tax_year_computationsArgs<ExtArgs>
+    ai_usage_logs?: boolean | User$ai_usage_logsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3284,6 +3395,7 @@ export namespace Prisma {
       custom_instruments: Prisma.$InstrumentPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       tax_year_computations: Prisma.$TaxYearComputationPayload<ExtArgs>[]
+      ai_usage_logs: Prisma.$AiUsageLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3694,6 +3806,7 @@ export namespace Prisma {
     custom_instruments<T extends User$custom_instrumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$custom_instrumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstrumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tax_year_computations<T extends User$tax_year_computationsArgs<ExtArgs> = {}>(args?: Subset<T, User$tax_year_computationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxYearComputationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ai_usage_logs<T extends User$ai_usage_logsArgs<ExtArgs> = {}>(args?: Subset<T, User$ai_usage_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4283,6 +4396,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TaxYearComputationScalarFieldEnum | TaxYearComputationScalarFieldEnum[]
+  }
+
+  /**
+   * User.ai_usage_logs
+   */
+  export type User$ai_usage_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    where?: AiUsageLogWhereInput
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    cursor?: AiUsageLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageLogScalarFieldEnum | AiUsageLogScalarFieldEnum[]
   }
 
   /**
@@ -9244,6 +9381,7 @@ export namespace Prisma {
     staged_transactions?: boolean | ImportBatch$staged_transactionsArgs<ExtArgs>
     transactions?: boolean | ImportBatch$transactionsArgs<ExtArgs>
     documents?: boolean | ImportBatch$documentsArgs<ExtArgs>
+    ai_usage_logs?: boolean | ImportBatch$ai_usage_logsArgs<ExtArgs>
     _count?: boolean | ImportBatchCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["importBatch"]>
 
@@ -9303,6 +9441,7 @@ export namespace Prisma {
     staged_transactions?: boolean | ImportBatch$staged_transactionsArgs<ExtArgs>
     transactions?: boolean | ImportBatch$transactionsArgs<ExtArgs>
     documents?: boolean | ImportBatch$documentsArgs<ExtArgs>
+    ai_usage_logs?: boolean | ImportBatch$ai_usage_logsArgs<ExtArgs>
     _count?: boolean | ImportBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ImportBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9328,6 +9467,7 @@ export namespace Prisma {
       staged_transactions: Prisma.$StagedTransactionPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       documents: Prisma.$DocumentPayload<ExtArgs>[]
+      ai_usage_logs: Prisma.$AiUsageLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9741,6 +9881,7 @@ export namespace Prisma {
     staged_transactions<T extends ImportBatch$staged_transactionsArgs<ExtArgs> = {}>(args?: Subset<T, ImportBatch$staged_transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StagedTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends ImportBatch$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, ImportBatch$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     documents<T extends ImportBatch$documentsArgs<ExtArgs> = {}>(args?: Subset<T, ImportBatch$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ai_usage_logs<T extends ImportBatch$ai_usage_logsArgs<ExtArgs> = {}>(args?: Subset<T, ImportBatch$ai_usage_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10264,6 +10405,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
+  }
+
+  /**
+   * ImportBatch.ai_usage_logs
+   */
+  export type ImportBatch$ai_usage_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    where?: AiUsageLogWhereInput
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    cursor?: AiUsageLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AiUsageLogScalarFieldEnum | AiUsageLogScalarFieldEnum[]
   }
 
   /**
@@ -23298,6 +23463,1217 @@ export namespace Prisma {
 
 
   /**
+   * Model AiUsageLog
+   */
+
+  export type AggregateAiUsageLog = {
+    _count: AiUsageLogCountAggregateOutputType | null
+    _avg: AiUsageLogAvgAggregateOutputType | null
+    _sum: AiUsageLogSumAggregateOutputType | null
+    _min: AiUsageLogMinAggregateOutputType | null
+    _max: AiUsageLogMaxAggregateOutputType | null
+  }
+
+  export type AiUsageLogAvgAggregateOutputType = {
+    input_tokens: number | null
+    output_tokens: number | null
+    cost_usd: Decimal | null
+  }
+
+  export type AiUsageLogSumAggregateOutputType = {
+    input_tokens: number | null
+    output_tokens: number | null
+    cost_usd: Decimal | null
+  }
+
+  export type AiUsageLogMinAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    feature: string | null
+    provider: string | null
+    model: string | null
+    input_tokens: number | null
+    output_tokens: number | null
+    cost_usd: Decimal | null
+    import_batch_uuid: string | null
+    created_at: Date | null
+  }
+
+  export type AiUsageLogMaxAggregateOutputType = {
+    id: string | null
+    user_uuid: string | null
+    feature: string | null
+    provider: string | null
+    model: string | null
+    input_tokens: number | null
+    output_tokens: number | null
+    cost_usd: Decimal | null
+    import_batch_uuid: string | null
+    created_at: Date | null
+  }
+
+  export type AiUsageLogCountAggregateOutputType = {
+    id: number
+    user_uuid: number
+    feature: number
+    provider: number
+    model: number
+    input_tokens: number
+    output_tokens: number
+    cost_usd: number
+    import_batch_uuid: number
+    created_at: number
+    _all: number
+  }
+
+
+  export type AiUsageLogAvgAggregateInputType = {
+    input_tokens?: true
+    output_tokens?: true
+    cost_usd?: true
+  }
+
+  export type AiUsageLogSumAggregateInputType = {
+    input_tokens?: true
+    output_tokens?: true
+    cost_usd?: true
+  }
+
+  export type AiUsageLogMinAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    cost_usd?: true
+    import_batch_uuid?: true
+    created_at?: true
+  }
+
+  export type AiUsageLogMaxAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    cost_usd?: true
+    import_batch_uuid?: true
+    created_at?: true
+  }
+
+  export type AiUsageLogCountAggregateInputType = {
+    id?: true
+    user_uuid?: true
+    feature?: true
+    provider?: true
+    model?: true
+    input_tokens?: true
+    output_tokens?: true
+    cost_usd?: true
+    import_batch_uuid?: true
+    created_at?: true
+    _all?: true
+  }
+
+  export type AiUsageLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiUsageLog to aggregate.
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageLogs to fetch.
+     */
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiUsageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiUsageLogs
+    **/
+    _count?: true | AiUsageLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiUsageLogAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiUsageLogSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiUsageLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiUsageLogMaxAggregateInputType
+  }
+
+  export type GetAiUsageLogAggregateType<T extends AiUsageLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiUsageLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiUsageLog[P]>
+      : GetScalarType<T[P], AggregateAiUsageLog[P]>
+  }
+
+
+
+
+  export type AiUsageLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiUsageLogWhereInput
+    orderBy?: AiUsageLogOrderByWithAggregationInput | AiUsageLogOrderByWithAggregationInput[]
+    by: AiUsageLogScalarFieldEnum[] | AiUsageLogScalarFieldEnum
+    having?: AiUsageLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiUsageLogCountAggregateInputType | true
+    _avg?: AiUsageLogAvgAggregateInputType
+    _sum?: AiUsageLogSumAggregateInputType
+    _min?: AiUsageLogMinAggregateInputType
+    _max?: AiUsageLogMaxAggregateInputType
+  }
+
+  export type AiUsageLogGroupByOutputType = {
+    id: string
+    user_uuid: string | null
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal
+    import_batch_uuid: string | null
+    created_at: Date
+    _count: AiUsageLogCountAggregateOutputType | null
+    _avg: AiUsageLogAvgAggregateOutputType | null
+    _sum: AiUsageLogSumAggregateOutputType | null
+    _min: AiUsageLogMinAggregateOutputType | null
+    _max: AiUsageLogMaxAggregateOutputType | null
+  }
+
+  type GetAiUsageLogGroupByPayload<T extends AiUsageLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiUsageLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiUsageLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiUsageLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AiUsageLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiUsageLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    cost_usd?: boolean
+    import_batch_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageLog"]>
+
+  export type AiUsageLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    cost_usd?: boolean
+    import_batch_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageLog"]>
+
+  export type AiUsageLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    user_uuid?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    cost_usd?: boolean
+    import_batch_uuid?: boolean
+    created_at?: boolean
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }, ExtArgs["result"]["aiUsageLog"]>
+
+  export type AiUsageLogSelectScalar = {
+    id?: boolean
+    user_uuid?: boolean
+    feature?: boolean
+    provider?: boolean
+    model?: boolean
+    input_tokens?: boolean
+    output_tokens?: boolean
+    cost_usd?: boolean
+    import_batch_uuid?: boolean
+    created_at?: boolean
+  }
+
+  export type AiUsageLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "feature" | "provider" | "model" | "input_tokens" | "output_tokens" | "cost_usd" | "import_batch_uuid" | "created_at", ExtArgs["result"]["aiUsageLog"]>
+  export type AiUsageLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }
+  export type AiUsageLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }
+  export type AiUsageLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | AiUsageLog$userArgs<ExtArgs>
+    import_batch?: boolean | AiUsageLog$import_batchArgs<ExtArgs>
+  }
+
+  export type $AiUsageLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiUsageLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+      import_batch: Prisma.$ImportBatchPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      user_uuid: string | null
+      feature: string
+      provider: string
+      model: string
+      input_tokens: number
+      output_tokens: number
+      cost_usd: Prisma.Decimal
+      import_batch_uuid: string | null
+      created_at: Date
+    }, ExtArgs["result"]["aiUsageLog"]>
+    composites: {}
+  }
+
+  type AiUsageLogGetPayload<S extends boolean | null | undefined | AiUsageLogDefaultArgs> = $Result.GetResult<Prisma.$AiUsageLogPayload, S>
+
+  type AiUsageLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiUsageLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiUsageLogCountAggregateInputType | true
+    }
+
+  export interface AiUsageLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiUsageLog'], meta: { name: 'AiUsageLog' } }
+    /**
+     * Find zero or one AiUsageLog that matches the filter.
+     * @param {AiUsageLogFindUniqueArgs} args - Arguments to find a AiUsageLog
+     * @example
+     * // Get one AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiUsageLogFindUniqueArgs>(args: SelectSubset<T, AiUsageLogFindUniqueArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiUsageLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiUsageLogFindUniqueOrThrowArgs} args - Arguments to find a AiUsageLog
+     * @example
+     * // Get one AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiUsageLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AiUsageLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiUsageLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogFindFirstArgs} args - Arguments to find a AiUsageLog
+     * @example
+     * // Get one AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiUsageLogFindFirstArgs>(args?: SelectSubset<T, AiUsageLogFindFirstArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiUsageLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogFindFirstOrThrowArgs} args - Arguments to find a AiUsageLog
+     * @example
+     * // Get one AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiUsageLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AiUsageLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiUsageLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiUsageLogs
+     * const aiUsageLogs = await prisma.aiUsageLog.findMany()
+     * 
+     * // Get first 10 AiUsageLogs
+     * const aiUsageLogs = await prisma.aiUsageLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiUsageLogWithIdOnly = await prisma.aiUsageLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiUsageLogFindManyArgs>(args?: SelectSubset<T, AiUsageLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiUsageLog.
+     * @param {AiUsageLogCreateArgs} args - Arguments to create a AiUsageLog.
+     * @example
+     * // Create one AiUsageLog
+     * const AiUsageLog = await prisma.aiUsageLog.create({
+     *   data: {
+     *     // ... data to create a AiUsageLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiUsageLogCreateArgs>(args: SelectSubset<T, AiUsageLogCreateArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiUsageLogs.
+     * @param {AiUsageLogCreateManyArgs} args - Arguments to create many AiUsageLogs.
+     * @example
+     * // Create many AiUsageLogs
+     * const aiUsageLog = await prisma.aiUsageLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiUsageLogCreateManyArgs>(args?: SelectSubset<T, AiUsageLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiUsageLogs and returns the data saved in the database.
+     * @param {AiUsageLogCreateManyAndReturnArgs} args - Arguments to create many AiUsageLogs.
+     * @example
+     * // Create many AiUsageLogs
+     * const aiUsageLog = await prisma.aiUsageLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiUsageLogs and only return the `id`
+     * const aiUsageLogWithIdOnly = await prisma.aiUsageLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiUsageLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AiUsageLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiUsageLog.
+     * @param {AiUsageLogDeleteArgs} args - Arguments to delete one AiUsageLog.
+     * @example
+     * // Delete one AiUsageLog
+     * const AiUsageLog = await prisma.aiUsageLog.delete({
+     *   where: {
+     *     // ... filter to delete one AiUsageLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiUsageLogDeleteArgs>(args: SelectSubset<T, AiUsageLogDeleteArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiUsageLog.
+     * @param {AiUsageLogUpdateArgs} args - Arguments to update one AiUsageLog.
+     * @example
+     * // Update one AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiUsageLogUpdateArgs>(args: SelectSubset<T, AiUsageLogUpdateArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiUsageLogs.
+     * @param {AiUsageLogDeleteManyArgs} args - Arguments to filter AiUsageLogs to delete.
+     * @example
+     * // Delete a few AiUsageLogs
+     * const { count } = await prisma.aiUsageLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiUsageLogDeleteManyArgs>(args?: SelectSubset<T, AiUsageLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiUsageLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiUsageLogs
+     * const aiUsageLog = await prisma.aiUsageLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiUsageLogUpdateManyArgs>(args: SelectSubset<T, AiUsageLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiUsageLogs and returns the data updated in the database.
+     * @param {AiUsageLogUpdateManyAndReturnArgs} args - Arguments to update many AiUsageLogs.
+     * @example
+     * // Update many AiUsageLogs
+     * const aiUsageLog = await prisma.aiUsageLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiUsageLogs and only return the `id`
+     * const aiUsageLogWithIdOnly = await prisma.aiUsageLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiUsageLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AiUsageLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiUsageLog.
+     * @param {AiUsageLogUpsertArgs} args - Arguments to update or create a AiUsageLog.
+     * @example
+     * // Update or create a AiUsageLog
+     * const aiUsageLog = await prisma.aiUsageLog.upsert({
+     *   create: {
+     *     // ... data to create a AiUsageLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiUsageLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiUsageLogUpsertArgs>(args: SelectSubset<T, AiUsageLogUpsertArgs<ExtArgs>>): Prisma__AiUsageLogClient<$Result.GetResult<Prisma.$AiUsageLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiUsageLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogCountArgs} args - Arguments to filter AiUsageLogs to count.
+     * @example
+     * // Count the number of AiUsageLogs
+     * const count = await prisma.aiUsageLog.count({
+     *   where: {
+     *     // ... the filter for the AiUsageLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiUsageLogCountArgs>(
+      args?: Subset<T, AiUsageLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiUsageLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiUsageLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiUsageLogAggregateArgs>(args: Subset<T, AiUsageLogAggregateArgs>): Prisma.PrismaPromise<GetAiUsageLogAggregateType<T>>
+
+    /**
+     * Group by AiUsageLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiUsageLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiUsageLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiUsageLogGroupByArgs['orderBy'] }
+        : { orderBy?: AiUsageLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiUsageLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiUsageLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiUsageLog model
+   */
+  readonly fields: AiUsageLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiUsageLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiUsageLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends AiUsageLog$userArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageLog$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    import_batch<T extends AiUsageLog$import_batchArgs<ExtArgs> = {}>(args?: Subset<T, AiUsageLog$import_batchArgs<ExtArgs>>): Prisma__ImportBatchClient<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiUsageLog model
+   */
+  interface AiUsageLogFieldRefs {
+    readonly id: FieldRef<"AiUsageLog", 'String'>
+    readonly user_uuid: FieldRef<"AiUsageLog", 'String'>
+    readonly feature: FieldRef<"AiUsageLog", 'String'>
+    readonly provider: FieldRef<"AiUsageLog", 'String'>
+    readonly model: FieldRef<"AiUsageLog", 'String'>
+    readonly input_tokens: FieldRef<"AiUsageLog", 'Int'>
+    readonly output_tokens: FieldRef<"AiUsageLog", 'Int'>
+    readonly cost_usd: FieldRef<"AiUsageLog", 'Decimal'>
+    readonly import_batch_uuid: FieldRef<"AiUsageLog", 'String'>
+    readonly created_at: FieldRef<"AiUsageLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiUsageLog findUnique
+   */
+  export type AiUsageLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageLog to fetch.
+     */
+    where: AiUsageLogWhereUniqueInput
+  }
+
+  /**
+   * AiUsageLog findUniqueOrThrow
+   */
+  export type AiUsageLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageLog to fetch.
+     */
+    where: AiUsageLogWhereUniqueInput
+  }
+
+  /**
+   * AiUsageLog findFirst
+   */
+  export type AiUsageLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageLog to fetch.
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageLogs to fetch.
+     */
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiUsageLogs.
+     */
+    cursor?: AiUsageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiUsageLogs.
+     */
+    distinct?: AiUsageLogScalarFieldEnum | AiUsageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageLog findFirstOrThrow
+   */
+  export type AiUsageLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageLog to fetch.
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageLogs to fetch.
+     */
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiUsageLogs.
+     */
+    cursor?: AiUsageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiUsageLogs.
+     */
+    distinct?: AiUsageLogScalarFieldEnum | AiUsageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageLog findMany
+   */
+  export type AiUsageLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AiUsageLogs to fetch.
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiUsageLogs to fetch.
+     */
+    orderBy?: AiUsageLogOrderByWithRelationInput | AiUsageLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiUsageLogs.
+     */
+    cursor?: AiUsageLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiUsageLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiUsageLogs.
+     */
+    skip?: number
+    distinct?: AiUsageLogScalarFieldEnum | AiUsageLogScalarFieldEnum[]
+  }
+
+  /**
+   * AiUsageLog create
+   */
+  export type AiUsageLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AiUsageLog.
+     */
+    data: XOR<AiUsageLogCreateInput, AiUsageLogUncheckedCreateInput>
+  }
+
+  /**
+   * AiUsageLog createMany
+   */
+  export type AiUsageLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiUsageLogs.
+     */
+    data: AiUsageLogCreateManyInput | AiUsageLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiUsageLog createManyAndReturn
+   */
+  export type AiUsageLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiUsageLogs.
+     */
+    data: AiUsageLogCreateManyInput | AiUsageLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiUsageLog update
+   */
+  export type AiUsageLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AiUsageLog.
+     */
+    data: XOR<AiUsageLogUpdateInput, AiUsageLogUncheckedUpdateInput>
+    /**
+     * Choose, which AiUsageLog to update.
+     */
+    where: AiUsageLogWhereUniqueInput
+  }
+
+  /**
+   * AiUsageLog updateMany
+   */
+  export type AiUsageLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiUsageLogs.
+     */
+    data: XOR<AiUsageLogUpdateManyMutationInput, AiUsageLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AiUsageLogs to update
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * Limit how many AiUsageLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiUsageLog updateManyAndReturn
+   */
+  export type AiUsageLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AiUsageLogs.
+     */
+    data: XOR<AiUsageLogUpdateManyMutationInput, AiUsageLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AiUsageLogs to update
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * Limit how many AiUsageLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AiUsageLog upsert
+   */
+  export type AiUsageLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AiUsageLog to update in case it exists.
+     */
+    where: AiUsageLogWhereUniqueInput
+    /**
+     * In case the AiUsageLog found by the `where` argument doesn't exist, create a new AiUsageLog with this data.
+     */
+    create: XOR<AiUsageLogCreateInput, AiUsageLogUncheckedCreateInput>
+    /**
+     * In case the AiUsageLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiUsageLogUpdateInput, AiUsageLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AiUsageLog delete
+   */
+  export type AiUsageLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+    /**
+     * Filter which AiUsageLog to delete.
+     */
+    where: AiUsageLogWhereUniqueInput
+  }
+
+  /**
+   * AiUsageLog deleteMany
+   */
+  export type AiUsageLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiUsageLogs to delete
+     */
+    where?: AiUsageLogWhereInput
+    /**
+     * Limit how many AiUsageLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiUsageLog.user
+   */
+  export type AiUsageLog$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * AiUsageLog.import_batch
+   */
+  export type AiUsageLog$import_batchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImportBatch
+     */
+    select?: ImportBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImportBatch
+     */
+    omit?: ImportBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImportBatchInclude<ExtArgs> | null
+    where?: ImportBatchWhereInput
+  }
+
+  /**
+   * AiUsageLog without action
+   */
+  export type AiUsageLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiUsageLog
+     */
+    select?: AiUsageLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiUsageLog
+     */
+    omit?: AiUsageLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AiUsageLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model AuditLog
    */
 
@@ -24599,6 +25975,22 @@ export namespace Prisma {
   export type TaxFormScalarFieldEnum = (typeof TaxFormScalarFieldEnum)[keyof typeof TaxFormScalarFieldEnum]
 
 
+  export const AiUsageLogScalarFieldEnum: {
+    id: 'id',
+    user_uuid: 'user_uuid',
+    feature: 'feature',
+    provider: 'provider',
+    model: 'model',
+    input_tokens: 'input_tokens',
+    output_tokens: 'output_tokens',
+    cost_usd: 'cost_usd',
+    import_batch_uuid: 'import_batch_uuid',
+    created_at: 'created_at'
+  };
+
+  export type AiUsageLogScalarFieldEnum = (typeof AiUsageLogScalarFieldEnum)[keyof typeof AiUsageLogScalarFieldEnum]
+
+
   export const AuditLogScalarFieldEnum: {
     id: 'id',
     user_uuid: 'user_uuid',
@@ -24974,6 +26366,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentListRelationFilter
     transactions?: TransactionListRelationFilter
     tax_year_computations?: TaxYearComputationListRelationFilter
+    ai_usage_logs?: AiUsageLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -24991,6 +26384,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     tax_year_computations?: TaxYearComputationOrderByRelationAggregateInput
+    ai_usage_logs?: AiUsageLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -25011,6 +26405,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentListRelationFilter
     transactions?: TransactionListRelationFilter
     tax_year_computations?: TaxYearComputationListRelationFilter
+    ai_usage_logs?: AiUsageLogListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -25373,6 +26768,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionListRelationFilter
     transactions?: TransactionListRelationFilter
     documents?: DocumentListRelationFilter
+    ai_usage_logs?: AiUsageLogListRelationFilter
   }
 
   export type ImportBatchOrderByWithRelationInput = {
@@ -25393,6 +26789,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     documents?: DocumentOrderByRelationAggregateInput
+    ai_usage_logs?: AiUsageLogOrderByRelationAggregateInput
   }
 
   export type ImportBatchWhereUniqueInput = Prisma.AtLeast<{
@@ -25416,6 +26813,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionListRelationFilter
     transactions?: TransactionListRelationFilter
     documents?: DocumentListRelationFilter
+    ai_usage_logs?: AiUsageLogListRelationFilter
   }, "id">
 
   export type ImportBatchOrderByWithAggregationInput = {
@@ -26406,6 +27804,91 @@ export namespace Prisma {
     generated_at?: DateTimeWithAggregatesFilter<"TaxForm"> | Date | string
   }
 
+  export type AiUsageLogWhereInput = {
+    AND?: AiUsageLogWhereInput | AiUsageLogWhereInput[]
+    OR?: AiUsageLogWhereInput[]
+    NOT?: AiUsageLogWhereInput | AiUsageLogWhereInput[]
+    id?: StringFilter<"AiUsageLog"> | string
+    user_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    feature?: StringFilter<"AiUsageLog"> | string
+    provider?: StringFilter<"AiUsageLog"> | string
+    model?: StringFilter<"AiUsageLog"> | string
+    input_tokens?: IntFilter<"AiUsageLog"> | number
+    output_tokens?: IntFilter<"AiUsageLog"> | number
+    cost_usd?: DecimalFilter<"AiUsageLog"> | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    created_at?: DateTimeFilter<"AiUsageLog"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
+  }
+
+  export type AiUsageLogOrderByWithRelationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrderInput | SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+    import_batch_uuid?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    user?: UserOrderByWithRelationInput
+    import_batch?: ImportBatchOrderByWithRelationInput
+  }
+
+  export type AiUsageLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiUsageLogWhereInput | AiUsageLogWhereInput[]
+    OR?: AiUsageLogWhereInput[]
+    NOT?: AiUsageLogWhereInput | AiUsageLogWhereInput[]
+    user_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    feature?: StringFilter<"AiUsageLog"> | string
+    provider?: StringFilter<"AiUsageLog"> | string
+    model?: StringFilter<"AiUsageLog"> | string
+    input_tokens?: IntFilter<"AiUsageLog"> | number
+    output_tokens?: IntFilter<"AiUsageLog"> | number
+    cost_usd?: DecimalFilter<"AiUsageLog"> | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    created_at?: DateTimeFilter<"AiUsageLog"> | Date | string
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
+  }, "id">
+
+  export type AiUsageLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    user_uuid?: SortOrderInput | SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+    import_batch_uuid?: SortOrderInput | SortOrder
+    created_at?: SortOrder
+    _count?: AiUsageLogCountOrderByAggregateInput
+    _avg?: AiUsageLogAvgOrderByAggregateInput
+    _max?: AiUsageLogMaxOrderByAggregateInput
+    _min?: AiUsageLogMinOrderByAggregateInput
+    _sum?: AiUsageLogSumOrderByAggregateInput
+  }
+
+  export type AiUsageLogScalarWhereWithAggregatesInput = {
+    AND?: AiUsageLogScalarWhereWithAggregatesInput | AiUsageLogScalarWhereWithAggregatesInput[]
+    OR?: AiUsageLogScalarWhereWithAggregatesInput[]
+    NOT?: AiUsageLogScalarWhereWithAggregatesInput | AiUsageLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiUsageLog"> | string
+    user_uuid?: StringNullableWithAggregatesFilter<"AiUsageLog"> | string | null
+    feature?: StringWithAggregatesFilter<"AiUsageLog"> | string
+    provider?: StringWithAggregatesFilter<"AiUsageLog"> | string
+    model?: StringWithAggregatesFilter<"AiUsageLog"> | string
+    input_tokens?: IntWithAggregatesFilter<"AiUsageLog"> | number
+    output_tokens?: IntWithAggregatesFilter<"AiUsageLog"> | number
+    cost_usd?: DecimalWithAggregatesFilter<"AiUsageLog"> | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: StringNullableWithAggregatesFilter<"AiUsageLog"> | string | null
+    created_at?: DateTimeWithAggregatesFilter<"AiUsageLog"> | Date | string
+  }
+
   export type AuditLogWhereInput = {
     AND?: AuditLogWhereInput | AuditLogWhereInput[]
     OR?: AuditLogWhereInput[]
@@ -26488,6 +27971,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -26505,6 +27989,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -26522,6 +28007,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -26539,6 +28025,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -26928,6 +28415,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateInput = {
@@ -26944,6 +28432,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUpdateInput = {
@@ -26960,6 +28449,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateInput = {
@@ -26976,6 +28466,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchCreateManyInput = {
@@ -28034,6 +29525,95 @@ export namespace Prisma {
     generated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiUsageLogCreateInput = {
+    id?: string
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    created_at?: Date | string
+    user?: UserCreateNestedOneWithoutAi_usage_logsInput
+    import_batch?: ImportBatchCreateNestedOneWithoutAi_usage_logsInput
+  }
+
+  export type AiUsageLogUncheckedCreateInput = {
+    id?: string
+    user_uuid?: string | null
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: string | null
+    created_at?: Date | string
+  }
+
+  export type AiUsageLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutAi_usage_logsNestedInput
+    import_batch?: ImportBatchUpdateOneWithoutAi_usage_logsNestedInput
+  }
+
+  export type AiUsageLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageLogCreateManyInput = {
+    id?: string
+    user_uuid?: string | null
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: string | null
+    created_at?: Date | string
+  }
+
+  export type AiUsageLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AuditLogCreateInput = {
     id?: string
     user_uuid?: string | null
@@ -28201,6 +29781,12 @@ export namespace Prisma {
     none?: TaxYearComputationWhereInput
   }
 
+  export type AiUsageLogListRelationFilter = {
+    every?: AiUsageLogWhereInput
+    some?: AiUsageLogWhereInput
+    none?: AiUsageLogWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -28231,6 +29817,10 @@ export namespace Prisma {
   }
 
   export type TaxYearComputationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AiUsageLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -29599,6 +31189,57 @@ export namespace Prisma {
     _max?: NestedEnumTaxFormFormatFilter<$PrismaModel>
   }
 
+  export type AiUsageLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+    import_batch_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageLogAvgOrderByAggregateInput = {
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+  }
+
+  export type AiUsageLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+    import_batch_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    user_uuid?: SortOrder
+    feature?: SortOrder
+    provider?: SortOrder
+    model?: SortOrder
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+    import_batch_uuid?: SortOrder
+    created_at?: SortOrder
+  }
+
+  export type AiUsageLogSumOrderByAggregateInput = {
+    input_tokens?: SortOrder
+    output_tokens?: SortOrder
+    cost_usd?: SortOrder
+  }
+
   export type EnumAuditActionFilter<$PrismaModel = never> = {
     equals?: $Enums.AuditAction | EnumAuditActionFieldRefInput<$PrismaModel>
     in?: $Enums.AuditAction[] | ListEnumAuditActionFieldRefInput<$PrismaModel>
@@ -29694,6 +31335,13 @@ export namespace Prisma {
     connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
   }
 
+  export type AiUsageLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput> | AiUsageLogCreateWithoutUserInput[] | AiUsageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutUserInput | AiUsageLogCreateOrConnectWithoutUserInput[]
+    createMany?: AiUsageLogCreateManyUserInputEnvelope
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+  }
+
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -29741,6 +31389,13 @@ export namespace Prisma {
     connectOrCreate?: TaxYearComputationCreateOrConnectWithoutUserInput | TaxYearComputationCreateOrConnectWithoutUserInput[]
     createMany?: TaxYearComputationCreateManyUserInputEnvelope
     connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+  }
+
+  export type AiUsageLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput> | AiUsageLogCreateWithoutUserInput[] | AiUsageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutUserInput | AiUsageLogCreateOrConnectWithoutUserInput[]
+    createMany?: AiUsageLogCreateManyUserInputEnvelope
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -29857,6 +31512,20 @@ export namespace Prisma {
     deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
   }
 
+  export type AiUsageLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput> | AiUsageLogCreateWithoutUserInput[] | AiUsageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutUserInput | AiUsageLogCreateOrConnectWithoutUserInput[]
+    upsert?: AiUsageLogUpsertWithWhereUniqueWithoutUserInput | AiUsageLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiUsageLogCreateManyUserInputEnvelope
+    set?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    disconnect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    delete?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    update?: AiUsageLogUpdateWithWhereUniqueWithoutUserInput | AiUsageLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiUsageLogUpdateManyWithWhereWithoutUserInput | AiUsageLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
+  }
+
   export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<PasswordResetTokenCreateWithoutUserInput, PasswordResetTokenUncheckedCreateWithoutUserInput> | PasswordResetTokenCreateWithoutUserInput[] | PasswordResetTokenUncheckedCreateWithoutUserInput[]
     connectOrCreate?: PasswordResetTokenCreateOrConnectWithoutUserInput | PasswordResetTokenCreateOrConnectWithoutUserInput[]
@@ -29953,6 +31622,20 @@ export namespace Prisma {
     update?: TaxYearComputationUpdateWithWhereUniqueWithoutUserInput | TaxYearComputationUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: TaxYearComputationUpdateManyWithWhereWithoutUserInput | TaxYearComputationUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
+  }
+
+  export type AiUsageLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput> | AiUsageLogCreateWithoutUserInput[] | AiUsageLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutUserInput | AiUsageLogCreateOrConnectWithoutUserInput[]
+    upsert?: AiUsageLogUpsertWithWhereUniqueWithoutUserInput | AiUsageLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AiUsageLogCreateManyUserInputEnvelope
+    set?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    disconnect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    delete?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    update?: AiUsageLogUpdateWithWhereUniqueWithoutUserInput | AiUsageLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AiUsageLogUpdateManyWithWhereWithoutUserInput | AiUsageLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
@@ -30420,6 +32103,13 @@ export namespace Prisma {
     connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
   }
 
+  export type AiUsageLogCreateNestedManyWithoutImport_batchInput = {
+    create?: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput> | AiUsageLogCreateWithoutImport_batchInput[] | AiUsageLogUncheckedCreateWithoutImport_batchInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutImport_batchInput | AiUsageLogCreateOrConnectWithoutImport_batchInput[]
+    createMany?: AiUsageLogCreateManyImport_batchInputEnvelope
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+  }
+
   export type StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput = {
     create?: XOR<StagedTransactionCreateWithoutImport_batchInput, StagedTransactionUncheckedCreateWithoutImport_batchInput> | StagedTransactionCreateWithoutImport_batchInput[] | StagedTransactionUncheckedCreateWithoutImport_batchInput[]
     connectOrCreate?: StagedTransactionCreateOrConnectWithoutImport_batchInput | StagedTransactionCreateOrConnectWithoutImport_batchInput[]
@@ -30439,6 +32129,13 @@ export namespace Prisma {
     connectOrCreate?: DocumentCreateOrConnectWithoutImport_batchInput | DocumentCreateOrConnectWithoutImport_batchInput[]
     createMany?: DocumentCreateManyImport_batchInputEnvelope
     connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
+  }
+
+  export type AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput = {
+    create?: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput> | AiUsageLogCreateWithoutImport_batchInput[] | AiUsageLogUncheckedCreateWithoutImport_batchInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutImport_batchInput | AiUsageLogCreateOrConnectWithoutImport_batchInput[]
+    createMany?: AiUsageLogCreateManyImport_batchInputEnvelope
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
   }
 
   export type EnumImportBatchStatusFieldUpdateOperationsInput = {
@@ -30521,6 +32218,20 @@ export namespace Prisma {
     deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
   }
 
+  export type AiUsageLogUpdateManyWithoutImport_batchNestedInput = {
+    create?: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput> | AiUsageLogCreateWithoutImport_batchInput[] | AiUsageLogUncheckedCreateWithoutImport_batchInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutImport_batchInput | AiUsageLogCreateOrConnectWithoutImport_batchInput[]
+    upsert?: AiUsageLogUpsertWithWhereUniqueWithoutImport_batchInput | AiUsageLogUpsertWithWhereUniqueWithoutImport_batchInput[]
+    createMany?: AiUsageLogCreateManyImport_batchInputEnvelope
+    set?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    disconnect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    delete?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    update?: AiUsageLogUpdateWithWhereUniqueWithoutImport_batchInput | AiUsageLogUpdateWithWhereUniqueWithoutImport_batchInput[]
+    updateMany?: AiUsageLogUpdateManyWithWhereWithoutImport_batchInput | AiUsageLogUpdateManyWithWhereWithoutImport_batchInput[]
+    deleteMany?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
+  }
+
   export type StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput = {
     create?: XOR<StagedTransactionCreateWithoutImport_batchInput, StagedTransactionUncheckedCreateWithoutImport_batchInput> | StagedTransactionCreateWithoutImport_batchInput[] | StagedTransactionUncheckedCreateWithoutImport_batchInput[]
     connectOrCreate?: StagedTransactionCreateOrConnectWithoutImport_batchInput | StagedTransactionCreateOrConnectWithoutImport_batchInput[]
@@ -30561,6 +32272,20 @@ export namespace Prisma {
     update?: DocumentUpdateWithWhereUniqueWithoutImport_batchInput | DocumentUpdateWithWhereUniqueWithoutImport_batchInput[]
     updateMany?: DocumentUpdateManyWithWhereWithoutImport_batchInput | DocumentUpdateManyWithWhereWithoutImport_batchInput[]
     deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+  }
+
+  export type AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput = {
+    create?: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput> | AiUsageLogCreateWithoutImport_batchInput[] | AiUsageLogUncheckedCreateWithoutImport_batchInput[]
+    connectOrCreate?: AiUsageLogCreateOrConnectWithoutImport_batchInput | AiUsageLogCreateOrConnectWithoutImport_batchInput[]
+    upsert?: AiUsageLogUpsertWithWhereUniqueWithoutImport_batchInput | AiUsageLogUpsertWithWhereUniqueWithoutImport_batchInput[]
+    createMany?: AiUsageLogCreateManyImport_batchInputEnvelope
+    set?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    disconnect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    delete?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    connect?: AiUsageLogWhereUniqueInput | AiUsageLogWhereUniqueInput[]
+    update?: AiUsageLogUpdateWithWhereUniqueWithoutImport_batchInput | AiUsageLogUpdateWithWhereUniqueWithoutImport_batchInput[]
+    updateMany?: AiUsageLogUpdateManyWithWhereWithoutImport_batchInput | AiUsageLogUpdateManyWithWhereWithoutImport_batchInput[]
+    deleteMany?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
   }
 
   export type ImportBatchCreateNestedOneWithoutStaged_transactionsInput = {
@@ -31318,6 +33043,38 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutTax_formsInput, DocumentUpdateWithoutTax_formsInput>, DocumentUncheckedUpdateWithoutTax_formsInput>
   }
 
+  export type UserCreateNestedOneWithoutAi_usage_logsInput = {
+    create?: XOR<UserCreateWithoutAi_usage_logsInput, UserUncheckedCreateWithoutAi_usage_logsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAi_usage_logsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ImportBatchCreateNestedOneWithoutAi_usage_logsInput = {
+    create?: XOR<ImportBatchCreateWithoutAi_usage_logsInput, ImportBatchUncheckedCreateWithoutAi_usage_logsInput>
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutAi_usage_logsInput
+    connect?: ImportBatchWhereUniqueInput
+  }
+
+  export type UserUpdateOneWithoutAi_usage_logsNestedInput = {
+    create?: XOR<UserCreateWithoutAi_usage_logsInput, UserUncheckedCreateWithoutAi_usage_logsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAi_usage_logsInput
+    upsert?: UserUpsertWithoutAi_usage_logsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAi_usage_logsInput, UserUpdateWithoutAi_usage_logsInput>, UserUncheckedUpdateWithoutAi_usage_logsInput>
+  }
+
+  export type ImportBatchUpdateOneWithoutAi_usage_logsNestedInput = {
+    create?: XOR<ImportBatchCreateWithoutAi_usage_logsInput, ImportBatchUncheckedCreateWithoutAi_usage_logsInput>
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutAi_usage_logsInput
+    upsert?: ImportBatchUpsertWithoutAi_usage_logsInput
+    disconnect?: ImportBatchWhereInput | boolean
+    delete?: ImportBatchWhereInput | boolean
+    connect?: ImportBatchWhereUniqueInput
+    update?: XOR<XOR<ImportBatchUpdateToOneWithWhereWithoutAi_usage_logsInput, ImportBatchUpdateWithoutAi_usage_logsInput>, ImportBatchUncheckedUpdateWithoutAi_usage_logsInput>
+  }
+
   export type EnumAuditActionFieldUpdateOperationsInput = {
     set?: $Enums.AuditAction
   }
@@ -31945,6 +33702,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutUserInput = {
@@ -31960,6 +33718,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutUserInput = {
@@ -32121,6 +33880,40 @@ export namespace Prisma {
 
   export type TaxYearComputationCreateManyUserInputEnvelope = {
     data: TaxYearComputationCreateManyUserInput | TaxYearComputationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AiUsageLogCreateWithoutUserInput = {
+    id?: string
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    created_at?: Date | string
+    import_batch?: ImportBatchCreateNestedOneWithoutAi_usage_logsInput
+  }
+
+  export type AiUsageLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: string | null
+    created_at?: Date | string
+  }
+
+  export type AiUsageLogCreateOrConnectWithoutUserInput = {
+    where: AiUsageLogWhereUniqueInput
+    create: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiUsageLogCreateManyUserInputEnvelope = {
+    data: AiUsageLogCreateManyUserInput | AiUsageLogCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -32356,6 +34149,38 @@ export namespace Prisma {
     updated_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
   }
 
+  export type AiUsageLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AiUsageLogWhereUniqueInput
+    update: XOR<AiUsageLogUpdateWithoutUserInput, AiUsageLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AiUsageLogCreateWithoutUserInput, AiUsageLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AiUsageLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AiUsageLogWhereUniqueInput
+    data: XOR<AiUsageLogUpdateWithoutUserInput, AiUsageLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AiUsageLogUpdateManyWithWhereWithoutUserInput = {
+    where: AiUsageLogScalarWhereInput
+    data: XOR<AiUsageLogUpdateManyMutationInput, AiUsageLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AiUsageLogScalarWhereInput = {
+    AND?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
+    OR?: AiUsageLogScalarWhereInput[]
+    NOT?: AiUsageLogScalarWhereInput | AiUsageLogScalarWhereInput[]
+    id?: StringFilter<"AiUsageLog"> | string
+    user_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    feature?: StringFilter<"AiUsageLog"> | string
+    provider?: StringFilter<"AiUsageLog"> | string
+    model?: StringFilter<"AiUsageLog"> | string
+    input_tokens?: IntFilter<"AiUsageLog"> | number
+    output_tokens?: IntFilter<"AiUsageLog"> | number
+    cost_usd?: DecimalFilter<"AiUsageLog"> | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: StringNullableFilter<"AiUsageLog"> | string | null
+    created_at?: DateTimeFilter<"AiUsageLog"> | Date | string
+  }
+
   export type UserCreateWithoutPassword_reset_tokensInput = {
     id?: string
     email: string
@@ -32370,6 +34195,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -32386,6 +34212,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -32418,6 +34245,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -32434,6 +34262,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchCreateWithoutDocumentsInput = {
@@ -32449,6 +34278,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutDocumentsInput = {
@@ -32464,6 +34294,7 @@ export namespace Prisma {
     updated_at?: Date | string
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutDocumentsInput = {
@@ -32484,6 +34315,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutSource_documentInput = {
@@ -32499,6 +34331,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutSource_documentInput = {
@@ -32561,6 +34394,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutDocumentsInput = {
@@ -32576,6 +34410,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUpsertWithWhereUniqueWithoutSource_documentInput = {
@@ -32636,6 +34471,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -32652,6 +34488,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -32672,6 +34509,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutAccountInput = {
@@ -32687,6 +34525,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutAccountInput = {
@@ -32892,6 +34731,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -32908,6 +34748,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchUpsertWithWhereUniqueWithoutAccountInput = {
@@ -33034,6 +34875,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMapping_templatesInput = {
@@ -33050,6 +34892,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMapping_templatesInput = {
@@ -33070,6 +34913,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutMapping_templateInput = {
@@ -33085,6 +34929,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutMapping_templateInput = {
@@ -33122,6 +34967,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMapping_templatesInput = {
@@ -33138,6 +34984,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchUpsertWithWhereUniqueWithoutMapping_templateInput = {
@@ -33170,6 +35017,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutImport_batchesInput = {
@@ -33186,6 +35034,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutImport_batchesInput = {
@@ -33428,6 +35277,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AiUsageLogCreateWithoutImport_batchInput = {
+    id?: string
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    created_at?: Date | string
+    user?: UserCreateNestedOneWithoutAi_usage_logsInput
+  }
+
+  export type AiUsageLogUncheckedCreateWithoutImport_batchInput = {
+    id?: string
+    user_uuid?: string | null
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    created_at?: Date | string
+  }
+
+  export type AiUsageLogCreateOrConnectWithoutImport_batchInput = {
+    where: AiUsageLogWhereUniqueInput
+    create: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput>
+  }
+
+  export type AiUsageLogCreateManyImport_batchInputEnvelope = {
+    data: AiUsageLogCreateManyImport_batchInput | AiUsageLogCreateManyImport_batchInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutImport_batchesInput = {
     update: XOR<UserUpdateWithoutImport_batchesInput, UserUncheckedUpdateWithoutImport_batchesInput>
     create: XOR<UserCreateWithoutImport_batchesInput, UserUncheckedCreateWithoutImport_batchesInput>
@@ -33453,6 +35336,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutImport_batchesInput = {
@@ -33469,6 +35353,7 @@ export namespace Prisma {
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutImport_batchesInput = {
@@ -33667,6 +35552,22 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"Document"> | Date | string
   }
 
+  export type AiUsageLogUpsertWithWhereUniqueWithoutImport_batchInput = {
+    where: AiUsageLogWhereUniqueInput
+    update: XOR<AiUsageLogUpdateWithoutImport_batchInput, AiUsageLogUncheckedUpdateWithoutImport_batchInput>
+    create: XOR<AiUsageLogCreateWithoutImport_batchInput, AiUsageLogUncheckedCreateWithoutImport_batchInput>
+  }
+
+  export type AiUsageLogUpdateWithWhereUniqueWithoutImport_batchInput = {
+    where: AiUsageLogWhereUniqueInput
+    data: XOR<AiUsageLogUpdateWithoutImport_batchInput, AiUsageLogUncheckedUpdateWithoutImport_batchInput>
+  }
+
+  export type AiUsageLogUpdateManyWithWhereWithoutImport_batchInput = {
+    where: AiUsageLogScalarWhereInput
+    data: XOR<AiUsageLogUpdateManyMutationInput, AiUsageLogUncheckedUpdateManyWithoutImport_batchInput>
+  }
+
   export type ImportBatchCreateWithoutStaged_transactionsInput = {
     id?: string
     status?: $Enums.ImportBatchStatus
@@ -33680,6 +35581,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
     transactions?: TransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutStaged_transactionsInput = {
@@ -33695,6 +35597,7 @@ export namespace Prisma {
     updated_at?: Date | string
     transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutStaged_transactionsInput = {
@@ -33826,6 +35729,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutStaged_transactionsInput = {
@@ -33841,6 +35745,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type InstrumentUpsertWithoutStaged_transactionsInput = {
@@ -33969,6 +35874,7 @@ export namespace Prisma {
     import_batches?: ImportBatchCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCustom_instrumentsInput = {
@@ -33985,6 +35891,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCustom_instrumentsInput = {
@@ -34235,6 +36142,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustom_instrumentsInput = {
@@ -34251,6 +36159,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StagedTransactionUpsertWithWhereUniqueWithoutResolved_instrumentInput = {
@@ -34389,6 +36298,7 @@ export namespace Prisma {
     import_batches?: ImportBatchCreateNestedManyWithoutUserInput
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -34405,6 +36315,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -34501,6 +36412,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
     documents?: DocumentCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchUncheckedCreateWithoutTransactionsInput = {
@@ -34516,6 +36428,7 @@ export namespace Prisma {
     updated_at?: Date | string
     staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
     documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutImport_batchInput
   }
 
   export type ImportBatchCreateOrConnectWithoutTransactionsInput = {
@@ -34727,6 +36640,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -34743,6 +36657,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutTransactionsInput = {
@@ -34857,6 +36772,7 @@ export namespace Prisma {
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutTransactionsInput = {
@@ -34872,6 +36788,7 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type StagedTransactionUpsertWithoutCommitted_transactionInput = {
@@ -35699,6 +37616,7 @@ export namespace Prisma {
     import_batches?: ImportBatchCreateNestedManyWithoutUserInput
     custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTax_year_computationsInput = {
@@ -35715,6 +37633,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
     custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    ai_usage_logs?: AiUsageLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTax_year_computationsInput = {
@@ -35806,6 +37725,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
     custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTax_year_computationsInput = {
@@ -35822,6 +37742,7 @@ export namespace Prisma {
     import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
     custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutTax_year_computationsInput = {
@@ -36035,6 +37956,170 @@ export namespace Prisma {
     source_for_import_batches?: ImportBatchUncheckedUpdateManyWithoutSource_documentNestedInput
   }
 
+  export type UserCreateWithoutAi_usage_logsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAi_usage_logsInput = {
+    id?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
+    created_at?: Date | string
+    updated_at?: Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAi_usage_logsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAi_usage_logsInput, UserUncheckedCreateWithoutAi_usage_logsInput>
+  }
+
+  export type ImportBatchCreateWithoutAi_usage_logsInput = {
+    id?: string
+    status?: $Enums.ImportBatchStatus
+    error_summary?: string | null
+    committed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    user: UserCreateNestedOneWithoutImport_batchesInput
+    account: AccountCreateNestedOneWithoutImport_batchesInput
+    source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
+    mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
+    staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
+    transactions?: TransactionCreateNestedManyWithoutImport_batchInput
+    documents?: DocumentCreateNestedManyWithoutImport_batchInput
+  }
+
+  export type ImportBatchUncheckedCreateWithoutAi_usage_logsInput = {
+    id?: string
+    user_uuid: string
+    account_uuid: string
+    source_document_uuid: string
+    mapping_template_uuid?: string | null
+    status?: $Enums.ImportBatchStatus
+    error_summary?: string | null
+    committed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+  }
+
+  export type ImportBatchCreateOrConnectWithoutAi_usage_logsInput = {
+    where: ImportBatchWhereUniqueInput
+    create: XOR<ImportBatchCreateWithoutAi_usage_logsInput, ImportBatchUncheckedCreateWithoutAi_usage_logsInput>
+  }
+
+  export type UserUpsertWithoutAi_usage_logsInput = {
+    update: XOR<UserUpdateWithoutAi_usage_logsInput, UserUncheckedUpdateWithoutAi_usage_logsInput>
+    create: XOR<UserCreateWithoutAi_usage_logsInput, UserUncheckedCreateWithoutAi_usage_logsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAi_usage_logsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAi_usage_logsInput, UserUncheckedUpdateWithoutAi_usage_logsInput>
+  }
+
+  export type UserUpdateWithoutAi_usage_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAi_usage_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ImportBatchUpsertWithoutAi_usage_logsInput = {
+    update: XOR<ImportBatchUpdateWithoutAi_usage_logsInput, ImportBatchUncheckedUpdateWithoutAi_usage_logsInput>
+    create: XOR<ImportBatchCreateWithoutAi_usage_logsInput, ImportBatchUncheckedCreateWithoutAi_usage_logsInput>
+    where?: ImportBatchWhereInput
+  }
+
+  export type ImportBatchUpdateToOneWithWhereWithoutAi_usage_logsInput = {
+    where?: ImportBatchWhereInput
+    data: XOR<ImportBatchUpdateWithoutAi_usage_logsInput, ImportBatchUncheckedUpdateWithoutAi_usage_logsInput>
+  }
+
+  export type ImportBatchUpdateWithoutAi_usage_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
+    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
+    account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
+    source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
+    mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
+    staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
+    transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
+    documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+  }
+
+  export type ImportBatchUncheckedUpdateWithoutAi_usage_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
+    account_uuid?: StringFieldUpdateOperationsInput | string
+    source_document_uuid?: StringFieldUpdateOperationsInput | string
+    mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
+    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+  }
+
   export type PasswordResetTokenCreateManyUserInput = {
     id?: string
     token_hash: string
@@ -36125,6 +38210,18 @@ export namespace Prisma {
     finalized_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
+  }
+
+  export type AiUsageLogCreateManyUserInput = {
+    id?: string
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: string | null
+    created_at?: Date | string
   }
 
   export type PasswordResetTokenUpdateWithoutUserInput = {
@@ -36236,6 +38333,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutUserInput = {
@@ -36251,6 +38349,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateManyWithoutUserInput = {
@@ -36439,6 +38538,42 @@ export namespace Prisma {
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiUsageLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    import_batch?: ImportBatchUpdateOneWithoutAi_usage_logsNestedInput
+  }
+
+  export type AiUsageLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ImportBatchCreateManySource_documentInput = {
     id?: string
     user_uuid: string
@@ -36472,6 +38607,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutSource_documentInput = {
@@ -36487,6 +38623,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateManyWithoutSource_documentInput = {
@@ -36611,6 +38748,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutAccountInput = {
@@ -36626,6 +38764,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateManyWithoutAccountInput = {
@@ -36854,6 +38993,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateWithoutMapping_templateInput = {
@@ -36869,6 +39009,7 @@ export namespace Prisma {
     staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
     documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+    ai_usage_logs?: AiUsageLogUncheckedUpdateManyWithoutImport_batchNestedInput
   }
 
   export type ImportBatchUncheckedUpdateManyWithoutMapping_templateInput = {
@@ -36929,6 +39070,18 @@ export namespace Prisma {
     path: string
     type?: $Enums.DocumentType
     category?: $Enums.DocumentCategory
+    created_at?: Date | string
+  }
+
+  export type AiUsageLogCreateManyImport_batchInput = {
+    id?: string
+    user_uuid?: string | null
+    feature: string
+    provider: string
+    model: string
+    input_tokens: number
+    output_tokens: number
+    cost_usd: Decimal | DecimalJsLike | number | string
     created_at?: Date | string
   }
 
@@ -37086,6 +39239,42 @@ export namespace Prisma {
     path?: StringFieldUpdateOperationsInput | string
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageLogUpdateWithoutImport_batchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutAi_usage_logsNestedInput
+  }
+
+  export type AiUsageLogUncheckedUpdateWithoutImport_batchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiUsageLogUncheckedUpdateManyWithoutImport_batchInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    feature?: StringFieldUpdateOperationsInput | string
+    provider?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    input_tokens?: IntFieldUpdateOperationsInput | number
+    output_tokens?: IntFieldUpdateOperationsInput | number
+    cost_usd?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

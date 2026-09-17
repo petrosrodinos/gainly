@@ -331,6 +331,19 @@ exports.Prisma.TaxFormScalarFieldEnum = {
   generated_at: 'generated_at'
 };
 
+exports.Prisma.AiUsageLogScalarFieldEnum = {
+  id: 'id',
+  user_uuid: 'user_uuid',
+  feature: 'feature',
+  provider: 'provider',
+  model: 'model',
+  input_tokens: 'input_tokens',
+  output_tokens: 'output_tokens',
+  cost_usd: 'cost_usd',
+  import_batch_uuid: 'import_batch_uuid',
+  created_at: 'created_at'
+};
+
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
@@ -508,6 +521,7 @@ exports.Prisma.ModelName = {
   TaxJurisdictionModule: 'TaxJurisdictionModule',
   TaxYearComputation: 'TaxYearComputation',
   TaxForm: 'TaxForm',
+  AiUsageLog: 'AiUsageLog',
   AuditLog: 'AuditLog'
 };
 

@@ -19,6 +19,8 @@ import { StagedTransactionQueryType } from './dto/staged-transaction-query.schem
 import { UpdateStagedTransactionDto } from './dto/update-staged-transaction.dto';
 import { ColumnMapping } from '@/modules/mapping-templates/interfaces/mapping-template.interface';
 import { FileSignature } from '@/modules/mapping-templates/interfaces/file-signature.interface';
+import { MappedRow } from './interfaces/canonical-row.interface';
+import { PdfAiExtractionService } from './parsers/pdf-ai-extraction.service';
 
 @Injectable()
 export class ImportsService {
@@ -34,6 +36,7 @@ export class ImportsService {
         private readonly columnMappingEngine: ColumnMappingEngine,
         private readonly stagedRowValidator: StagedRowValidator,
         private readonly dedupService: DedupService,
+        private readonly pdfAiExtractionService: PdfAiExtractionService,
         @InjectQueue(IMPORT_PROCESSING_QUEUE) private readonly importQueue: Queue,
     ) { }
 
@@ -196,6 +199,31 @@ export class ImportsService {
         return { queued: true };
     }
 
+    private async stageMappedRows(batchUuid: string, accountUuid: string, userUuid: string, mappedRows: MappedRow[]) {
+        const stagedRows: Prisma.StagedTransactionCreateManyInput[] = [];
+
+        for (const mappedRow of mappedRows) {
+            const validated = await this.stagedRowValidator.validate(mappedRow, userUuid);
+            const duplicate = await this.dedupService.findDuplicate(accountUuid, validated);
+            const validationErrors = [...validated.validation_errors];
+            if (duplicate) {
+                validationErrors.push({ field: 'duplicate', message: `Likely duplicate of an already-committed transaction (${duplicate.id})` });
+            }
+
+            stagedRows.push({
+                import_batch_uuid: batchUuid,
+                row_index: mappedRow.row_index,
+                raw_data: mappedRow.raw as Prisma.InputJsonValue,
+                mapped_data: validated.mapped as unknown as Prisma.InputJsonValue,
+                status: StagedTransactionStatus.PENDING_REVIEW,
+                validation_errors: validationErrors.length > 0 ? (validationErrors as unknown as Prisma.InputJsonValue) : Prisma.DbNull,
+                resolved_instrument_uuid: validated.resolved_instrument_uuid,
+            });
+        }
+
+        return stagedRows;
+    }
+
     /** The actual parse -> map -> validate -> dedup -> stage pipeline (DESIGN.MD §4). Runs on the import-processing queue. */
     async processBatch(batchUuid: string) {
         const batch = await this.prisma.importBatch.findUnique({
@@ -209,75 +237,76 @@ export class ImportsService {
 
             const fileType = detectSourceFileType(batch.source_document.filename, batch.source_document.mimetype);
             const buffer = await this.documentsService.downloadBuffer(batch.source_document);
-            const parsedFile = await this.parserFactory.forFileType(fileType).parse(buffer);
 
-            const fileSignature: FileSignature = {
-                sheets: parsedFile.sheets.map((s) => ({ name: s.name, header_row_index: s.header_row_index, headers: s.headers })),
-            };
+            let stagedRows: Prisma.StagedTransactionCreateManyInput[];
 
-            let templateId = batch.mapping_template_uuid;
-            let sheetNameMap: Record<string, string> | null = null;
-
-            if (templateId) {
-                sheetNameMap = await this.templateDetectionService.matchTemplate(templateId, fileSignature);
-                if (!sheetNameMap) {
-                    await this.prisma.importBatch.update({
-                        where: { id: batchUuid },
-                        data: {
-                            status: ImportBatchStatus.NEEDS_MAPPING,
-                            error_summary: 'The assigned mapping template no longer matches this file\'s sheets/columns.',
-                        },
-                    });
-                    return;
-                }
+            if (fileType === 'PDF') {
+                // No layout mapping template mechanism exists for PDFs yet — every PDF goes
+                // through AI-assisted extraction (DESIGN.MD §4.4), quota-checked and cost-logged.
+                const canonicalRows = await this.pdfAiExtractionService.extract(buffer, batch.user_uuid, batchUuid);
+                const mappedRows: MappedRow[] = canonicalRows.map((row, index) => ({
+                    row_index: index,
+                    raw: row as unknown as Record<string, string | null>,
+                    mapped: row,
+                    mapping_errors: [],
+                }));
+                stagedRows = await this.stageMappedRows(batchUuid, batch.account_uuid, batch.user_uuid, mappedRows);
             } else {
-                const detected = await this.templateDetectionService.detect(fileType, fileSignature, batch.user_uuid);
-                if (!detected) {
-                    await this.prisma.importBatch.update({
-                        where: { id: batchUuid },
-                        data: {
-                            status: ImportBatchStatus.NEEDS_MAPPING,
-                            error_summary: `No matching mapping template found. Detected sheets: ${parsedFile.sheets.map((s) => `${s.name} [${s.headers.filter(Boolean).join(', ')}]`).join(' | ')}`,
-                        },
-                    });
-                    return;
-                }
-                templateId = detected.template_id;
-                sheetNameMap = detected.sheet_name_map;
-                await this.prisma.importBatch.update({ where: { id: batchUuid }, data: { mapping_template_uuid: templateId } });
-            }
+                const parsedFile = await this.parserFactory.forFileType(fileType).parse(buffer);
 
-            const template = await this.prisma.mappingTemplate.findUniqueOrThrow({ where: { id: templateId } });
-            const columnMapping = template.column_mapping as unknown as ColumnMapping;
+                const fileSignature: FileSignature = {
+                    sheets: parsedFile.sheets.map((s) => ({ name: s.name, header_row_index: s.header_row_index, headers: s.headers })),
+                };
 
-            const stagedRows: Prisma.StagedTransactionCreateManyInput[] = [];
-            let rowIndex = 0;
+                let templateId = batch.mapping_template_uuid;
+                let sheetNameMap: Record<string, string> | null = null;
 
-            for (const [templateSheetName, actualSheetName] of Object.entries(sheetNameMap)) {
-                const sheetMapping = columnMapping.sheets[templateSheetName];
-                const parsedSheet = parsedFile.sheets.find((s) => s.name === actualSheetName);
-                if (!sheetMapping || !parsedSheet) continue;
-
-                const mappedRows = this.columnMappingEngine.mapSheet(sheetMapping, parsedSheet);
-
-                for (const mappedRow of mappedRows) {
-                    const validated = await this.stagedRowValidator.validate(mappedRow, batch.user_uuid);
-                    const duplicate = await this.dedupService.findDuplicate(batch.account_uuid, validated);
-                    const validationErrors = [...validated.validation_errors];
-                    if (duplicate) {
-                        validationErrors.push({ field: 'duplicate', message: `Likely duplicate of an already-committed transaction (${duplicate.id})` });
+                if (templateId) {
+                    sheetNameMap = await this.templateDetectionService.matchTemplate(templateId, fileSignature);
+                    if (!sheetNameMap) {
+                        await this.prisma.importBatch.update({
+                            where: { id: batchUuid },
+                            data: {
+                                status: ImportBatchStatus.NEEDS_MAPPING,
+                                error_summary: 'The assigned mapping template no longer matches this file\'s sheets/columns.',
+                            },
+                        });
+                        return;
                     }
-
-                    stagedRows.push({
-                        import_batch_uuid: batchUuid,
-                        row_index: rowIndex++,
-                        raw_data: mappedRow.raw as Prisma.InputJsonValue,
-                        mapped_data: validated.mapped as unknown as Prisma.InputJsonValue,
-                        status: StagedTransactionStatus.PENDING_REVIEW,
-                        validation_errors: validationErrors.length > 0 ? (validationErrors as unknown as Prisma.InputJsonValue) : Prisma.DbNull,
-                        resolved_instrument_uuid: validated.resolved_instrument_uuid,
-                    });
+                } else {
+                    const detected = await this.templateDetectionService.detect(fileType, fileSignature, batch.user_uuid);
+                    if (!detected) {
+                        await this.prisma.importBatch.update({
+                            where: { id: batchUuid },
+                            data: {
+                                status: ImportBatchStatus.NEEDS_MAPPING,
+                                error_summary: `No matching mapping template found. Detected sheets: ${parsedFile.sheets.map((s) => `${s.name} [${s.headers.filter(Boolean).join(', ')}]`).join(' | ')}`,
+                            },
+                        });
+                        return;
+                    }
+                    templateId = detected.template_id;
+                    sheetNameMap = detected.sheet_name_map;
+                    await this.prisma.importBatch.update({ where: { id: batchUuid }, data: { mapping_template_uuid: templateId } });
                 }
+
+                const template = await this.prisma.mappingTemplate.findUniqueOrThrow({ where: { id: templateId } });
+                const columnMapping = template.column_mapping as unknown as ColumnMapping;
+
+                const allMappedRows: MappedRow[] = [];
+                let rowIndex = 0;
+
+                for (const [templateSheetName, actualSheetName] of Object.entries(sheetNameMap)) {
+                    const sheetMapping = columnMapping.sheets[templateSheetName];
+                    const parsedSheet = parsedFile.sheets.find((s) => s.name === actualSheetName);
+                    if (!sheetMapping || !parsedSheet) continue;
+
+                    for (const mappedRow of this.columnMappingEngine.mapSheet(sheetMapping, parsedSheet)) {
+                        allMappedRows.push({ ...mappedRow, row_index: rowIndex++ });
+                    }
+                }
+
+                stagedRows = await this.stageMappedRows(batchUuid, batch.account_uuid, batch.user_uuid, allMappedRows);
             }
 
             if (stagedRows.length === 0) {
