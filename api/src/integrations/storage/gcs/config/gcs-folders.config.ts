@@ -2,6 +2,9 @@ export const GcsFolders = {
     documents: 'documents',
     avatars: 'avatars',
     uploads: 'uploads',
+    imports: 'imports',
+    reports: 'reports',
+    'tax-forms': 'tax-forms',
 } as const;
 
 export type GcsFolderKey = keyof typeof GcsFolders;
