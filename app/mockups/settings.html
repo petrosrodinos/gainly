@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content" style="max-width:920px;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Settings</div>
+          <div class="page-subtitle">Manage your profile, security, and data.</div>
+        </div>
+      </div>
+
+      <div class="tabs-list mb-4" data-tabs="settings" style="flex-wrap:wrap;">
+        <div class="tab-trigger active" data-value="profile">Profile</div>
+        <div class="tab-trigger" data-value="security">Security</div>
+        <div class="tab-trigger" data-value="accounts">Accounts &amp; jurisdictions</div>
+        <div class="tab-trigger" data-value="notifications">Notifications</div>
+        <div class="tab-trigger" data-value="data">Data &amp; privacy</div>
+        <div class="tab-trigger" data-value="sessions">Sessions</div>
+      </div>
+
+      <!-- Profile -->
+      <div class="tab-panel active" data-tabs="settings" data-value="profile">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Profile</div>
+            <div class="card-description">Basic information tied to your account.</div>
+          </div>
+          <div class="card-content space-y-5">
+            <div class="flex items-center gap-4">
+              <span class="avatar" style="width:56px;height:56px;font-size:1.1rem;" id="profile-avatar"></span>
+              <div>
+                <button class="btn btn-outline btn-sm">Change avatar</button>
+                <div class="text-[.72rem] mt-1" style="color:var(--muted-foreground)">JPG or PNG, up to 2MB.</div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="field">
+                <label class="field-label">Full name</label>
+                <input class="input" id="profile-name" />
+              </div>
+              <div class="field">
+                <label class="field-label">Email</label>
+                <input class="input" id="profile-email" disabled />
+                <span class="field-hint">Contact support to change your email.</span>
+              </div>
+              <div class="field">
+                <label class="field-label">Phone <span style="font-weight:400;color:var(--muted-foreground)">(optional)</span></label>
+                <input class="input" placeholder="+370 600 00000" />
+              </div>
+              <div class="field">
+                <label class="field-label">Role</label>
+                <input class="input" value="User" disabled />
+              </div>
+            </div>
+          </div>
+          <div class="card-footer justify-end">
+            <button class="btn btn-primary" onclick="showToast('Profile updated', null, 'success')">Save changes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="tab-panel" data-tabs="settings" data-value="security">
+        <div class="card mb-4">
+          <div class="card-header bordered">
+            <div class="card-title">Change password</div>
+            <div class="card-description">Authentication uses JWT sessions with email/password sign-in.</div>
+          </div>
+          <div class="card-content space-y-4" style="max-width:420px;">
+            <div class="field"><label class="field-label">Current password</label><input type="password" class="input" /></div>
+            <div class="field"><label class="field-label">New password</label><input type="password" class="input" /></div>
+            <div class="field"><label class="field-label">Confirm new password</label><input type="password" class="input" /></div>
+          </div>
+          <div class="card-footer justify-end">
+            <button class="btn btn-primary" onclick="showToast('Password updated', null, 'success')">Update password</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Sign out everywhere</div>
+            <div class="card-description">Immediately invalidate every active session, including this one.</div>
+          </div>
+          <div class="card-footer justify-end !border-t-0 pt-0">
+            <button class="btn btn-destructive" onclick="openDialog('dlg-signout-all')">Sign out of all devices</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accounts & jurisdictions -->
+      <div class="tab-panel" data-tabs="settings" data-value="accounts">
+        <div class="card">
+          <div class="card-header bordered flex items-center justify-between">
+            <div>
+              <div class="card-title">Accounts &amp; jurisdictions</div>
+              <div class="card-description">Each account has its own base currency, jurisdiction, and cost-basis method.</div>
+            </div>
+            <a href="accounts.html" class="btn btn-outline btn-sm">Manage accounts</a>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table">
+              <thead><tr><th>Account</th><th>Currency</th><th>Jurisdiction</th><th>Cost basis method</th></tr></thead>
+              <tbody id="accounts-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="tab-panel" data-tabs="settings" data-value="notifications">
+        <div class="card">
+          <div class="card-content flex items-center justify-between">
+            <div>
+              <div class="text-sm font-medium">Notification preferences</div>
+              <div class="text-xs mt-0.5" style="color:var(--muted-foreground)">Choose which events trigger in-app, email, or SMS notifications.</div>
+            </div>
+            <a href="notifications.html" class="btn btn-outline btn-sm">Open notifications</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data & privacy -->
+      <div class="tab-panel" data-tabs="settings" data-value="data">
+        <div class="card mb-4">
+          <div class="card-header bordered">
+            <div class="card-title">Export your data</div>
+            <div class="card-description">A self-service, on-demand archive of everything you've stored — transactions, documents, and tax computations (product spec §6, §9).</div>
+          </div>
+          <div class="card-footer justify-end !border-t-0 pt-0">
+            <button class="btn btn-outline" onclick="showToast('Export requested', 'We will email you a download link shortly.', 'success')">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 18v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/></svg>
+              Export all my data
+            </button>
+          </div>
+        </div>
+        <div class="card" style="border-color:color-mix(in oklab, var(--destructive) 40%, var(--border));">
+          <div class="card-header bordered">
+            <div class="card-title" style="color:var(--destructive)">Danger zone</div>
+            <div class="card-description">Permanently delete your account and all associated data, in line with right-to-erasure requirements (product spec §9). This cannot be undone.</div>
+          </div>
+          <div class="card-footer justify-end !border-t-0 pt-0">
+            <button class="btn btn-destructive" onclick="openDialog('dlg-delete-account')">Delete my account</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sessions -->
+      <div class="tab-panel" data-tabs="settings" data-value="sessions">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Active sessions</div>
+            <div class="card-description">Devices currently signed in to your account.</div>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table">
+              <thead><tr><th>Device</th><th>Location</th><th>Last active</th><th></th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><span class="font-medium">Chrome on Windows</span> <span class="badge badge-success ml-1">This device</span></td>
+                  <td>Vilnius, LT</td>
+                  <td class="mono">Just now</td>
+                  <td class="text-right"><button class="btn btn-ghost btn-sm" disabled>Current</button></td>
+                </tr>
+                <tr>
+                  <td><span class="font-medium">Safari on iPhone</span></td>
+                  <td>Vilnius, LT</td>
+                  <td class="mono">2 days ago</td>
+                  <td class="text-right"><button class="btn btn-outline btn-sm" onclick="this.closest('tr').remove(); showToast('Session revoked')">Revoke</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Sign out all dialog -->
+<div class="overlay" id="dlg-signout-all">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div><div class="dialog-title">Sign out of all devices?</div><div class="dialog-description">You'll need to sign in again on every device, including this one.</div></div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-signout-all')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-signout-all')">Cancel</button>
+      <button class="btn btn-destructive" onclick="window.location.href='login.html'">Sign out everywhere</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete account dialog -->
+<div class="overlay" id="dlg-delete-account">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div><div class="dialog-title">Delete your account?</div><div class="dialog-description">This permanently deletes your accounts, transactions, documents, and tax computations. This cannot be undone.</div></div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-delete-account')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-body">
+      <div class="field">
+        <label class="field-label">Type <strong>DELETE</strong> to confirm</label>
+        <input class="input" placeholder="DELETE" />
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-delete-account')">Cancel</button>
+      <button class="btn btn-destructive" onclick="window.location.href='login.html'">Permanently delete account</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "", title: "Settings", crumbs: [{ label: "Settings" }] });
+
+  document.getElementById("profile-avatar").textContent = CURRENT_USER.initials;
+  document.getElementById("profile-name").value = CURRENT_USER.name;
+  document.getElementById("profile-email").value = CURRENT_USER.email;
+
+  const accBody = document.getElementById("accounts-body");
+  ACCOUNTS.forEach((a) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><a class="link" href="account-detail.html?id=${a.id}">${a.name}</a></td>
+      <td>${a.currency}</td>
+      <td>${a.jurisdiction}</td>
+      <td><span class="badge badge-outline">${a.cost_basis_method.replace("_"," ")}</span></td>
+    `;
+    accBody.appendChild(tr);
+  });
+</script>
+</body>
+</html>

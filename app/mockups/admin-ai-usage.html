@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI usage · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">AI usage</div>
+          <div class="page-subtitle">Visibility into AI-assisted-extraction usage and cost across all users (product spec §8).</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div class="stat-tile">
+          <div class="stat-label">Total cost (30d)</div>
+          <div class="stat-value" id="stat-cost"></div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Total calls</div>
+          <div class="stat-value" id="stat-calls"></div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Avg. cost per call</div>
+          <div class="stat-value" id="stat-avg"></div>
+        </div>
+      </div>
+
+      <div class="card mb-6">
+        <div class="card-header bordered">
+          <div class="card-title">Cost by feature</div>
+          <div class="card-description">Reuses the AI module's existing cost-tracking utility; per-user rate limits/quotas apply (DESIGN.MD §8).</div>
+        </div>
+        <div class="card-content space-y-3" id="feature-chart"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="card-title">Call log</div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr><th>Date</th><th>User</th><th>Feature</th><th class="text-right">Tokens in</th><th class="text-right">Tokens out</th><th class="text-right">Cost</th><th>Batch</th></tr>
+            </thead>
+            <tbody id="usage-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "admin-ai-usage", title: "AI usage", crumbs: [{ label: "Admin", href: "admin-imports.html" }, { label: "AI usage" }] });
+
+  const totalCost = AI_USAGE.reduce((s, r) => s + r.cost_usd, 0);
+  document.getElementById("stat-cost").textContent = fmtMoney(totalCost, "USD", { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+  document.getElementById("stat-calls").textContent = AI_USAGE.length;
+  document.getElementById("stat-avg").textContent = fmtMoney(totalCost / AI_USAGE.length, "USD", { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+
+  const byFeature = {};
+  AI_USAGE.forEach((r) => { byFeature[r.feature] = (byFeature[r.feature] || 0) + r.cost_usd; });
+  const maxCost = Math.max(...Object.values(byFeature));
+  const chart = document.getElementById("feature-chart");
+  const colors = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)"];
+  Object.entries(byFeature).forEach(([feature, cost], i) => {
+    const pct = (cost / maxCost) * 100;
+    const row = document.createElement("div");
+    row.innerHTML = `
+      <div class="flex items-center justify-between text-xs mb-1">
+        <span class="font-medium">${feature}</span>
+        <span class="mono" style="color:var(--muted-foreground)">${fmtMoney(cost, "USD", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</span>
+      </div>
+      <div class="progress" style="height:10px;"><div style="width:${pct}%; background:${colors[i % colors.length]};"></div></div>
+    `;
+    chart.appendChild(row);
+  });
+
+  const body = document.getElementById("usage-body");
+  AI_USAGE.forEach((r) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${r.date}</td>
+      <td>${r.user}</td>
+      <td><span class="badge badge-neutral">${r.feature}</span></td>
+      <td class="text-right mono">${fmtNum(r.tokens_in, 0)}</td>
+      <td class="text-right mono">${fmtNum(r.tokens_out, 0)}</td>
+      <td class="text-right mono">${fmtMoney(r.cost_usd, "USD", { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</td>
+      <td><a class="link" href="import-review.html?batch=${r.batch}">${r.batch}</a></td>
+    `;
+    body.appendChild(tr);
+  });
+</script>
+</body>
+</html>

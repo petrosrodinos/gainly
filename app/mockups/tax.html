@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tax years · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Tax years</div>
+          <div class="page-subtitle">Per-account, per-year tax computations — draft until you finalize and file.</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="select !w-auto" id="filter-account">
+            <option value="">All accounts</option>
+          </select>
+          <select class="select !w-auto" id="filter-year">
+            <option value="">All years</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card mb-5">
+        <div class="card-content flex items-start gap-3">
+          <svg class="icon flex-shrink-0 mt-0.5" style="color:var(--chart-2)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <div class="text-xs" style="color:var(--muted-foreground)">
+            <span class="font-medium" style="color:var(--foreground)">Computations are versioned.</span>
+            A year starts as <span class="badge badge-outline !inline">DRAFT</span> and can be recalculated freely as underlying transactions, corporate actions, or FX rates change. Once you file it, it becomes
+            <span class="badge badge-success !inline">FINALIZED</span> and is locked — any later change to source data produces a new draft version rather than silently altering the filed result.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="card-title">All computations</div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table" id="tax-years-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Account</th>
+                <th>Jurisdiction</th>
+                <th>Cost basis</th>
+                <th>Status</th>
+                <th class="text-right">Realized gain</th>
+                <th class="text-right">Income</th>
+                <th class="text-right">Est. liability</th>
+                <th>Finalized</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "tax", title: "Tax years", crumbs: [{ label: "Tax years", href: "tax.html" }] });
+
+  const accSelect = document.getElementById("filter-account");
+  ACCOUNTS.forEach((a) => {
+    const opt = document.createElement("option");
+    opt.value = a.id; opt.textContent = a.name;
+    accSelect.appendChild(opt);
+  });
+  const yearSelect = document.getElementById("filter-year");
+  [...new Set(TAX_YEARS.map((t) => t.year))].sort((a, b) => b - a).forEach((y) => {
+    const opt = document.createElement("option");
+    opt.value = y; opt.textContent = y;
+    yearSelect.appendChild(opt);
+  });
+
+  function renderRows() {
+    const accFilter = accSelect.value;
+    const yearFilter = yearSelect.value;
+    const body = document.querySelector("#tax-years-table tbody");
+    body.innerHTML = "";
+    TAX_YEARS
+      .filter((t) => (!accFilter || t.account_id === accFilter) && (!yearFilter || String(t.year) === yearFilter))
+      .sort((a, b) => b.year - a.year)
+      .forEach((t) => {
+        const acc = accountById(t.account_id);
+        const tr = document.createElement("tr");
+        tr.style.cursor = "pointer";
+        tr.innerHTML = `
+          <td class="font-semibold">${t.year}</td>
+          <td>${acc.name}</td>
+          <td><span class="badge badge-outline">${t.country}</span></td>
+          <td><span class="badge badge-neutral">${t.method.replace("_"," ")}</span></td>
+          <td>${t.status === "FINALIZED" ? `<span class="badge badge-success">${icon("check","icon !w-3 !h-3")}Finalized</span>` : `<span class="badge badge-warning">Draft</span>`}</td>
+          <td class="text-right mono up">${fmtMoney(t.realized_gain, acc.currency)}</td>
+          <td class="text-right mono">${fmtMoney(t.income, acc.currency)}</td>
+          <td class="text-right mono font-medium">${fmtMoney(t.est_liability, acc.currency)}</td>
+          <td class="text-xs" style="color:var(--muted-foreground)">${t.finalized_at || "—"}</td>
+          <td class="text-right"><a href="tax-year.html?year=${t.year}&account=${t.account_id}" class="btn btn-ghost btn-sm">Open ${icon("chevronRight")}</a></td>
+        `;
+        tr.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return;
+          window.location.href = `tax-year.html?year=${t.year}&account=${t.account_id}`;
+        });
+        body.appendChild(tr);
+      });
+  }
+  accSelect.addEventListener("change", renderRows);
+  yearSelect.addEventListener("change", renderRows);
+  renderRows();
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transaction · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="txn-title">Transaction</div>
+          <div class="page-subtitle" id="txn-subtitle"></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="badge badge-success" id="immutable-badge"></span>
+          <button class="btn btn-outline" id="btn-correction">Record correction</button>
+        </div>
+      </div>
+
+      <div class="card mb-4" style="border-color: var(--ring);">
+        <div class="card-content flex items-start gap-3 py-3">
+          <span style="color:var(--chart-2)" id="info-icon"></span>
+          <div class="text-xs" style="color:var(--muted-foreground)">
+            This transaction is <strong style="color:var(--foreground)">immutable</strong> once committed — the ledger is the single source of truth and is never edited in place. To fix a mistake here, record a correction instead; it will be saved as a new transaction linked to this one.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="card lg:col-span-2">
+          <div class="card-header bordered"><div class="card-title">Details</div></div>
+          <div class="card-content">
+            <dl class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm" id="detail-grid"></dl>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="card">
+            <div class="card-header bordered"><div class="card-title">Lots opened</div></div>
+            <div class="card-content" id="lots-panel"></div>
+          </div>
+          <div class="card">
+            <div class="card-header bordered"><div class="card-title">Audit trail</div></div>
+            <div class="card-content">
+              <ul class="space-y-3 text-xs" id="audit-list"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-correction">
+  <div class="dialog dialog-lg">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Record a correction</div>
+        <div class="dialog-description">This creates a new transaction linked to the original via <code class="kbd">supersedes_uuid</code> — the original row is never modified.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('overlay-correction')"></button>
+    </div>
+    <div class="dialog-body">
+      <form class="grid grid-cols-2 gap-4" id="correction-form" onsubmit="event.preventDefault(); closeDialog('overlay-correction'); showToast('Correction recorded', 'A new transaction was committed and linked to the original.', 'success');">
+        <div class="field">
+          <label class="field-label">Type</label>
+          <select class="select" id="c-type"></select>
+        </div>
+        <div class="field">
+          <label class="field-label">Trade date</label>
+          <input type="date" class="input" id="c-trade-date" />
+        </div>
+        <div class="field">
+          <label class="field-label">Quantity</label>
+          <input type="number" step="any" class="input" id="c-qty" />
+        </div>
+        <div class="field">
+          <label class="field-label">Price</label>
+          <input type="number" step="any" class="input" id="c-price" />
+        </div>
+        <div class="field">
+          <label class="field-label">Amount</label>
+          <input type="number" step="any" class="input" id="c-amount" />
+        </div>
+        <div class="field">
+          <label class="field-label">Fee</label>
+          <input type="number" step="any" class="input" id="c-fee" value="0" />
+        </div>
+        <div class="field col-span-2">
+          <label class="field-label">Reason for correction</label>
+          <textarea class="textarea" placeholder="e.g. broker restated the settlement amount"></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('overlay-correction')">Cancel</button>
+      <button class="btn btn-primary" type="submit" form="correction-form">Commit correction</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const txnId = params.get("id") || "txn_1001";
+  const t = TRANSACTIONS.find((x) => x.id === txnId) || TRANSACTIONS[0];
+  const acc = accountById(t.account_id);
+  const ins = instrumentById(t.instrument_id);
+
+  mountLayout({
+    active: "transactions", title: `Transaction ${t.id}`,
+    crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Transactions", href: "transactions.html" }, { label: t.id }],
+  });
+
+  document.getElementById("txn-title").textContent = `${t.type.replace("_", " ")} ${ins ? (ins.ticker || ins.name) : ""}`.trim();
+  document.getElementById("txn-subtitle").textContent = `${acc.name} · ${t.trade_date} · ${t.broker_ref || "no broker ref"}`;
+  document.getElementById("immutable-badge").innerHTML = icon("check") + "Immutable — committed";
+  document.getElementById("info-icon").innerHTML = icon("info");
+  document.getElementById("btn-correction").addEventListener("click", () => openDialog("overlay-correction"));
+  document.querySelector("#overlay-correction .dialog-header .btn-ghost").innerHTML = icon("x");
+
+  const rows = [
+    ["Type", `<span class="badge badge-neutral">${t.type.replace("_", " ")}</span>`],
+    ["Account", acc.name],
+    ["Instrument", ins ? `<a class="link" href="instrument-detail.html?id=${ins.id}">${ins.ticker || ins.name}</a>` : "Cash / N/A"],
+    ["Trade date", t.trade_date],
+    ["Settlement date", t.settlement_date || "—"],
+    ["Quantity", fmtNum(t.quantity)],
+    ["Price", t.price != null ? fmtMoney(t.price, t.currency) : "—"],
+    ["Amount", `<span class="mono ${t.amount >= 0 ? "up" : "down"}">${fmtMoney(t.amount, t.currency)}</span>`],
+    ["Fee", fmtMoney(t.fee || 0, t.currency)],
+    ["Tax withheld", fmtMoney(t.tax_withheld || 0, t.currency)],
+    ["Currency", t.currency],
+    ["FX rate", t.fx_rate ? fmtNum(t.fx_rate, 4) : "—"],
+    ["Amount (base currency)", t.amount_base_currency ? fmtMoney(t.amount_base_currency) : "—"],
+    ["Broker reference", t.broker_ref || "—"],
+    ["Source import batch", t.import_batch_uuid ? `<a class="link" href="import-review.html?batch=${t.import_batch_uuid}">${t.import_batch_uuid}</a>` : "Manual entry"],
+    ["Correction status", t.is_correction ? `<span class="badge badge-info">Correction of ${t.supersedes_uuid}</span>` : "Original entry"],
+  ];
+  document.getElementById("detail-grid").innerHTML = rows.map(([k, v]) => `
+    <div><dt style="color:var(--muted-foreground); font-size:.72rem;">${k}</dt><dd class="mt-0.5">${v}</dd></div>
+  `).join("");
+
+  const lotsPanel = document.getElementById("lots-panel");
+  const relatedLots = LOTS.filter((l) => l.account_id === t.account_id && l.instrument_id === t.instrument_id);
+  if (t.type === "BUY" && relatedLots.length) {
+    lotsPanel.innerHTML = relatedLots.map((l) => `
+      <div class="p-2.5 rounded-[var(--radius-md)] border mb-2" style="border-color:var(--border)">
+        <div class="flex justify-between text-xs"><span class="font-medium">${fmtNum(l.quantity_remaining)} remaining</span><span class="${l.closed_at ? "" : "badge badge-success"}">${l.closed_at ? "Closed " + l.closed_at : "Open"}</span></div>
+        <div class="text-[.72rem] mt-1" style="color:var(--muted-foreground)">Cost basis: ${fmtMoney(l.cost_basis_per_unit)} / unit · Opened ${l.opened_at}</div>
+      </div>
+    `).join("");
+  } else {
+    lotsPanel.innerHTML = `<div class="empty-state !p-4 text-xs">${icon("layers")}No lots opened by this transaction.</div>`;
+  }
+
+  document.getElementById("audit-list").innerHTML = `
+    <li class="flex gap-2"><span style="color:var(--muted-foreground)">${icon("clock")}</span><span><strong>${CURRENT_USER.email}</strong> committed this transaction<br><span style="color:var(--muted-foreground)">${t.trade_date} 09:20</span></span></li>
+    ${t.import_batch_uuid ? `<li class="flex gap-2"><span style="color:var(--muted-foreground)">${icon("upload")}</span><span>Created from import batch <strong>${t.import_batch_uuid}</strong></span></li>` : `<li class="flex gap-2"><span style="color:var(--muted-foreground)">${icon("edit")}</span><span>Entered manually</span></li>`}
+    ${t.is_correction ? `<li class="flex gap-2"><span style="color:var(--muted-foreground)">${icon("repeat")}</span><span>Supersedes <a class="link" href="transaction-detail.html?id=${t.supersedes_uuid}">${t.supersedes_uuid}</a></span></li>` : ""}
+  `;
+
+  TRANSACTION_TYPES.forEach((ty) => {
+    const opt = document.createElement("option");
+    opt.value = ty; opt.textContent = ty.replace("_", " ");
+    if (ty === t.type) opt.selected = true;
+    document.getElementById("c-type").appendChild(opt);
+  });
+  document.getElementById("c-trade-date").value = t.trade_date;
+  document.getElementById("c-qty").value = t.quantity ?? "";
+  document.getElementById("c-price").value = t.price ?? "";
+  document.getElementById("c-amount").value = t.amount ?? "";
+</script>
+</body>
+</html>

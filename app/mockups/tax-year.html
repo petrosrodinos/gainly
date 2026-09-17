@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tax year · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="page-title">Tax year</div>
+          <div class="page-subtitle" id="page-subtitle"></div>
+        </div>
+        <div class="flex items-center gap-2" id="header-actions"></div>
+      </div>
+
+      <!-- Jurisdiction module info -->
+      <div class="card mb-5">
+        <div class="card-content flex flex-wrap items-center gap-x-8 gap-y-3">
+          <div class="flex items-center gap-2.5">
+            <div class="sidebar-mark" style="background:var(--secondary); color:var(--secondary-foreground);">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5l-8-3Z"/></svg>
+            </div>
+            <div>
+              <div class="text-xs" style="color:var(--muted-foreground)">Jurisdiction module</div>
+              <div class="text-sm font-semibold" id="jm-country">Lithuania (LT) · v1.2.0</div>
+            </div>
+          </div>
+          <div>
+            <div class="text-xs" style="color:var(--muted-foreground)">Supported cost-basis methods</div>
+            <div class="flex gap-1 mt-1">
+              <span class="badge badge-outline">FIFO</span>
+              <span class="badge badge-outline">AVERAGE_COST</span>
+            </div>
+          </div>
+          <div>
+            <div class="text-xs" style="color:var(--muted-foreground)">Default method</div>
+            <div class="text-sm font-medium mt-1">FIFO</div>
+          </div>
+          <div>
+            <div class="text-xs" style="color:var(--muted-foreground)">This computation uses</div>
+            <div class="text-sm font-medium mt-1" id="jm-method">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="mb-4">
+        <div class="tabs-list" data-tabs="tax">
+          <div class="tab-trigger active" data-value="summary">Summary</div>
+          <div class="tab-trigger" data-value="realized">Realized gains/losses</div>
+          <div class="tab-trigger" data-value="income">Income</div>
+          <div class="tab-trigger" data-value="fx">FX gain/loss</div>
+          <div class="tab-trigger" data-value="allowances">Allowances &amp; carryforward</div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="tab-panel active" data-tabs="tax" data-value="summary">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div class="stat-tile"><div class="stat-label">Realized gain</div><div class="stat-value up" id="sum-gain">—</div></div>
+          <div class="stat-tile"><div class="stat-label">Dividend &amp; interest income</div><div class="stat-value" id="sum-income">—</div></div>
+          <div class="stat-tile"><div class="stat-label">Est. tax liability</div><div class="stat-value" id="sum-liability">—</div></div>
+          <div class="stat-tile"><div class="stat-label">Status</div><div class="stat-value" id="sum-status">—</div></div>
+        </div>
+        <div class="card">
+          <div class="card-header bordered flex items-center justify-between">
+            <div>
+              <div class="card-title">Generate a filing</div>
+              <div class="card-description">Turn this computation into an exportable, declarative per-country tax form.</div>
+            </div>
+            <a href="#" id="link-generate-form" class="btn btn-primary">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+              Generate tax form
+            </a>
+          </div>
+          <div class="card-content text-xs" style="color:var(--muted-foreground)">
+            Form generation works from either a draft (preview only, watermarked) or a finalized computation. Adding a new form or country is a declarative template change — it never requires modifying the computation engine.
+          </div>
+        </div>
+      </div>
+
+      <!-- Realized gains/losses -->
+      <div class="tab-panel" data-tabs="tax" data-value="realized">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Realized disposals</div>
+            <div class="card-description">Per-disposal detail with acquire/dispose dates, proceeds, cost basis and holding period.</div>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table">
+              <thead><tr><th>Instrument</th><th>Acquired</th><th>Disposed</th><th class="text-right">Qty</th><th class="text-right">Proceeds</th><th class="text-right">Cost basis</th><th class="text-right">Gain/loss</th><th>Holding period</th><th>Term</th></tr></thead>
+              <tbody id="realized-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Income -->
+      <div class="tab-panel" data-tabs="tax" data-value="income">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Dividend &amp; interest income</div>
+            <div class="card-description">Income transactions with any withholding-tax credit available.</div>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Instrument</th><th>Type</th><th class="text-right">Gross amount</th><th class="text-right">Withholding credit</th><th class="text-right">Net</th></tr></thead>
+              <tbody id="income-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FX -->
+      <div class="tab-panel" data-tabs="tax" data-value="fx">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">FX gain/loss</div>
+            <div class="card-description">Reported separately where the jurisdiction taxes currency conversion gains.</div>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Pair</th><th class="text-right">Amount converted</th><th class="text-right">Rate</th><th class="text-right">Rate at acquisition</th><th class="text-right">FX gain/loss</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">2026-06-11</td><td>USD → EUR</td><td class="text-right mono">$4,200.00</td><td class="text-right mono">1.0821</td><td class="text-right mono">1.0654</td><td class="text-right mono up">+€68.14</td></tr>
+                <tr><td class="mono">2026-03-02</td><td>USD → EUR</td><td class="text-right mono">$2,600.00</td><td class="text-right mono">1.0790</td><td class="text-right mono">1.0902</td><td class="text-right mono down">-€26.83</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer">
+            <span class="text-xs" style="color:var(--muted-foreground)">Net FX gain/loss this year:</span>
+            <span class="mono font-semibold up">+€41.31</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Allowances -->
+      <div class="tab-panel" data-tabs="tax" data-value="allowances">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="stat-tile">
+            <div class="stat-label">Allowance applied</div>
+            <div class="stat-value">€500.00</div>
+            <div class="text-xs mt-2" style="color:var(--muted-foreground)">Annual personal capital gains allowance (LT).</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Loss carryforward used</div>
+            <div class="stat-value">€412.60</div>
+            <div class="text-xs mt-2" style="color:var(--muted-foreground)">Applied against this year's realized gains.</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Loss carryforward remaining</div>
+            <div class="stat-value">€1,148.90</div>
+            <div class="text-xs mt-2" style="color:var(--muted-foreground)">Available for future tax years.</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Finalize confirm dialog -->
+<div class="overlay" id="dlg-finalize">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Finalize this tax year?</div>
+        <div class="dialog-description">This locks the computation.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-finalize')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-body text-sm space-y-3">
+      <div class="flex items-start gap-2 p-3 rounded-[var(--radius-md)]" style="background:color-mix(in oklab, var(--warning) 14%, transparent);">
+        <svg class="icon flex-shrink-0 mt-0.5" style="color:var(--warning)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></svg>
+        <div class="text-xs">Once finalized, this version becomes immutable — it will not be edited or deleted. If your source data changes afterward (a correction, a late statement), the system will create a new <strong>draft</strong> version instead of altering this filed result.</div>
+      </div>
+      <p class="text-xs" style="color:var(--muted-foreground)">You can still generate forms from a finalized computation at any time.</p>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-finalize')">Cancel</button>
+      <button class="btn btn-primary" onclick="doFinalize()">Finalize &amp; lock</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const year = Number(params.get("year")) || 2026;
+  const accountId = params.get("account") || "acc_1";
+  const record = TAX_YEARS.find((t) => t.year === year && t.account_id === accountId) || TAX_YEARS[0];
+  const acc = accountById(record.account_id);
+
+  mountLayout({
+    active: "tax", title: `Tax year ${record.year}`,
+    crumbs: [{ label: "Tax years", href: "tax.html" }, { label: `${record.year} · ${acc.name}`, href: "#" }],
+  });
+
+  document.getElementById("page-title").textContent = `${record.year} tax computation`;
+  document.getElementById("page-subtitle").textContent = `${acc.name} · ${record.country} · ${record.method.replace("_"," ")} cost basis`;
+  document.getElementById("jm-country").textContent = "Lithuania (LT) · v1.2.0";
+  document.getElementById("jm-method").innerHTML = `<span class="badge badge-neutral">${record.method.replace("_"," ")}</span>`;
+  document.getElementById("sum-gain").textContent = fmtMoney(record.realized_gain, acc.currency);
+  document.getElementById("sum-income").textContent = fmtMoney(record.income, acc.currency);
+  document.getElementById("sum-liability").textContent = fmtMoney(record.est_liability, acc.currency);
+  document.getElementById("sum-status").innerHTML = record.status === "FINALIZED"
+    ? `<span class="badge badge-success">Finalized</span>`
+    : `<span class="badge badge-warning">Draft</span>`;
+  document.getElementById("link-generate-form").href = `tax-form.html?year=${record.year}&account=${record.account_id}`;
+
+  const actions = document.getElementById("header-actions");
+  if (record.status === "DRAFT") {
+    actions.innerHTML = `
+      <button class="btn btn-outline" onclick="showToast('Recalculating…','Computation will refresh from the latest transactions, lots and FX rates.','default')">${icon("refresh")}Recalculate</button>
+      <button class="btn btn-primary" onclick="openDialog('dlg-finalize')">${icon("check")}Finalize</button>
+    `;
+  } else {
+    actions.innerHTML = `<span class="badge badge-success" style="padding:.4rem .75rem;">${icon("check")}Finalized ${record.finalized_at}</span>`;
+  }
+
+  function doFinalize() {
+    closeDialog("dlg-finalize");
+    showToast("Tax year finalized", `${record.year} · ${acc.name} is now locked. Any future data changes will create a new draft.`, "success");
+    document.getElementById("sum-status").innerHTML = `<span class="badge badge-success">Finalized</span>`;
+    actions.innerHTML = `<span class="badge badge-success" style="padding:.4rem .75rem;">${icon("check")}Finalized just now</span>`;
+  }
+
+  // Realized gains/losses
+  const realizedBody = document.getElementById("realized-body");
+  REALIZED_LOTS_2026.forEach((r) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="font-medium">${r.instrument}</td>
+      <td class="mono">${r.acquire_date}</td>
+      <td class="mono">${r.dispose_date}</td>
+      <td class="text-right mono">${fmtNum(r.quantity, 4)}</td>
+      <td class="text-right mono">${fmtMoney(r.proceeds, acc.currency)}</td>
+      <td class="text-right mono">${fmtMoney(r.cost_basis, acc.currency)}</td>
+      <td class="text-right mono ${r.gain >= 0 ? "up" : "down"}">${fmtMoney(r.gain, acc.currency)}</td>
+      <td class="mono">${r.holding_days} days</td>
+      <td><span class="badge ${r.term === "Long-term" ? "badge-success" : "badge-neutral"}">${r.term}</span></td>
+    `;
+    realizedBody.appendChild(tr);
+  });
+
+  // Income
+  const incomeBody = document.getElementById("income-body");
+  TRANSACTIONS.filter((t) => (t.type === "DIVIDEND" || t.type === "INTEREST") && t.account_id === record.account_id)
+    .forEach((t) => {
+      const ins = instrumentById(t.instrument_id);
+      const wht = t.tax_withheld || 0;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="mono">${t.trade_date}</td>
+        <td>${ins ? (ins.ticker || ins.name) : "—"}</td>
+        <td><span class="badge badge-neutral">${t.type}</span></td>
+        <td class="text-right mono">${fmtMoney(t.amount, t.currency)}</td>
+        <td class="text-right mono down">${wht ? "-" + fmtMoney(wht, t.currency) : "—"}</td>
+        <td class="text-right mono font-medium">${fmtMoney(t.amount - wht, t.currency)}</td>
+      `;
+      incomeBody.appendChild(tr);
+    });
+  if (!incomeBody.children.length) {
+    incomeBody.innerHTML = `<tr><td colspan="6" class="text-center text-xs" style="color:var(--muted-foreground); padding:2rem;">No dividend or interest income recorded for this account.</td></tr>`;
+  }
+</script>
+</body>
+</html>

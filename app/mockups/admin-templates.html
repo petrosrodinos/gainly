@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mapping templates · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Mapping templates</div>
+          <div class="page-subtitle">Global templates ship with the product and auto-detect broker formats; user-specific templates are created when no match is found (product spec §3).</div>
+        </div>
+        <button class="btn btn-primary" onclick="openDialog('dlg-new-template')">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          New global template
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="card-title">All templates</div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr><th>Name</th><th>Scope</th><th>File type</th><th class="text-right">Uses</th><th>Updated</th><th class="text-right">Actions</th></tr>
+            </thead>
+            <tbody id="templates-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- New template dialog -->
+<div class="overlay" id="dlg-new-template">
+  <div class="dialog dialog-lg">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">New global template</div>
+        <div class="dialog-description">Global templates are curated by admins and apply to auto-detection for every user.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-new-template')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-body space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="field">
+          <label class="field-label">Template name</label>
+          <input class="input" placeholder="e.g. Swedbank — Portfolio Export (CSV)" />
+        </div>
+        <div class="field">
+          <label class="field-label">File type</label>
+          <select class="select">
+            <option>CSV</option><option>XLS</option><option>XLSX</option><option>PDF</option><option>IMAGE</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Detection signature</label>
+        <textarea class="textarea" placeholder="Sheet/column headers (spreadsheets) or text signature (PDFs) used to fingerprint matching files, e.g. header row: Date, Ticker, Side, Qty, Price, Fee"></textarea>
+        <span class="field-hint">Used to auto-match uploaded files against this template before falling back to the mapping wizard.</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Column mapping</label>
+        <textarea class="textarea" placeholder="e.g. Date → trade_date, Ticker → instrument.ticker, Side → type, Qty → quantity, Price → price"></textarea>
+        <span class="field-hint">Maps source columns/positions to canonical transaction fields.</span>
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-new-template')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeDialog('dlg-new-template'); showToast('Template created', 'Available to all users immediately.', 'success')">Create template</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm dialog -->
+<div class="overlay" id="dlg-delete-template">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Delete <span id="del-template-name"></span>?</div>
+        <div class="dialog-description">This is a global template — deleting it disables auto-detection for every user currently matched to it. This cannot be undone.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-delete-template')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-delete-template')">Cancel</button>
+      <button class="btn btn-destructive" onclick="closeDialog('dlg-delete-template'); showToast('Template deleted', null, 'destructive')">Delete template</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "admin-templates", title: "Mapping templates", crumbs: [{ label: "Admin", href: "admin-imports.html" }, { label: "Mapping templates" }] });
+
+  const body = document.getElementById("templates-body");
+  MAPPING_TEMPLATES.forEach((t) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="font-medium">${t.name}</td>
+      <td><span class="badge ${t.scope === "Global" ? "badge-info" : "badge-outline"}">${t.scope}</span></td>
+      <td><span class="badge badge-neutral">${t.file_type}</span></td>
+      <td class="text-right mono">${fmtNum(t.uses, 0)}</td>
+      <td class="mono">${t.updated_at}</td>
+      <td class="text-right">
+        <div class="dropdown">
+          <button class="btn btn-ghost btn-icon" aria-label="More actions">${icon("moreHorizontal")}</button>
+          <div class="dropdown-menu">
+            <div class="dropdown-item" onclick="showToast('Opening editor (mockup)')">${icon("edit")}Edit</div>
+            <div class="dropdown-item" onclick="showToast('Template duplicated')">${icon("layers")}Duplicate</div>
+            <div class="dropdown-sep"></div>
+            <div class="dropdown-item danger" onclick="confirmDelete('${t.id}', '${t.name.replace(/'/g, "&#39;")}')">${icon("trash")}Delete</div>
+          </div>
+        </div>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+
+  function confirmDelete(id, name) {
+    document.getElementById("del-template-name").textContent = name;
+    openDialog("dlg-delete-template");
+  }
+</script>
+</body>
+</html>

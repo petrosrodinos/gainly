@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>invest-tax — Mockups</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="max-w-5xl mx-auto px-6 py-12">
+  <div class="flex items-center gap-3 mb-2">
+    <div class="sidebar-mark">IT</div>
+    <div>
+      <div class="text-xl font-bold">invest-tax — static HTML/CSS/JS mockups</div>
+      <div class="text-sm" style="color:var(--muted-foreground)">Plain HTML/CSS/JS, shadcn/Tailwind styling, no build step, no npm libraries. Data is fabricated (see <code class="kbd">shared/mock-data.js</code>).</div>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 my-6">
+    <a href="login.html" class="btn btn-primary btn-lg">Enter app → Sign in</a>
+    <a href="dashboard.html" class="btn btn-outline btn-lg">Skip to dashboard</a>
+  </div>
+
+  <div id="gallery" class="space-y-8"></div>
+</div>
+
+<script>
+  const SECTIONS = [
+    {
+      title: "Authentication",
+      pages: [
+        ["login.html", "Sign in"],
+        ["register.html", "Create account"],
+        ["forgot-password.html", "Forgot password"],
+        ["reset-password.html", "Set new password"],
+      ],
+    },
+    {
+      title: "Overview",
+      pages: [["dashboard.html", "Dashboard"]],
+    },
+    {
+      title: "Portfolio",
+      pages: [
+        ["accounts.html", "Accounts"],
+        ["account-detail.html", "Account detail"],
+        ["holdings.html", "Holdings"],
+        ["instruments.html", "Instrument catalog"],
+        ["instrument-detail.html", "Instrument detail"],
+        ["corporate-actions.html", "Corporate actions"],
+      ],
+    },
+    {
+      title: "Transactions",
+      pages: [
+        ["transactions.html", "Transaction ledger"],
+        ["transaction-detail.html", "Transaction detail"],
+        ["transaction-new.html", "Manual transaction entry"],
+      ],
+    },
+    {
+      title: "Statement imports",
+      pages: [
+        ["imports.html", "Import batches"],
+        ["import-upload.html", "Wizard · 1. Upload"],
+        ["import-mapping.html", "Wizard · 2. Mapping"],
+        ["import-review.html", "Wizard · 3. Staged review"],
+      ],
+    },
+    {
+      title: "Tax engine",
+      pages: [
+        ["tax.html", "Tax years"],
+        ["tax-year.html", "Tax year computation"],
+        ["tax-form.html", "Tax form generation"],
+      ],
+    },
+    {
+      title: "Reporting",
+      pages: [
+        ["reports.html", "Reports"],
+        ["documents.html", "Documents"],
+      ],
+    },
+    {
+      title: "Account",
+      pages: [
+        ["notifications.html", "Notifications"],
+        ["settings.html", "Settings"],
+      ],
+    },
+    {
+      title: "Admin",
+      pages: [
+        ["admin-imports.html", "Import triage"],
+        ["admin-templates.html", "Mapping templates"],
+        ["admin-ai-usage.html", "AI usage"],
+      ],
+    },
+  ];
+
+  const root = document.getElementById("gallery");
+  SECTIONS.forEach((section) => {
+    const wrap = document.createElement("div");
+    const cards = section.pages.map(([href, label]) => `
+      <a href="${href}" class="card block hover:shadow-sm transition-shadow" style="text-decoration:none;">
+        <div class="card-content !py-3.5 flex items-center justify-between gap-2">
+          <div>
+            <div class="text-sm font-medium" style="color:var(--foreground)">${label}</div>
+            <div class="mono" style="font-size:.7rem; color:var(--muted-foreground)">${href}</div>
+          </div>
+          <svg class="icon flex-shrink-0" style="color:var(--muted-foreground)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+        </div>
+      </a>`).join("");
+    wrap.innerHTML = `
+      <div class="sidebar-group-title !px-0 mb-2">${section.title}</div>
+      <div class="grid sm:grid-cols-2 gap-3">${cards}</div>
+    `;
+    root.appendChild(wrap);
+  });
+</script>
+</body>
+</html>

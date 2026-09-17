@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Add transaction · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content" style="max-width:760px;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Add transaction</div>
+          <div class="page-subtitle">Manually record a buy, sell, dividend or other event for a broker or event you don't have a statement for.</div>
+        </div>
+      </div>
+
+      <form class="card" id="new-txn-form" onsubmit="event.preventDefault(); showToast('Transaction committed', 'It is now part of the immutable ledger.', 'success'); setTimeout(() => window.location.href='transactions.html', 900);">
+        <div class="card-content grid grid-cols-2 gap-4">
+          <div class="field">
+            <label class="field-label">Account</label>
+            <select class="select" id="f-account" required></select>
+          </div>
+          <div class="field">
+            <label class="field-label">Type</label>
+            <select class="select" id="f-type" required></select>
+          </div>
+
+          <div class="field col-span-2" id="wrap-instrument">
+            <label class="field-label">Instrument</label>
+            <select class="select" id="f-instrument"></select>
+            <span class="field-hint">Not resolvable? <a href="instruments.html" class="link">Add a custom instrument</a> first.</span>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Trade date</label>
+            <input type="date" class="input" id="f-trade-date" value="2026-09-17" required />
+          </div>
+          <div class="field">
+            <label class="field-label">Settlement date</label>
+            <input type="date" class="input" id="f-settle-date" value="2026-09-19" />
+          </div>
+
+          <div class="field" id="wrap-qty">
+            <label class="field-label">Quantity</label>
+            <input type="number" step="any" class="input" id="f-qty" placeholder="0.00" />
+          </div>
+          <div class="field" id="wrap-price">
+            <label class="field-label">Price</label>
+            <input type="number" step="any" class="input" id="f-price" placeholder="0.00" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Amount</label>
+            <input type="number" step="any" class="input" id="f-amount" placeholder="0.00" required />
+            <span class="field-hint" id="amount-hint">Auto-suggested from quantity × price — you can override it.</span>
+          </div>
+          <div class="field">
+            <label class="field-label">Currency</label>
+            <select class="select" id="f-currency">
+              <option>USD</option><option>EUR</option><option>GBP</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Fee</label>
+            <input type="number" step="any" class="input" id="f-fee" value="0" />
+          </div>
+          <div class="field">
+            <label class="field-label">Tax withheld</label>
+            <input type="number" step="any" class="input" id="f-tax" value="0" />
+          </div>
+
+          <div class="field" id="wrap-fx">
+            <label class="field-label">FX rate <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label>
+            <input type="number" step="any" class="input" id="f-fx" placeholder="e.g. 1.0821" />
+          </div>
+          <div class="field">
+            <label class="field-label">Broker reference <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label>
+            <input class="input" id="f-broker-ref" placeholder="e.g. IB-1234567" />
+          </div>
+        </div>
+
+        <div class="card-footer justify-between">
+          <span class="text-[.72rem]" style="color:var(--muted-foreground)">Once committed, this transaction becomes immutable — fix mistakes with a correction, not an edit.</span>
+          <div class="flex gap-2">
+            <a href="transactions.html" class="btn btn-outline">Cancel</a>
+            <button type="submit" class="btn btn-primary">Commit transaction</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "transactions", title: "Add transaction", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Transactions", href: "transactions.html" }, { label: "New" }] });
+
+  const accSel = document.getElementById("f-account");
+  ACCOUNTS.forEach((a) => { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; accSel.appendChild(o); });
+
+  const typeSel = document.getElementById("f-type");
+  TRANSACTION_TYPES.forEach((t) => { const o = document.createElement("option"); o.value = t; o.textContent = t.replace("_", " "); typeSel.appendChild(o); });
+
+  const insSel = document.getElementById("f-instrument");
+  const noneOpt = document.createElement("option"); noneOpt.value = ""; noneOpt.textContent = "— none / cash —";
+  insSel.appendChild(noneOpt);
+  INSTRUMENTS.forEach((i) => { const o = document.createElement("option"); o.value = i.id; o.textContent = `${i.ticker || i.name} — ${i.name}`; insSel.appendChild(o); });
+
+  const NO_INSTRUMENT_TYPES = ["DEPOSIT", "WITHDRAWAL", "FX_CONVERSION"];
+  function syncTypeFields() {
+    const t = typeSel.value;
+    const noInstrument = NO_INSTRUMENT_TYPES.includes(t);
+    document.getElementById("wrap-instrument").style.display = noInstrument ? "none" : "";
+    document.getElementById("wrap-fx").style.display = t === "FX_CONVERSION" ? "" : "none";
+    const noQtyPrice = ["DIVIDEND", "INTEREST", "FEE", "TAX_WITHHOLDING", "DEPOSIT", "WITHDRAWAL", "FX_CONVERSION", "CORPORATE_ACTION"].includes(t);
+    document.getElementById("wrap-qty").style.display = noQtyPrice ? "none" : "";
+    document.getElementById("wrap-price").style.display = noQtyPrice ? "none" : "";
+  }
+  typeSel.addEventListener("change", syncTypeFields);
+  syncTypeFields();
+
+  function syncAmount() {
+    const qty = parseFloat(document.getElementById("f-qty").value);
+    const price = parseFloat(document.getElementById("f-price").value);
+    if (!isNaN(qty) && !isNaN(price)) {
+      const sign = typeSel.value === "BUY" ? -1 : 1;
+      document.getElementById("f-amount").value = (sign * qty * price).toFixed(2);
+    }
+  }
+  document.getElementById("f-qty").addEventListener("input", syncAmount);
+  document.getElementById("f-price").addEventListener("input", syncAmount);
+  typeSel.addEventListener("change", syncAmount);
+</script>
+</body>
+</html>

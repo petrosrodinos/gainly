@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Good afternoon, Petros</div>
+          <div class="page-subtitle">Here's how your portfolio is doing across all accounts.</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="select !w-auto">
+            <option>All accounts</option>
+            <option>Interactive Brokers — Main</option>
+            <option>Trading212 — ISA</option>
+            <option>Binance — Crypto</option>
+          </select>
+          <a href="import-upload.html" class="btn btn-primary">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+            Import statement
+          </a>
+        </div>
+      </div>
+
+      <!-- Stat tiles -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div class="stat-tile">
+          <div class="stat-label">Total portfolio value</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-delta up" id="stat-total-delta"></div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Realized gains (2026 YTD)</div>
+          <div class="stat-value">$3,190.20</div>
+          <div class="stat-delta up">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+            vs $2,410 last year same period
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Dividend &amp; interest income</div>
+          <div class="stat-value">$218.70</div>
+          <div class="stat-delta" style="color:var(--muted-foreground)">Across 3 accounts, 2026</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Est. tax liability (2026)</div>
+          <div class="stat-value">$511.34</div>
+          <div class="badge badge-warning mt-2">Estimate — not finalized</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+        <!-- Portfolio value chart -->
+        <div class="card lg:col-span-2">
+          <div class="card-header flex items-center justify-between">
+            <div>
+              <div class="card-title">Portfolio value over time</div>
+              <div class="card-description">All accounts, base currency USD</div>
+            </div>
+            <div class="tabs-list" data-tabs="range">
+              <div class="tab-trigger" data-value="1m">1M</div>
+              <div class="tab-trigger active" data-value="6m">6M</div>
+              <div class="tab-trigger" data-value="1y">1Y</div>
+              <div class="tab-trigger" data-value="all">All</div>
+            </div>
+          </div>
+          <div class="card-content">
+            <svg viewBox="0 0 600 220" class="w-full h-56" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="var(--chart-1)" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="var(--chart-1)" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <g stroke="var(--border)" stroke-width="1">
+                <line x1="0" y1="20" x2="600" y2="20"/>
+                <line x1="0" y1="70" x2="600" y2="70"/>
+                <line x1="0" y1="120" x2="600" y2="120"/>
+                <line x1="0" y1="170" x2="600" y2="170"/>
+              </g>
+              <path d="M0,150 L40,148 L80,142 L120,130 L160,132 L200,118 L240,122 L280,105 L320,98 L360,108 L400,88 L440,72 L480,78 L520,55 L560,48 L600,40 L600,220 L0,220 Z" fill="url(#areaFill)"/>
+              <polyline points="0,150 40,148 80,142 120,130 160,132 200,118 240,122 280,105 320,98 360,108 400,88 440,72 480,78 520,55 560,48 600,40" fill="none" stroke="var(--chart-1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="600" cy="40" r="4" fill="var(--chart-1)"/>
+            </svg>
+            <div class="flex justify-between text-[.68rem] mt-1" style="color:var(--muted-foreground)">
+              <span>Mar 2026</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Allocation donut -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Asset allocation</div>
+            <div class="card-description">By asset class</div>
+          </div>
+          <div class="card-content flex items-center gap-5">
+            <div class="rounded-full flex-shrink-0" style="width:120px;height:120px;background:conic-gradient(var(--chart-1) 0 42%, var(--chart-2) 42% 66%, var(--chart-3) 66% 80%, var(--chart-4) 80% 92%, var(--chart-5) 92% 100%);">
+              <div class="rounded-full flex items-center justify-center" style="width:76px;height:76px;background:var(--card);margin:22px;">
+                <div class="text-center">
+                  <div style="font-size:.65rem;color:var(--muted-foreground)">Total</div>
+                  <div style="font-size:.78rem;font-weight:700">$242K</div>
+                </div>
+              </div>
+            </div>
+            <ul class="space-y-2 text-xs flex-1">
+              <li class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="badge-dot" style="color:var(--chart-1)"></span>Equity</span><span class="mono font-medium">42%</span></li>
+              <li class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="badge-dot" style="color:var(--chart-2)"></span>ETF</span><span class="mono font-medium">24%</span></li>
+              <li class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="badge-dot" style="color:var(--chart-3)"></span>Crypto</span><span class="mono font-medium">14%</span></li>
+              <li class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="badge-dot" style="color:var(--chart-4)"></span>Bond</span><span class="mono font-medium">12%</span></li>
+              <li class="flex items-center justify-between"><span class="flex items-center gap-2"><span class="badge-dot" style="color:var(--chart-5)"></span>Fund</span><span class="mono font-medium">8%</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Recent transactions -->
+        <div class="card lg:col-span-2">
+          <div class="card-header bordered flex items-center justify-between">
+            <div class="card-title">Recent transactions</div>
+            <a href="transactions.html" class="btn btn-ghost btn-sm">View all</a>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table" id="recent-txn-table">
+              <thead><tr><th>Date</th><th>Account</th><th>Instrument</th><th>Type</th><th class="text-right">Amount</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Needs attention -->
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Needs your attention</div>
+          </div>
+          <div class="card-content space-y-3">
+            <a href="import-review.html?batch=ib_1" class="block p-3 rounded-[var(--radius-md)] border" style="border-color:var(--border);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="badge badge-warning">Needs review</span>
+                <span class="text-[.68rem]" style="color:var(--muted-foreground)">Sep 16</span>
+              </div>
+              <div class="text-xs font-medium">IBKR_Statement_2026-09.csv</div>
+              <div class="text-[.72rem]" style="color:var(--muted-foreground)">3 rows flagged — ambiguous dates, unresolved instrument</div>
+            </a>
+            <a href="import-mapping.html?batch=ib_5" class="block p-3 rounded-[var(--radius-md)] border" style="border-color:var(--border);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="badge badge-outline">Needs mapping</span>
+                <span class="text-[.68rem]" style="color:var(--muted-foreground)">Sep 14</span>
+              </div>
+              <div class="text-xs font-medium">isa_statement_scan.pdf</div>
+              <div class="text-[.72rem]" style="color:var(--muted-foreground)">No template matched — define column mapping</div>
+            </a>
+            <a href="tax-year.html?year=2026&account=acc_1" class="block p-3 rounded-[var(--radius-md)] border" style="border-color:var(--border);">
+              <div class="flex items-center justify-between mb-1">
+                <span class="badge badge-info">46 days left</span>
+                <span class="text-[.68rem]" style="color:var(--muted-foreground)">LT</span>
+              </div>
+              <div class="text-xs font-medium">2026 filing deadline approaching</div>
+              <div class="text-[.72rem]" style="color:var(--muted-foreground)">Review your draft computation before finalizing</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accounts summary -->
+      <div class="card mt-4">
+        <div class="card-header bordered flex items-center justify-between">
+          <div class="card-title">Accounts</div>
+          <a href="accounts.html" class="btn btn-ghost btn-sm">Manage accounts</a>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead><tr><th>Account</th><th>Jurisdiction</th><th>Cost basis</th><th class="text-right">Value</th><th class="text-right">Today</th></tr></thead>
+            <tbody id="accounts-summary-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "dashboard", title: "Dashboard" });
+
+  document.getElementById("stat-total").textContent = fmtMoney(totalPortfolioValue());
+  const totalDelta = ACCOUNTS.reduce((s, a) => s + a.day_change, 0);
+  const totalDeltaPct = (totalDelta / totalPortfolioValue()) * 100;
+  const deltaEl = document.getElementById("stat-total-delta");
+  deltaEl.className = "stat-delta " + (totalDelta >= 0 ? "up" : "down");
+  deltaEl.innerHTML = `${icon(totalDelta >= 0 ? "arrowUpRight" : "arrowDownRight")} ${fmtMoney(totalDelta)} (${fmtPct(totalDeltaPct)}) today`;
+
+  const txnBody = document.querySelector("#recent-txn-table tbody");
+  TRANSACTIONS.slice(0, 6).forEach((t) => {
+    const acc = accountById(t.account_id);
+    const ins = instrumentById(t.instrument_id);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${t.trade_date}</td>
+      <td>${acc.name}</td>
+      <td>${ins ? `<span class="font-medium">${ins.ticker || ins.name}</span>` : `<span style="color:var(--muted-foreground)">Cash</span>`}</td>
+      <td><span class="badge badge-neutral">${t.type.replace("_"," ")}</span></td>
+      <td class="text-right mono ${t.amount >= 0 ? "up" : "down"}">${fmtMoney(t.amount, t.currency)}</td>
+    `;
+    txnBody.appendChild(tr);
+  });
+
+  const accBody = document.getElementById("accounts-summary-body");
+  ACCOUNTS.forEach((a) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><a class="link" href="account-detail.html?id=${a.id}">${a.name}</a></td>
+      <td>${a.jurisdiction}</td>
+      <td><span class="badge badge-outline">${a.cost_basis_method.replace("_"," ")}</span></td>
+      <td class="text-right mono">${fmtMoney(a.value, a.currency)}</td>
+      <td class="text-right mono ${a.day_change >= 0 ? "up" : "down"}">${fmtMoney(a.day_change, a.currency)} (${fmtPct(a.day_change_pct)})</td>
+    `;
+    accBody.appendChild(tr);
+  });
+</script>
+</body>
+</html>

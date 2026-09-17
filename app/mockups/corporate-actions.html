@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Corporate actions · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Corporate actions</div>
+          <div class="page-subtitle">Splits, mergers and spin-offs recorded against instruments in your catalog.</div>
+        </div>
+        <button class="btn btn-primary" onclick="openDialog('dlg-new-action')">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add corporate action
+        </button>
+      </div>
+
+      <div class="card mb-4" style="background: color-mix(in oklab, var(--chart-2) 8%, var(--card));">
+        <div class="card-content flex items-start gap-3">
+          <svg class="icon flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="var(--chart-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <div class="text-xs" style="color:var(--muted-foreground)">
+            Corporate actions automatically adjust historical lots and quantities in affected accounts — you never need to manually re-enter positions after a split, merger, or spin-off.
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Instrument</th><th>Type</th><th>Effective date</th><th>Ratio</th><th>Details</th></tr></thead>
+          <tbody id="body"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="overlay" id="dlg-new-action">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Add corporate action</div>
+        <div class="dialog-description">Adjusts historical lots and quantities for the affected instrument.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-new-action')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body space-y-4">
+      <div class="field">
+        <label class="field-label">Instrument</label>
+        <select class="select" id="new-action-instrument"></select>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="field-label">Type</label>
+          <select class="select">
+            <option>SPLIT</option><option>REVERSE_SPLIT</option><option>MERGER</option><option>SPINOFF</option><option>DIVIDEND_REINVESTMENT</option><option>OTHER</option>
+          </select>
+        </div>
+        <div class="field"><label class="field-label">Effective date</label><input type="date" class="input" value="2026-09-17" /></div>
+      </div>
+      <div class="field">
+        <label class="field-label">Ratio <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label>
+        <input class="input" placeholder="e.g. 10:1" />
+      </div>
+      <div class="field">
+        <label class="field-label">Details</label>
+        <textarea class="textarea" placeholder="Describe the action for audit purposes…"></textarea>
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-new-action')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeDialog('dlg-new-action'); showToast('Corporate action recorded', 'Historical lots and quantities have been adjusted.', 'success')">Save corporate action</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "corporate-actions", title: "Corporate actions", crumbs: [{ label: "Corporate actions", href: "corporate-actions.html" }] });
+
+  const sel = document.getElementById("new-action-instrument");
+  INSTRUMENTS.forEach((i) => {
+    const opt = document.createElement("option");
+    opt.value = i.id; opt.textContent = i.ticker ? `${i.ticker} — ${i.name}` : i.name;
+    sel.appendChild(opt);
+  });
+
+  const body = document.getElementById("body");
+  CORPORATE_ACTIONS.forEach((c) => {
+    const ins = instrumentById(c.instrument_id);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><a class="link" href="instrument-detail.html?id=${ins.id}">${ins.ticker || ins.name}</a></td>
+      <td><span class="badge badge-info">${c.type.replace("_"," ")}</span></td>
+      <td class="mono">${c.effective_date}</td>
+      <td class="mono">${c.ratio || "—"}</td>
+      <td style="color:var(--muted-foreground)">${c.details}</td>
+    `;
+    body.appendChild(tr);
+  });
+</script>
+</body>
+</html>

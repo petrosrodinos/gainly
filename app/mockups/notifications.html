@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Notifications · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Notifications</div>
+          <div class="page-subtitle">Import status, tax deadlines, and portfolio digests.</div>
+        </div>
+        <button class="btn btn-outline" id="btn-mark-all">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Mark all as read
+        </button>
+      </div>
+
+      <div class="card mb-6">
+        <div class="card-header bordered flex items-center justify-between">
+          <div class="tabs-list" data-tabs="notif-filter">
+            <div class="tab-trigger active" data-value="all">All</div>
+            <div class="tab-trigger" data-value="unread">Unread</div>
+          </div>
+          <span class="text-xs" id="unread-count" style="color:var(--muted-foreground)"></span>
+        </div>
+        <div class="tab-panel active" data-tabs="notif-filter" data-value="all">
+          <div id="list-all"></div>
+        </div>
+        <div class="tab-panel" data-tabs="notif-filter" data-value="unread">
+          <div id="list-unread"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="card-title">Notification preferences</div>
+          <div class="card-description">Choose how you're notified for each event (product spec §8). Changes save automatically in this mockup.</div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th style="width:90px;">In-app</th>
+                <th style="width:70px;">Email</th>
+                <th style="width:70px;">SMS</th>
+              </tr>
+            </thead>
+            <tbody id="prefs-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "", title: "Notifications", crumbs: [{ label: "Notifications" }] });
+
+  const kindColor = (k) => ({ destructive: "var(--destructive)", warning: "var(--warning)", success: "var(--success)", info: "var(--chart-2)" }[k] || "var(--chart-2)");
+  const kindIcon = (k) => ({ destructive: "alertCircle", warning: "alertTriangle", success: "check", info: "info" }[k] || "info");
+
+  function notifRow(n) {
+    return `
+      <div class="flex items-start gap-3 p-4" style="border-bottom:1px solid var(--border); ${n.read ? "" : "background:color-mix(in oklab, var(--primary) 4%, transparent);"}" data-id="${n.id}">
+        <span class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style="background:color-mix(in oklab, ${kindColor(n.kind)} 16%, var(--background)); color:${kindColor(n.kind)};">
+          ${icon(kindIcon(n.kind), "icon")}
+        </span>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-semibold">${n.title}</span>
+            ${!n.read ? `<span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:var(--destructive)"></span>` : ""}
+          </div>
+          <div class="text-xs mt-0.5" style="color:var(--muted-foreground)">${n.body}</div>
+          <div class="text-[.68rem] mt-1.5" style="color:var(--muted-foreground)">${n.time}</div>
+        </div>
+        <div class="flex items-center gap-1 flex-shrink-0">
+          ${!n.read ? `<button class="btn btn-ghost btn-sm" onclick="markRead('${n.id}')">Mark read</button>` : ""}
+          <button class="btn btn-ghost btn-icon" onclick="removeNotif('${n.id}')" aria-label="Delete">${icon("trash")}</button>
+        </div>
+      </div>`;
+  }
+
+  function render() {
+    const unread = NOTIFICATIONS.filter((n) => !n.read).length;
+    document.getElementById("unread-count").textContent = `${unread} unread`;
+    document.getElementById("list-all").innerHTML = NOTIFICATIONS.length
+      ? NOTIFICATIONS.map(notifRow).join("")
+      : `<div class="empty-state"><div class="icon-wrap">${icon("bell")}</div>You're all caught up.</div>`;
+    const unreadItems = NOTIFICATIONS.filter((n) => !n.read);
+    document.getElementById("list-unread").innerHTML = unreadItems.length
+      ? unreadItems.map(notifRow).join("")
+      : `<div class="empty-state"><div class="icon-wrap">${icon("check")}</div>No unread notifications.</div>`;
+  }
+
+  function markRead(id) {
+    const n = NOTIFICATIONS.find((x) => x.id === id);
+    if (n) { n.read = true; render(); showToast("Marked as read", n.title, "default"); }
+  }
+  function removeNotif(id) {
+    const idx = NOTIFICATIONS.findIndex((x) => x.id === id);
+    if (idx > -1) { const [n] = NOTIFICATIONS.splice(idx, 1); render(); showToast("Notification deleted", n.title, "destructive"); }
+  }
+  document.getElementById("btn-mark-all").addEventListener("click", () => {
+    NOTIFICATIONS.forEach((n) => (n.read = true));
+    render();
+    showToast("All notifications marked as read");
+  });
+
+  render();
+
+  const PREFS = [
+    { label: "Import completed", desc: "A statement finished processing successfully." },
+    { label: "Import needs review", desc: "Some rows in an import need your attention." },
+    { label: "Import failed", desc: "A file could not be parsed at all." },
+    { label: "Tax year opened", desc: "A new tax year became available for computation." },
+    { label: "Tax deadline approaching", desc: "Your jurisdiction's filing deadline is near." },
+    { label: "Portfolio digest", desc: "Periodic summary email of portfolio performance." },
+  ];
+  const prefsBody = document.getElementById("prefs-body");
+  PREFS.forEach((p, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div class="text-xs font-medium">${p.label}</div>
+        <div class="text-[.72rem]" style="color:var(--muted-foreground)">${p.desc}</div>
+      </td>
+      <td><button class="switch ${i !== 5 ? "on" : ""}"></button></td>
+      <td><input type="checkbox" class="checkbox" ${i !== 3 ? "checked" : ""} /></td>
+      <td><input type="checkbox" class="checkbox" /></td>
+    `;
+    prefsBody.appendChild(tr);
+  });
+  initSwitches();
+</script>
+</body>
+</html>

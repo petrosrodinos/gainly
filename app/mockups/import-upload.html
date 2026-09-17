@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Upload statement · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content" style="max-width:760px;">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Upload statement</div>
+          <div class="page-subtitle">Upload one or more files from your broker. We'll try to auto-detect the format.</div>
+        </div>
+      </div>
+
+      <div class="step-indicator mb-6">
+        <div class="step active"><span class="step-num">1</span>Upload</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">2</span>Mapping</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">3</span>Review</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">4</span>Commit</div>
+      </div>
+
+      <div class="card">
+        <div class="card-content space-y-5">
+          <div class="field">
+            <label class="field-label">Account</label>
+            <select class="select" id="f-account"></select>
+            <span class="field-hint">Files are attached to one account — its currency and jurisdiction pre-select conversions and tax modules.</span>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Files</label>
+            <div id="dropzone" class="rounded-[var(--radius-lg)] border-2 border-dashed flex flex-col items-center justify-center text-center py-10 px-4 cursor-pointer" style="border-color:var(--border)">
+              <div id="dropzone-icon" class="mb-2" style="color:var(--muted-foreground)"></div>
+              <div class="text-sm font-medium">Click to browse, or drag files here</div>
+              <div class="text-xs mt-1" style="color:var(--muted-foreground)">XLS, XLSX, CSV — PDF and scans coming soon</div>
+              <input type="file" id="file-input" class="hidden" multiple />
+            </div>
+            <button type="button" class="btn btn-outline btn-sm mt-2" id="btn-simulate">Simulate file selected: IBKR_Statement_2026-09.csv</button>
+          </div>
+
+          <div id="file-list" class="space-y-2"></div>
+        </div>
+
+        <div class="card-footer flex-col items-stretch gap-3">
+          <div class="separator"></div>
+          <div class="text-xs" style="color:var(--muted-foreground)">Choose how this demo continues once files are "uploaded":</div>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <a href="import-review.html?batch=ib_1" class="btn btn-primary flex-1 flex-col !items-start !gap-0 !py-2.5">
+              <span class="text-xs font-semibold">Continue — confident template match</span>
+              <span class="text-[.68rem] font-normal opacity-80">Auto-parsed, skips straight to staged review</span>
+            </a>
+            <a href="import-mapping.html?batch=ib_5" class="btn btn-outline flex-1 flex-col !items-start !gap-0 !py-2.5">
+              <span class="text-xs font-semibold">Continue — no template matched</span>
+              <span class="text-[.68rem] font-normal" style="color:var(--muted-foreground)">Routes to the mapping wizard</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "imports", title: "Upload statement", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Imports", href: "imports.html" }, { label: "Upload" }] });
+  document.getElementById("dropzone-icon").innerHTML = icon("fileUp", "icon w-8 h-8");
+
+  const accSel = document.getElementById("f-account");
+  ACCOUNTS.forEach((a) => { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; accSel.appendChild(o); });
+
+  document.getElementById("dropzone").addEventListener("click", () => document.getElementById("file-input").click());
+
+  const fileList = document.getElementById("file-list");
+  function addFileRow(name, size) {
+    const row = document.createElement("div");
+    row.className = "flex items-center justify-between p-2.5 rounded-[var(--radius-md)] border";
+    row.style.borderColor = "var(--border)";
+    row.innerHTML = `
+      <div class="flex items-center gap-2.5 text-xs">
+        <span style="color:var(--muted-foreground)">${icon("filetext")}</span>
+        <span class="font-medium">${name}</span>
+        <span style="color:var(--muted-foreground)">${size}</span>
+      </div>
+      <button class="btn btn-ghost btn-icon btn-sm remove-file">${icon("x")}</button>
+    `;
+    row.querySelector(".remove-file").addEventListener("click", () => row.remove());
+    fileList.appendChild(row);
+  }
+
+  document.getElementById("btn-simulate").addEventListener("click", () => addFileRow("IBKR_Statement_2026-09.csv", "128 KB"));
+  document.getElementById("file-input").addEventListener("change", (e) => {
+    Array.from(e.target.files).forEach((f) => addFileRow(f.name, `${Math.max(1, Math.round(f.size / 1024))} KB`));
+  });
+</script>
+</body>
+</html>

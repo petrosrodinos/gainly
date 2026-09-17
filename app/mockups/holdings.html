@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Holdings · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Holdings</div>
+          <div class="page-subtitle">Positions are always computed from the transaction ledger — never hand-edited — so they stay consistent with history.</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+        <div class="stat-tile"><div class="stat-label">Market value</div><div class="stat-value" id="s-value">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Cost basis</div><div class="stat-value" id="s-cost">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Unrealized gain</div><div class="stat-value" id="s-gain">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Holdings</div><div class="stat-value" id="s-count">—</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered flex flex-wrap items-center gap-2 justify-between">
+          <div class="card-title">All positions</div>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="relative">
+              <svg class="icon absolute left-2.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+              <input id="f-search" class="input !pl-8 !w-56" placeholder="Search instrument…" />
+            </div>
+            <select id="f-class" class="select !w-auto">
+              <option value="">All asset classes</option>
+              <option>EQUITY</option><option>ETF</option><option>BOND</option><option>FUND</option><option>CRYPTO</option><option>CASH</option><option>COMMODITY</option><option>REAL_ESTATE</option><option>OTHER</option>
+            </select>
+            <select id="f-account" class="select !w-auto">
+              <option value="">All accounts</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Instrument</th><th>Asset class</th><th>Account</th>
+                <th class="text-right">Quantity</th><th class="text-right">Avg cost</th><th class="text-right">Price</th>
+                <th class="text-right">Market value</th><th class="text-right">Unrealized</th><th class="text-right">% of portfolio</th>
+              </tr>
+            </thead>
+            <tbody id="holdings-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "holdings", title: "Holdings", crumbs: [{ label: "Holdings", href: "holdings.html" }] });
+
+  const accSel = document.getElementById("f-account");
+  ACCOUNTS.forEach((a) => {
+    const opt = document.createElement("option");
+    opt.value = a.id; opt.textContent = a.name;
+    accSel.appendChild(opt);
+  });
+
+  const rows = POSITIONS.map((p) => {
+    const ins = instrumentById(p.instrument_id);
+    const acc = accountById(p.account_id);
+    const mv = p.quantity * p.price;
+    const gain = mv - p.cost_basis;
+    return { ...p, ins, acc, mv, gain };
+  });
+
+  const totalMv = rows.reduce((s, r) => s + r.mv, 0);
+  document.getElementById("s-value").textContent = fmtMoney(totalMv);
+  document.getElementById("s-cost").textContent = fmtMoney(rows.reduce((s, r) => s + r.cost_basis, 0));
+  const gainEl = document.getElementById("s-gain");
+  const totalGain = rows.reduce((s, r) => s + r.gain, 0);
+  gainEl.textContent = fmtMoney(totalGain);
+  gainEl.className = "stat-value " + (totalGain >= 0 ? "up" : "down");
+  document.getElementById("s-count").textContent = rows.length;
+
+  const body = document.getElementById("holdings-body");
+  function render() {
+    const q = document.getElementById("f-search").value.trim().toLowerCase();
+    const cls = document.getElementById("f-class").value;
+    const acc = document.getElementById("f-account").value;
+    body.innerHTML = "";
+    rows
+      .filter((r) => (!q || (r.ins.ticker || "").toLowerCase().includes(q) || (r.ins.name || "").toLowerCase().includes(q)))
+      .filter((r) => !cls || r.ins.asset_class === cls)
+      .filter((r) => !acc || r.acc.id === acc)
+      .forEach((r) => {
+        const tr = document.createElement("tr");
+        tr.style.cursor = "pointer";
+        tr.onclick = () => location.href = `instrument-detail.html?id=${r.ins.id}`;
+        tr.innerHTML = `
+          <td><span class="font-medium">${r.ins.ticker || r.ins.name}</span>${r.ins.ticker ? `<div style="color:var(--muted-foreground); font-size:.72rem;">${r.ins.name}</div>` : ""}</td>
+          <td><span class="badge badge-neutral">${r.ins.asset_class}</span></td>
+          <td>${r.acc.name}</td>
+          <td class="text-right mono">${fmtNum(r.quantity, 4)}</td>
+          <td class="text-right mono">${fmtMoney(r.cost_basis / r.quantity, r.ins.currency)}</td>
+          <td class="text-right mono">${fmtMoney(r.price, r.ins.currency)}</td>
+          <td class="text-right mono">${fmtMoney(r.mv, r.ins.currency)}</td>
+          <td class="text-right mono ${r.gain >= 0 ? "up" : "down"}">${fmtMoney(r.gain, r.ins.currency)}</td>
+          <td class="text-right mono">${((r.mv / totalMv) * 100).toFixed(1)}%</td>
+        `;
+        body.appendChild(tr);
+      });
+    if (!body.children.length) body.innerHTML = `<tr><td colspan="9" class="empty-state">No holdings match your filters.</td></tr>`;
+  }
+  ["f-search", "f-class", "f-account"].forEach((id) => document.getElementById(id).addEventListener("input", render));
+  render();
+</script>
+</body>
+</html>

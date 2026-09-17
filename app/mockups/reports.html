@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reports · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Reports</div>
+          <div class="page-subtitle">Generate exportable reports and archives from your portfolio data.</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <!-- Portfolio PDF report -->
+        <div class="card">
+          <div class="card-header">
+            <div class="flex items-center gap-2.5 mb-1">
+              <div class="sidebar-mark" style="background:var(--secondary); color:var(--secondary-foreground);">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+              </div>
+              <div class="card-title">Portfolio report (PDF)</div>
+            </div>
+            <div class="card-description">Holdings, allocation, and performance summary for a chosen period.</div>
+          </div>
+          <div class="card-content space-y-3">
+            <div class="field"><label class="field-label">Account</label>
+              <select class="select" id="r1-account"><option value="">All accounts</option></select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="field"><label class="field-label">From</label><input type="date" class="input" id="r1-from" value="2026-01-01" /></div>
+              <div class="field"><label class="field-label">To</label><input type="date" class="input" id="r1-to" value="2026-09-17" /></div>
+            </div>
+            <button class="btn btn-outline w-full" id="r1-btn">Generate</button>
+          </div>
+        </div>
+
+        <!-- Tax summary -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Tax summary</div>
+            <div class="card-description">Human-readable PDF + machine-readable CSV/JSON, derived from that year's tax computation.</div>
+          </div>
+          <div class="card-content space-y-3">
+            <div class="field"><label class="field-label">Account</label>
+              <select class="select" id="r2-account"></select>
+            </div>
+            <div class="field"><label class="field-label">Tax year</label>
+              <select class="select" id="r2-year"></select>
+            </div>
+            <button class="btn btn-outline w-full" id="r2-btn">Generate</button>
+          </div>
+        </div>
+
+        <!-- Transaction ledger CSV -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Transaction ledger (CSV)</div>
+            <div class="card-description">Full export of an account's transaction history.</div>
+          </div>
+          <div class="card-content space-y-3">
+            <div class="field"><label class="field-label">Account</label>
+              <select class="select" id="r3-account"></select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="field"><label class="field-label">From</label><input type="date" class="input" id="r3-from" value="2023-01-01" /></div>
+              <div class="field"><label class="field-label">To</label><input type="date" class="input" id="r3-to" value="2026-09-17" /></div>
+            </div>
+            <button class="btn btn-outline w-full" id="r3-btn">Generate</button>
+          </div>
+        </div>
+
+        <!-- Realized gains/losses CSV -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Realized gains/losses (CSV)</div>
+            <div class="card-description">Usable on its own by a tax preparer, independent of the built-in filing flow.</div>
+          </div>
+          <div class="card-content space-y-3">
+            <div class="field"><label class="field-label">Account</label>
+              <select class="select" id="r4-account"></select>
+            </div>
+            <div class="field"><label class="field-label">Tax year</label>
+              <select class="select" id="r4-year"></select>
+            </div>
+            <button class="btn btn-outline w-full" id="r4-btn">Generate</button>
+          </div>
+        </div>
+
+        <!-- Full data export -->
+        <div class="card md:col-span-2 lg:col-span-1">
+          <div class="card-header">
+            <div class="card-title">Full data export / backup</div>
+            <div class="card-description">Everything you've stored — transactions, documents, computations — in one archive.</div>
+          </div>
+          <div class="card-content space-y-3">
+            <p class="text-xs" style="color:var(--muted-foreground)">Self-service and on-demand. Covers data-portability requests and basic trust: you can always get your data out.</p>
+            <button class="btn btn-primary w-full" id="r5-btn">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 18v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/></svg>
+              Export everything
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="card-title">Recent reports</div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Type</th><th>Period</th><th>Generated</th><th></th></tr></thead>
+            <tbody id="reports-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Confirm dialog -->
+<div class="overlay" id="dlg-report">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title" id="dlg-title">Generate report</div>
+        <div class="dialog-description">Review the parameters before generating.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-report')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-body text-sm" id="dlg-body"></div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-report')">Cancel</button>
+      <button class="btn btn-primary" id="dlg-confirm-btn">Confirm &amp; generate</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "reports", title: "Reports", crumbs: [{ label: "Reports", href: "reports.html" }] });
+
+  ["r1-account","r2-account","r3-account","r4-account"].forEach((id) => {
+    const sel = document.getElementById(id);
+    ACCOUNTS.forEach((a) => { const o = document.createElement("option"); o.value = a.id; o.textContent = a.name; sel.appendChild(o); });
+  });
+  ["r2-year","r4-year"].forEach((id) => {
+    const sel = document.getElementById(id);
+    [...new Set(TAX_YEARS.map((t) => t.year))].sort((a,b)=>b-a).forEach((y) => { const o = document.createElement("option"); o.value = y; o.textContent = y; sel.appendChild(o); });
+  });
+
+  let pendingReport = null;
+  function openReportDialog(title, paramsFn, filename, type) {
+    document.getElementById("dlg-title").textContent = `Generate: ${title}`;
+    document.getElementById("dlg-body").innerHTML = `
+      <div class="p-3 rounded-[var(--radius-md)] border text-xs mono" style="border-color:var(--border); background:var(--muted); white-space:pre-wrap;">${paramsFn()}</div>
+      <p class="text-xs mt-3" style="color:var(--muted-foreground)">This runs as a background job — you'll be notified when it's ready, and the UI won't block while it computes.</p>
+    `;
+    pendingReport = { title, filename, type };
+    openDialog("dlg-report");
+  }
+  document.getElementById("dlg-confirm-btn").addEventListener("click", () => {
+    closeDialog("dlg-report");
+    if (!pendingReport) return;
+    showToast("Report queued", `${pendingReport.title} is generating — you'll be notified when it's ready.`, "success");
+    const row = document.createElement("tr");
+    const now = new Date().toISOString().slice(0,16).replace("T"," ");
+    row.innerHTML = `
+      <td class="font-medium">${pendingReport.filename}</td>
+      <td><span class="badge badge-neutral">${pendingReport.type}</span></td>
+      <td class="text-xs" style="color:var(--muted-foreground)">Custom range</td>
+      <td class="text-xs" style="color:var(--muted-foreground)">${now}</td>
+      <td class="text-right"><button class="btn btn-ghost btn-sm" onclick="showToast('Download started','${pendingReport.filename}','success')">Download</button></td>
+    `;
+    document.getElementById("reports-body").prepend(row);
+  });
+
+  document.getElementById("r1-btn").addEventListener("click", () => {
+    const accName = document.getElementById("r1-account").selectedOptions[0]?.textContent || "All accounts";
+    const from = document.getElementById("r1-from").value, to = document.getElementById("r1-to").value;
+    openReportDialog("Portfolio report (PDF)", () => `Account: ${accName}\nPeriod: ${from} – ${to}`, "portfolio-report.pdf", "PDF");
+  });
+  document.getElementById("r2-btn").addEventListener("click", () => {
+    const accName = document.getElementById("r2-account").selectedOptions[0]?.textContent || "All accounts";
+    const year = document.getElementById("r2-year").value;
+    openReportDialog("Tax summary", () => `Account: ${accName}\nTax year: ${year}\nDerived from that year's tax computation (draft or finalized).`, `tax-summary-${year}.pdf`, "PDF+CSV");
+  });
+  document.getElementById("r3-btn").addEventListener("click", () => {
+    const accName = document.getElementById("r3-account").selectedOptions[0]?.textContent || "All accounts";
+    const from = document.getElementById("r3-from").value, to = document.getElementById("r3-to").value;
+    openReportDialog("Transaction ledger", () => `Account: ${accName}\nPeriod: ${from} – ${to}`, `ledger-export.csv`, "CSV");
+  });
+  document.getElementById("r4-btn").addEventListener("click", () => {
+    const accName = document.getElementById("r4-account").selectedOptions[0]?.textContent || "All accounts";
+    const year = document.getElementById("r4-year").value;
+    openReportDialog("Realized gains/losses", () => `Account: ${accName}\nTax year: ${year}`, `realized-gains-${year}.csv`, "CSV");
+  });
+  document.getElementById("r5-btn").addEventListener("click", () => {
+    openReportDialog("Full data export", () => `Includes: transactions, documents, tax computations.\nDelivered as a downloadable archive when ready.`, `full-data-export.zip`, "ZIP");
+  });
+
+  const reportsBody = document.getElementById("reports-body");
+  const seed = [
+    ...DOCUMENTS.filter((d) => d.category === "REPORT").map((d) => ({ name: d.filename, type: d.filename.split(".").pop().toUpperCase(), period: "Q2 2026", at: d.uploaded_at })),
+    { name: "ledger-export-2025.csv", type: "CSV", period: "Full history", at: "2026-01-05 09:40" },
+    { name: "tax-summary-2025.pdf", type: "PDF", period: "2025", at: "2026-03-28 11:20" },
+  ];
+  seed.forEach((r) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="font-medium">${r.name}</td>
+      <td><span class="badge badge-neutral">${r.type}</span></td>
+      <td class="text-xs" style="color:var(--muted-foreground)">${r.period}</td>
+      <td class="text-xs" style="color:var(--muted-foreground)">${r.at}</td>
+      <td class="text-right"><button class="btn btn-ghost btn-sm" onclick="showToast('Download started','${r.name}','success')">Download</button></td>
+    `;
+    reportsBody.appendChild(tr);
+  });
+</script>
+</body>
+</html>

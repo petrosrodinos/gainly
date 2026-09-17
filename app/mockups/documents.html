@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documents · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Documents</div>
+          <div class="page-subtitle">Every file you've uploaded or the system has generated — statements, tax forms, reports.</div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <div class="tabs-list" data-tabs="docs">
+          <div class="tab-trigger active" data-value="all">All</div>
+          <div class="tab-trigger" data-value="STATEMENT">Statements</div>
+          <div class="tab-trigger" data-value="TAX_FORM">Tax forms</div>
+          <div class="tab-trigger" data-value="REPORT">Reports</div>
+          <div class="tab-trigger" data-value="GENERAL">General</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead><tr><th>File</th><th>Category</th><th>Size</th><th>Uploaded</th><th>Linked to</th><th></th></tr></thead>
+            <tbody id="docs-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Delete confirm dialog -->
+<div class="overlay" id="dlg-delete">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Delete document?</div>
+        <div class="dialog-description" id="del-filename"></div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-delete')"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="dialog-body text-sm" style="color:var(--muted-foreground)">This cannot be undone. Any provenance linkage (import batch, tax computation) will show this document as removed.</div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-delete')">Cancel</button>
+      <button class="btn btn-destructive" onclick="closeDialog('dlg-delete'); showToast('Document deleted','','destructive')">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "documents", title: "Documents", crumbs: [{ label: "Documents", href: "documents.html" }] });
+
+  const typeIcon = { LOGO: "tag", BANNER: "filetext", IMAGE: "scan", VIDEO: "filetext", AUDIO: "filetext", PDF: "filetext", DOCUMENT: "filetext", OTHER: "folder" };
+  const categoryBadge = { GENERAL: "badge-neutral", STATEMENT: "badge-info", TAX_FORM: "badge-success", REPORT: "badge-warning" };
+
+  const body = document.getElementById("docs-body");
+  function isProtectedStatement(d) {
+    return d.category === "STATEMENT" && /^Import batch/.test(d.linked);
+  }
+  function render(filter) {
+    body.innerHTML = "";
+    DOCUMENTS.filter((d) => filter === "all" || d.category === filter).forEach((d) => {
+      const protectedDoc = isProtectedStatement(d);
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>
+          <div class="flex items-center gap-2.5">
+            ${icon(typeIcon[d.type] || "folder", "icon flex-shrink-0")}
+            <div>
+              <div class="font-medium">${d.filename}</div>
+              <div class="text-[.68rem]" style="color:var(--muted-foreground)">${d.type}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="badge ${categoryBadge[d.category] || "badge-neutral"}">${d.category.replace("_"," ")}</span></td>
+        <td class="mono text-xs">${d.size}</td>
+        <td class="text-xs" style="color:var(--muted-foreground)">${d.uploaded_at}</td>
+        <td class="text-xs">${d.linked}</td>
+        <td class="text-right">
+          <div class="dropdown">
+            <button class="btn btn-ghost btn-icon">${icon("moreHorizontal")}</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" onclick="showToast('Download started','${d.filename}','success')">${icon("download")}Download</div>
+              <div class="dropdown-item" onclick="showToast('${d.filename}','${d.category} · uploaded ${d.uploaded_at} · ${d.linked}','default')">${icon("eye")}View details</div>
+              <div class="dropdown-sep"></div>
+              ${protectedDoc
+                ? `<div class="dropdown-item" style="opacity:.45; cursor:not-allowed;" title="Source statements are retained permanently for provenance">${icon("trash")}Delete (retained)</div>`
+                : `<div class="dropdown-item danger" onclick="confirmDelete('${d.filename}')">${icon("trash")}Delete</div>`}
+            </div>
+          </div>
+        </td>
+      `;
+      body.appendChild(tr);
+    });
+    if (!body.children.length) {
+      body.innerHTML = `<tr><td colspan="6"><div class="empty-state">${icon("folder","icon")}<div class="mt-2">No documents in this category.</div></div></td></tr>`;
+    }
+  }
+  function confirmDelete(filename) {
+    document.getElementById("del-filename").textContent = filename;
+    openDialog("dlg-delete");
+  }
+
+  document.querySelectorAll('.tabs-list[data-tabs="docs"] .tab-trigger').forEach((t) => {
+    t.addEventListener("click", () => render(t.dataset.value));
+  });
+  render("all");
+</script>
+</body>
+</html>

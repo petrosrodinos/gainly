@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mapping wizard · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Mapping wizard</div>
+          <div class="page-subtitle" id="page-subtitle">No reusable template matched this file with enough confidence — tell us what each column means.</div>
+        </div>
+      </div>
+
+      <div class="step-indicator mb-6">
+        <div class="step done"><span class="step-num">✓</span>Upload</div>
+        <div class="step-connector"></div>
+        <div class="step active"><span class="step-num">2</span>Mapping</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">3</span>Review</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">4</span>Commit</div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Column mapping</div>
+            <div class="card-description">Detected columns from isa_statement_scan.pdf (extracted table)</div>
+          </div>
+          <div class="card-content space-y-3" id="mapping-rows"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header bordered">
+            <div class="card-title">Preview</div>
+            <div class="card-description">First rows, transformed by the mapping on the left</div>
+          </div>
+          <div class="table-wrap !border-0 !rounded-none">
+            <table class="data-table" style="font-size:.72rem;">
+              <thead><tr><th>Trade date</th><th>Instrument</th><th>Type</th><th>Qty</th><th>Price</th><th>Broker ref</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">2026-09-15</td><td>AAPL</td><td><span class="badge badge-neutral">BUY</span></td><td class="mono">20</td><td class="mono">224.10</td><td class="mono">IB-8841021</td></tr>
+                <tr><td class="mono">2026-09-16</td><td>MSFT</td><td><span class="badge badge-neutral">SELL</span></td><td class="mono">8</td><td class="mono">421.10</td><td class="mono">IB-8842010</td></tr>
+                <tr><td class="mono">2026-09-16</td><td class="down">GOOGL <span title="Unresolved instrument" class="tooltip-wrap" style="color:var(--destructive)">⚠</span></td><td><span class="badge badge-neutral">BUY</span></td><td class="mono">5</td><td class="mono">192.40</td><td class="mono">IB-8842099</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-content" style="border-top:1px solid var(--border)">
+            <div class="field">
+              <label class="field-label">Template name</label>
+              <input class="input" value="isa_statement_scan — custom layout" />
+            </div>
+            <label class="flex items-center gap-2 text-xs mt-3" style="color:var(--muted-foreground)">
+              <input type="checkbox" class="checkbox" checked /> Save as a reusable template for future uploads of this format
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-footer justify-between">
+          <a href="import-upload.html" class="btn btn-outline">Back</a>
+          <a href="import-review.html?batch=ib_5" class="btn btn-primary" id="btn-run-parse"></a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "imports", title: "Mapping wizard", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Imports", href: "imports.html" }, { label: "Mapping wizard" }] });
+
+  document.getElementById("btn-run-parse").innerHTML = icon("refresh") + "Run parse";
+
+  const CANONICAL_FIELDS = [
+    "Trade date", "Settlement date", "Instrument (ISIN or ticker)", "Transaction type",
+    "Quantity", "Price", "Amount", "Fee", "Currency", "Broker reference", "Ignore column",
+  ];
+  const RAW_COLUMNS = [
+    { name: "Date", guess: "Trade date" },
+    { name: "Ticker", guess: "Instrument (ISIN or ticker)" },
+    { name: "Side", guess: "Transaction type" },
+    { name: "Qty", guess: "Quantity" },
+    { name: "Price", guess: "Price" },
+    { name: "Fee", guess: "Fee" },
+    { name: "Broker Ref", guess: "Broker reference" },
+  ];
+
+  const wrap = document.getElementById("mapping-rows");
+  RAW_COLUMNS.forEach((col) => {
+    const row = document.createElement("div");
+    row.className = "flex items-center gap-3";
+    row.innerHTML = `
+      <div class="w-32 flex-shrink-0">
+        <div class="text-xs font-medium mono">${col.name}</div>
+        <div class="text-[.65rem]" style="color:var(--muted-foreground)">raw column</div>
+      </div>
+      <span style="color:var(--muted-foreground)">${icon("chevronRight")}</span>
+      <select class="select flex-1"></select>
+    `;
+    const select = row.querySelector("select");
+    CANONICAL_FIELDS.forEach((f) => {
+      const o = document.createElement("option");
+      o.textContent = f; o.value = f;
+      if (f === col.guess) o.selected = true;
+      select.appendChild(o);
+    });
+    wrap.appendChild(row);
+  });
+</script>
+</body>
+</html>

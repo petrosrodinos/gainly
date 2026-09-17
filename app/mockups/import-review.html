@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Review import · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="batch-title">Review import</div>
+          <div class="page-subtitle" id="batch-subtitle"></div>
+        </div>
+        <span class="badge" id="batch-status-badge"></span>
+      </div>
+
+      <div class="step-indicator mb-6">
+        <div class="step done"><span class="step-num">✓</span>Upload</div>
+        <div class="step-connector"></div>
+        <div class="step done"><span class="step-num">✓</span>Mapping</div>
+        <div class="step-connector"></div>
+        <div class="step active"><span class="step-num">3</span>Review</div>
+        <div class="step-connector"></div>
+        <div class="step"><span class="step-num">4</span>Commit</div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+        <div class="stat-tile"><div class="stat-label">Rows parsed</div><div class="stat-value" id="stat-rows">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Flagged</div><div class="stat-value down" id="stat-flagged">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Accepted</div><div class="stat-value up" id="stat-accepted">—</div></div>
+        <div class="stat-tile"><div class="stat-label">Rejected</div><div class="stat-value" id="stat-rejected">—</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered flex flex-wrap items-center justify-between gap-3">
+          <div class="tabs-list" data-tabs="review-filter">
+            <div class="tab-trigger active" data-value="all">All</div>
+            <div class="tab-trigger" data-value="review">Needs review</div>
+            <div class="tab-trigger" data-value="accepted">Accepted</div>
+            <div class="tab-trigger" data-value="rejected">Rejected</div>
+          </div>
+          <button class="btn btn-outline btn-sm" id="btn-accept-clean"></button>
+        </div>
+
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:2rem;"><input type="checkbox" class="checkbox" /></th>
+                <th>#</th><th>Date</th><th>Instrument</th><th>Type</th>
+                <th class="text-right">Qty</th><th class="text-right">Price</th><th class="text-right">Amount</th>
+                <th>Status</th><th>Issue</th><th></th>
+              </tr>
+            </thead>
+            <tbody id="staged-body"></tbody>
+          </table>
+        </div>
+
+        <div class="card-footer justify-between">
+          <span class="text-xs" style="color:var(--muted-foreground)">Partial commit is allowed — rows still flagged stay <span class="badge badge-warning">NEEDS_REVIEW</span> and can be fixed later.</span>
+          <button class="btn btn-primary" id="btn-commit"></button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Edit row dialog -->
+<div class="overlay" id="overlay-edit">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Fix staged row</div>
+        <div class="dialog-description" id="edit-issue-text"></div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('overlay-edit')"></button>
+    </div>
+    <div class="dialog-body space-y-4">
+      <div class="field">
+        <label class="field-label">Instrument</label>
+        <select class="select" id="edit-instrument"></select>
+      </div>
+      <div class="field">
+        <label class="field-label">Date interpretation</label>
+        <div class="flex gap-4 text-xs mt-1">
+          <label class="flex items-center gap-1.5"><input type="radio" name="date-fmt" class="radio" checked /> DD-MM-YYYY</label>
+          <label class="flex items-center gap-1.5"><input type="radio" name="date-fmt" class="radio" /> MM-DD-YYYY</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Price</label>
+        <input type="number" step="any" class="input" id="edit-price" />
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('overlay-edit')">Cancel</button>
+      <button class="btn btn-primary" id="btn-save-edit">Save &amp; mark accepted</button>
+    </div>
+  </div>
+</div>
+
+<!-- Commit confirm dialog -->
+<div class="overlay" id="overlay-commit">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div class="dialog-title">Commit accepted rows?</div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('overlay-commit')"></button>
+    </div>
+    <div class="dialog-body text-sm space-y-3">
+      <p><strong id="commit-accepted-count">0</strong> accepted rows will become permanent, immutable transactions.</p>
+      <p style="color:var(--muted-foreground); font-size:.8rem;">Rows still flagged <span class="badge badge-warning">NEEDS_REVIEW</span> will be left out of this commit — the batch will not be blocked, and you can come back to fix and commit them later.</p>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('overlay-commit')">Cancel</button>
+      <button class="btn btn-primary" id="btn-confirm-commit">Commit rows</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const batchId = params.get("batch") || "ib_1";
+  const batch = IMPORT_BATCHES.find((b) => b.id === batchId) || IMPORT_BATCHES[0];
+  const acc = accountById(batch.account_id);
+
+  mountLayout({
+    active: "imports", title: "Review import",
+    crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Imports", href: "imports.html" }, { label: "Review" }],
+  });
+
+  document.getElementById("batch-title").textContent = batch.filename;
+  document.getElementById("batch-subtitle").textContent = `${acc.name} · uploaded ${batch.created_at}`;
+  const statusBadge = document.getElementById("batch-status-badge");
+  statusBadge.className = "badge " + ({ NEEDS_REVIEW: "badge-warning", COMMITTED: "badge-success", PARTIALLY_COMMITTED: "badge-warning", FAILED: "badge-destructive" }[batch.status] || "badge-neutral");
+  statusBadge.textContent = batch.status.replace("_", " ");
+
+  document.getElementById("btn-accept-clean").innerHTML = icon("check") + "Accept all clean rows";
+  document.getElementById("btn-commit").innerHTML = icon("upload") + "Commit accepted rows";
+  document.querySelectorAll('.overlay .dialog-header .btn-ghost').forEach((b) => b.innerHTML = icon("x"));
+
+  // Work on a mutable copy so accept/reject/edit actions can update state in-memory.
+  const rows = STAGED_TRANSACTIONS.map((r) => ({ ...r }));
+
+  const STATUS_BADGE = { PENDING_REVIEW: "badge-warning", ACCEPTED: "badge-success", REJECTED: "badge-destructive", COMMITTED: "badge-neutral" };
+  let currentFilter = "all";
+  let editingRowId = null;
+
+  function matchesFilter(r) {
+    if (currentFilter === "all") return true;
+    if (currentFilter === "review") return r.status === "PENDING_REVIEW";
+    if (currentFilter === "accepted") return r.status === "ACCEPTED";
+    if (currentFilter === "rejected") return r.status === "REJECTED";
+    return true;
+  }
+
+  function render() {
+    const body = document.getElementById("staged-body");
+    body.innerHTML = "";
+    rows.filter(matchesFilter).forEach((r) => {
+      const tr = document.createElement("tr");
+      const m = r.mapped || {};
+      const instrumentLabel = m.instrument || "—";
+      tr.innerHTML = `
+        <td><input type="checkbox" class="checkbox" /></td>
+        <td class="mono">${r.row_index}</td>
+        <td class="mono">${m.trade_date || "—"}</td>
+        <td>${instrumentLabel}</td>
+        <td>${m.type ? `<span class="badge badge-neutral">${m.type.replace("_", " ")}</span>` : "—"}</td>
+        <td class="text-right mono">${m.quantity != null ? fmtNum(m.quantity) : "—"}</td>
+        <td class="text-right mono">${m.price != null ? fmtNum(m.price) : "—"}</td>
+        <td class="text-right mono ${m.amount >= 0 ? "up" : "down"}">${m.amount != null ? fmtMoney(m.amount) : "—"}</td>
+        <td><span class="badge ${STATUS_BADGE[r.status]}">${r.status.replace("_", " ")}</span></td>
+        <td>${r.issue ? `<span class="tooltip-wrap" style="color:var(--warning)">${icon("alertTriangle")}<span class="tooltip-bubble" style="bottom:auto; top:calc(100% + 6px);">${r.issue}</span></span>` : ""}</td>
+        <td class="text-right whitespace-nowrap">
+          <button class="btn btn-ghost btn-icon btn-sm act-accept" title="Accept">${icon("check")}</button>
+          <button class="btn btn-ghost btn-icon btn-sm act-reject" title="Reject">${icon("x")}</button>
+          <button class="btn btn-ghost btn-icon btn-sm act-edit" title="Edit">${icon("edit")}</button>
+        </td>
+      `;
+      tr.querySelector(".act-accept").addEventListener("click", () => { r.status = "ACCEPTED"; r.issue = null; render(); });
+      tr.querySelector(".act-reject").addEventListener("click", () => { r.status = "REJECTED"; render(); });
+      tr.querySelector(".act-edit").addEventListener("click", () => openEdit(r));
+      body.appendChild(tr);
+    });
+    initRowSelection("#staged-body");
+    updateStats();
+  }
+
+  function updateStats() {
+    document.getElementById("stat-rows").textContent = rows.length;
+    document.getElementById("stat-flagged").textContent = rows.filter((r) => r.status === "PENDING_REVIEW").length;
+    document.getElementById("stat-accepted").textContent = rows.filter((r) => r.status === "ACCEPTED").length;
+    document.getElementById("stat-rejected").textContent = rows.filter((r) => r.status === "REJECTED").length;
+  }
+
+  document.querySelectorAll('.tab-trigger[data-value]').forEach((t) => {
+    t.addEventListener("click", () => { currentFilter = t.dataset.value; render(); });
+  });
+
+  document.getElementById("btn-accept-clean").addEventListener("click", () => {
+    let n = 0;
+    rows.forEach((r) => { if (r.status === "PENDING_REVIEW" && !r.issue) { r.status = "ACCEPTED"; n++; } });
+    showToast(`${n} clean rows accepted`, n === 0 ? "No unflagged rows were pending." : undefined, "success");
+    render();
+  });
+
+  function openEdit(r) {
+    editingRowId = r.id;
+    document.getElementById("edit-issue-text").textContent = r.issue || "Adjust the mapped fields for this row.";
+    const insSel = document.getElementById("edit-instrument");
+    insSel.innerHTML = "";
+    INSTRUMENTS.forEach((i) => {
+      const o = document.createElement("option");
+      o.value = i.id; o.textContent = `${i.ticker || i.name} — ${i.name}`;
+      insSel.appendChild(o);
+    });
+    document.getElementById("edit-price").value = (r.mapped && r.mapped.price) || "";
+    openDialog("overlay-edit");
+  }
+  document.getElementById("btn-save-edit").addEventListener("click", () => {
+    const r = rows.find((x) => x.id === editingRowId);
+    if (r) { r.status = "ACCEPTED"; r.issue = null; }
+    closeDialog("overlay-edit");
+    showToast("Row updated", "Marked as accepted.", "success");
+    render();
+  });
+
+  document.getElementById("btn-commit").addEventListener("click", () => {
+    document.getElementById("commit-accepted-count").textContent = rows.filter((r) => r.status === "ACCEPTED").length;
+    openDialog("overlay-commit");
+  });
+  document.getElementById("btn-confirm-commit").addEventListener("click", () => {
+    closeDialog("overlay-commit");
+    showToast("Rows committed", "Accepted rows are now permanent transactions.", "success");
+    setTimeout(() => window.location.href = "imports.html", 1000);
+  });
+
+  render();
+</script>
+</body>
+</html>

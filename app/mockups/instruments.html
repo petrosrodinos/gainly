@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Instruments · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Instruments</div>
+          <div class="page-subtitle">The shared security catalog — matched by ISIN where available, else ticker + exchange.</div>
+        </div>
+        <button class="btn btn-primary" onclick="openDialog('dlg-new-instrument')">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add custom instrument
+        </button>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered">
+          <div class="relative max-w-sm">
+            <svg class="icon absolute left-2.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="var(--muted-foreground)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="f-search" class="input !pl-8" placeholder="Search ticker, name, ISIN…" />
+          </div>
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead><tr><th>Instrument</th><th>ISIN</th><th>Asset class</th><th>Currency</th><th>Exchange</th><th></th></tr></thead>
+            <tbody id="body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="overlay" id="dlg-new-instrument">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Add custom instrument</div>
+        <div class="dialog-description">Used when no catalog match exists for a statement row.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-new-instrument')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body space-y-4">
+      <div class="field">
+        <label class="field-label">Name</label>
+        <input class="input" placeholder="e.g. Private Real Estate SPV — Lot 12" />
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field"><label class="field-label">Ticker <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label><input class="input" placeholder="e.g. TICK" /></div>
+        <div class="field"><label class="field-label">ISIN <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label><input class="input" placeholder="e.g. US0000000000" /></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="field-label">Asset class</label>
+          <select class="select">
+            <option>EQUITY</option><option>ETF</option><option>BOND</option><option>FUND</option><option>CRYPTO</option><option>CASH</option><option>COMMODITY</option><option>REAL_ESTATE</option><option>OTHER</option>
+          </select>
+        </div>
+        <div class="field"><label class="field-label">Currency</label><select class="select"><option>USD</option><option>EUR</option><option>GBP</option></select></div>
+      </div>
+      <div class="field">
+        <label class="field-label">Exchange <span style="color:var(--muted-foreground); font-weight:400;">(optional)</span></label>
+        <input class="input" placeholder="e.g. NASDAQ" />
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-new-instrument')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeDialog('dlg-new-instrument'); showToast('Instrument added', 'Available for future imports and manual entries.', 'success')">Add instrument</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "instruments", title: "Instruments", crumbs: [{ label: "Instruments", href: "instruments.html" }] });
+
+  const body = document.getElementById("body");
+  function render() {
+    const q = document.getElementById("f-search").value.trim().toLowerCase();
+    body.innerHTML = "";
+    INSTRUMENTS.filter((i) =>
+      !q ||
+      (i.ticker || "").toLowerCase().includes(q) ||
+      (i.name || "").toLowerCase().includes(q) ||
+      (i.isin || "").toLowerCase().includes(q)
+    ).forEach((i) => {
+      const tr = document.createElement("tr");
+      tr.style.cursor = "pointer";
+      tr.onclick = () => location.href = `instrument-detail.html?id=${i.id}`;
+      tr.innerHTML = `
+        <td>
+          <span class="font-medium">${i.ticker || "—"}</span>
+          <div style="color:var(--muted-foreground); font-size:.72rem;">${i.name}</div>
+        </td>
+        <td class="mono">${i.isin || "—"}</td>
+        <td><span class="badge badge-neutral">${i.asset_class}</span></td>
+        <td>${i.currency}</td>
+        <td>${i.exchange || "—"}</td>
+        <td class="text-right">${i.is_custom ? `<span class="badge badge-outline">Custom</span>` : ""}</td>
+      `;
+      body.appendChild(tr);
+    });
+    if (!body.children.length) body.innerHTML = `<tr><td colspan="6" class="empty-state">No instruments match "${q}".</td></tr>`;
+  }
+  document.getElementById("f-search").addEventListener("input", render);
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transactions · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Transactions</div>
+          <div class="page-subtitle">The immutable ledger — every buy, sell, dividend, fee and transfer across your accounts. Corrections are recorded as new linked rows, never edits.</div>
+        </div>
+        <a href="transaction-new.html" class="btn btn-primary" id="btn-add-transaction">
+          Add transaction
+        </a>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-content flex flex-wrap items-center gap-2">
+          <div class="relative flex-1 min-w-[220px]">
+            <span class="search-icon-slot absolute left-2.5 top-1/2 -translate-y-1/2" style="color:var(--muted-foreground)"></span>
+            <input id="txn-search" class="input !pl-8" placeholder="Search broker ref, instrument…" />
+          </div>
+          <select id="filter-account" class="select !w-auto">
+            <option value="">All accounts</option>
+          </select>
+          <select id="filter-type" class="select !w-auto">
+            <option value="">All types</option>
+          </select>
+          <button class="btn btn-outline btn-sm" id="btn-clear-filters">Clear filters</button>
+        </div>
+      </div>
+
+      <div id="bulk-toolbar" class="card mb-3 hidden" style="border-color:var(--ring)">
+        <div class="card-content flex items-center justify-between py-2.5">
+          <div class="text-xs font-medium"><span id="bulk-count">0</span> selected</div>
+          <div class="flex gap-2">
+            <button class="btn btn-outline btn-sm" onclick="showToast('Export started', 'Your CSV will download shortly.', 'success')">Export selected as CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table" id="txn-table">
+            <thead>
+              <tr>
+                <th style="width:2rem;"><input type="checkbox" class="checkbox" /></th>
+                <th>Date</th>
+                <th>Account</th>
+                <th>Instrument</th>
+                <th>Type</th>
+                <th class="text-right">Quantity</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Amount</th>
+                <th class="text-right">Fee</th>
+                <th>Currency</th>
+                <th>Broker ref</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="card-footer justify-between">
+          <span class="text-xs" style="color:var(--muted-foreground)" id="row-count"></span>
+          <span class="text-xs" style="color:var(--muted-foreground)">Committed rows are immutable — see a transaction to record a correction.</span>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "transactions", title: "Transactions", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Transactions" }] });
+
+  document.getElementById("btn-add-transaction").innerHTML = icon("plus") + "Add transaction";
+  document.querySelector(".search-icon-slot").innerHTML = icon("search", "icon");
+
+  const accSel = document.getElementById("filter-account");
+  ACCOUNTS.forEach((a) => {
+    const opt = document.createElement("option");
+    opt.value = a.id; opt.textContent = a.name;
+    accSel.appendChild(opt);
+  });
+  const typeSel = document.getElementById("filter-type");
+  TRANSACTION_TYPES.forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t; opt.textContent = t.replace("_", " ");
+    typeSel.appendChild(opt);
+  });
+
+  // Fabricate one correction example: txn_1002 (SELL TSLA) corrected by a new row.
+  const CORRECTION_EXAMPLE_ID = "txn_1002";
+  const rowsData = TRANSACTIONS.map((t) => ({ ...t }));
+  rowsData.push({
+    id: "txn_1002_c1", account_id: "acc_1", instrument_id: "ins_2", type: "SELL",
+    trade_date: "2026-09-12", settlement_date: "2026-09-14", quantity: 10, price: 421.10,
+    amount: 4211.00, fee: 1.00, currency: "USD", broker_ref: "IB-8839902-C1",
+    is_correction: true, supersedes_uuid: CORRECTION_EXAMPLE_ID, status: "committed",
+  });
+
+  const tbody = document.querySelector("#txn-table tbody");
+  const rowCountEl = document.getElementById("row-count");
+
+  function render() {
+    const q = document.getElementById("txn-search").value.trim().toLowerCase();
+    const accFilter = accSel.value;
+    const typeFilter = typeSel.value;
+    tbody.innerHTML = "";
+    let shown = 0;
+    rowsData
+      .slice()
+      .sort((a, b) => (a.trade_date < b.trade_date ? 1 : -1))
+      .forEach((t) => {
+        const acc = accountById(t.account_id);
+        const ins = instrumentById(t.instrument_id);
+        const haystack = `${t.broker_ref || ""} ${ins ? (ins.ticker || ins.name) : ""} ${t.type}`.toLowerCase();
+        if (accFilter && t.account_id !== accFilter) return;
+        if (typeFilter && t.type !== typeFilter) return;
+        if (q && !haystack.includes(q)) return;
+        shown++;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><input type="checkbox" class="checkbox" /></td>
+          <td class="mono">${t.trade_date}${t.is_correction ? `<div class="badge badge-info mt-1">Correction</div>` : ""}</td>
+          <td>${acc.name}</td>
+          <td>${ins ? `<a class="link" href="instrument-detail.html?id=${ins.id}">${ins.ticker || ins.name}</a>` : `<span style="color:var(--muted-foreground)">Cash</span>`}</td>
+          <td><span class="badge badge-neutral">${t.type.replace("_", " ")}</span></td>
+          <td class="text-right mono">${fmtNum(t.quantity)}</td>
+          <td class="text-right mono">${t.price !== null && t.price !== undefined ? fmtMoney(t.price, t.currency) : "—"}</td>
+          <td class="text-right mono ${t.amount >= 0 ? "up" : "down"}">${fmtMoney(t.amount, t.currency)}</td>
+          <td class="text-right mono">${fmtMoney(t.fee || 0, t.currency)}</td>
+          <td>${t.currency}</td>
+          <td class="mono" style="font-size:.72rem;color:var(--muted-foreground)">${t.broker_ref || "—"}</td>
+        `;
+        tr.style.cursor = "pointer";
+        tr.addEventListener("click", (e) => {
+          if (e.target.matches("input[type=checkbox]")) return;
+          window.location.href = `transaction-detail.html?id=${t.id}`;
+        });
+        tr.querySelector("input[type=checkbox]").addEventListener("click", (e) => e.stopPropagation());
+        tbody.appendChild(tr);
+      });
+    rowCountEl.textContent = `${shown} of ${rowsData.length} transactions`;
+    initRowSelection("#txn-table");
+    wireBulkToolbar();
+  }
+
+  function wireBulkToolbar() {
+    const toolbar = document.getElementById("bulk-toolbar");
+    const countEl = document.getElementById("bulk-count");
+    document.querySelectorAll("#txn-table tbody input[type=checkbox]").forEach((cb) => {
+      cb.addEventListener("change", updateBulk);
+    });
+    document.querySelector("#txn-table thead input[type=checkbox]").addEventListener("change", updateBulk);
+    function updateBulk() {
+      const checked = document.querySelectorAll("#txn-table tbody input[type=checkbox]:checked").length;
+      countEl.textContent = checked;
+      toolbar.classList.toggle("hidden", checked === 0);
+    }
+  }
+
+  document.getElementById("txn-search").addEventListener("input", render);
+  accSel.addEventListener("change", render);
+  typeSel.addEventListener("change", render);
+  document.getElementById("btn-clear-filters").addEventListener("click", () => {
+    document.getElementById("txn-search").value = "";
+    accSel.value = "";
+    typeSel.value = "";
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Instrument · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title" id="ins-title">—</div>
+          <div class="page-subtitle" id="ins-subtitle">—</div>
+        </div>
+        <div class="flex flex-wrap gap-1.5" id="ins-badges"></div>
+      </div>
+
+      <div class="tabs-list mb-4" data-tabs="ins">
+        <div class="tab-trigger active" data-value="positions">Positions</div>
+        <div class="tab-trigger" data-value="history">Transaction history</div>
+        <div class="tab-trigger" data-value="lots">Lots</div>
+        <div class="tab-trigger" data-value="actions">Corporate actions</div>
+        <div class="tab-trigger" data-value="prices">Price history</div>
+      </div>
+
+      <div class="tab-panel active" data-tabs="ins" data-value="positions">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Account</th><th class="text-right">Quantity</th><th class="text-right">Avg cost</th><th class="text-right">Market value</th><th class="text-right">Unrealized</th></tr></thead>
+            <tbody id="positions-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tabs="ins" data-value="history">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Account</th><th>Type</th><th class="text-right">Quantity</th><th class="text-right">Price</th><th class="text-right">Amount</th></tr></thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tabs="ins" data-value="lots">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Account</th><th>Opened</th><th class="text-right">Qty remaining</th><th class="text-right">Cost / unit</th><th>Status</th></tr></thead>
+            <tbody id="lots-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tabs="ins" data-value="actions">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Type</th><th>Effective date</th><th>Ratio</th><th>Details</th></tr></thead>
+            <tbody id="actions-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-tabs="ins" data-value="prices">
+        <div class="card mb-4">
+          <div class="card-header bordered"><div class="card-title">Recent price</div></div>
+          <div class="card-content">
+            <svg viewBox="0 0 600 140" class="w-full h-32" preserveAspectRatio="none">
+              <polyline id="price-sparkline" points="" fill="none" stroke="var(--chart-2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th class="text-right">Price</th><th>Source</th></tr></thead>
+            <tbody id="prices-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  const params = new URLSearchParams(location.search);
+  const instrument = instrumentById(params.get("id") || "ins_1") || INSTRUMENTS[0];
+
+  mountLayout({
+    active: "instruments",
+    title: instrument.ticker || instrument.name,
+    crumbs: [{ label: "Instruments", href: "instruments.html" }, { label: instrument.ticker || instrument.name }],
+  });
+
+  document.getElementById("ins-title").textContent = instrument.ticker ? `${instrument.ticker} — ${instrument.name}` : instrument.name;
+  document.getElementById("ins-subtitle").textContent = `${instrument.isin ? "ISIN " + instrument.isin + " · " : ""}${instrument.currency}${instrument.exchange ? " · " + instrument.exchange : ""}`;
+  document.getElementById("ins-badges").innerHTML = `
+    <span class="badge badge-neutral">${instrument.asset_class}</span>
+    ${instrument.is_custom ? `<span class="badge badge-outline">Custom</span>` : ""}
+  `;
+
+  const positions = POSITIONS.filter((p) => p.instrument_id === instrument.id);
+  const posBody = document.getElementById("positions-body");
+  positions.forEach((p) => {
+    const acc = accountById(p.account_id);
+    const mv = p.quantity * p.price;
+    const gain = mv - p.cost_basis;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><a class="link" href="account-detail.html?id=${acc.id}">${acc.name}</a></td>
+      <td class="text-right mono">${fmtNum(p.quantity, 4)}</td>
+      <td class="text-right mono">${fmtMoney(p.cost_basis / p.quantity, instrument.currency)}</td>
+      <td class="text-right mono">${fmtMoney(mv, instrument.currency)}</td>
+      <td class="text-right mono ${gain >= 0 ? "up" : "down"}">${fmtMoney(gain, instrument.currency)}</td>
+    `;
+    posBody.appendChild(tr);
+  });
+  if (!positions.length) posBody.innerHTML = `<tr><td colspan="5" class="empty-state">No open positions in this instrument.</td></tr>`;
+
+  const histBody = document.getElementById("history-body");
+  const txns = TRANSACTIONS.filter((t) => t.instrument_id === instrument.id);
+  txns.forEach((t) => {
+    const acc = accountById(t.account_id);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${t.trade_date}</td>
+      <td>${acc.name}</td>
+      <td><span class="badge badge-neutral">${t.type.replace("_"," ")}</span></td>
+      <td class="text-right mono">${fmtNum(t.quantity, 4)}</td>
+      <td class="text-right mono">${t.price ? fmtMoney(t.price, t.currency) : "—"}</td>
+      <td class="text-right mono ${t.amount >= 0 ? "up" : "down"}">${fmtMoney(t.amount, t.currency)}</td>
+    `;
+    histBody.appendChild(tr);
+  });
+  if (!txns.length) histBody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions for this instrument yet.</td></tr>`;
+
+  const lotsBody = document.getElementById("lots-body");
+  const insLots = LOTS.filter((l) => l.instrument_id === instrument.id);
+  insLots.forEach((l) => {
+    const acc = accountById(l.account_id);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${acc.name}</td>
+      <td class="mono">${l.opened_at}</td>
+      <td class="text-right mono">${fmtNum(l.quantity_remaining, 4)}</td>
+      <td class="text-right mono">${fmtMoney(l.cost_basis_per_unit, instrument.currency)}</td>
+      <td>${l.closed_at ? `<span class="badge badge-neutral">Closed ${l.closed_at}</span>` : `<span class="badge badge-success">Open</span>`}</td>
+    `;
+    lotsBody.appendChild(tr);
+  });
+  if (!insLots.length) lotsBody.innerHTML = `<tr><td colspan="5" class="empty-state">No lot data for this instrument.</td></tr>`;
+
+  const actionsBody = document.getElementById("actions-body");
+  const insActions = CORPORATE_ACTIONS.filter((c) => c.instrument_id === instrument.id);
+  insActions.forEach((c) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><span class="badge badge-info">${c.type.replace("_"," ")}</span></td>
+      <td class="mono">${c.effective_date}</td>
+      <td class="mono">${c.ratio || "—"}</td>
+      <td style="color:var(--muted-foreground)">${c.details}</td>
+    `;
+    actionsBody.appendChild(tr);
+  });
+  if (!insActions.length) actionsBody.innerHTML = `<tr><td colspan="4" class="empty-state">No corporate actions recorded for this instrument.</td></tr>`;
+
+  // Fabricated local price history (page-local, not part of shared mock-data.js)
+  const basePrice = instrument.currency === "USD" || instrument.currency === "EUR" ? (positions[0]?.price || 100) : 100;
+  const priceHistory = [-5,-4,-3,-2,-1,0].map((offset, i) => {
+    const d = new Date(2026, 8, 16 + offset);
+    const wobble = [0.97, 1.01, 0.99, 1.03, 1.0, 1.0][i];
+    return {
+      date: d.toISOString().slice(0, 10),
+      price: +(basePrice * wobble).toFixed(2),
+      source: i === 5 ? "PROVIDER" : (i % 3 === 0 ? "IMPORTED" : "PROVIDER"),
+    };
+  });
+  const pricesBody = document.getElementById("prices-body");
+  priceHistory.slice().reverse().forEach((p) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="mono">${p.date}</td>
+      <td class="text-right mono">${fmtMoney(p.price, instrument.currency)}</td>
+      <td><span class="badge badge-outline">${p.source}</span></td>
+    `;
+    pricesBody.appendChild(tr);
+  });
+  const prices = priceHistory.map((p) => p.price);
+  const min = Math.min(...prices), max = Math.max(...prices);
+  const pts = priceHistory.map((p, i) => {
+    const x = (i / (priceHistory.length - 1)) * 600;
+    const y = 120 - ((p.price - min) / (max - min || 1)) * 100;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+  document.getElementById("price-sparkline").setAttribute("points", pts);
+</script>
+</body>
+</html>

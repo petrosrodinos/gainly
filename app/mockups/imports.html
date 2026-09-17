@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Imports · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Imports</div>
+          <div class="page-subtitle">Every statement you've uploaded — parsed rows are staged for review before anything is committed to the ledger.</div>
+        </div>
+        <a href="import-upload.html" class="btn btn-primary" id="btn-upload"></a>
+      </div>
+
+      <div class="card">
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr><th>File</th><th>Account</th><th>Type</th><th>Status</th><th class="text-right">Rows</th><th class="text-right">Flagged</th><th>Uploaded</th><th>Committed</th></tr>
+            </thead>
+            <tbody id="imports-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "imports", title: "Imports", crumbs: [{ label: "Dashboard", href: "dashboard.html" }, { label: "Imports" }] });
+  document.getElementById("btn-upload").innerHTML = icon("upload") + "Upload statement";
+
+  const STATUS_BADGE = {
+    UPLOADED: "badge-neutral", DETECTING: "badge-neutral", NEEDS_MAPPING: "badge-outline",
+    PROCESSING: "badge-info", NEEDS_REVIEW: "badge-warning", COMMITTED: "badge-success",
+    PARTIALLY_COMMITTED: "badge-warning", FAILED: "badge-destructive",
+  };
+
+  const body = document.getElementById("imports-body");
+  IMPORT_BATCHES.forEach((b) => {
+    const acc = accountById(b.account_id);
+    const tr = document.createElement("tr");
+    tr.style.cursor = "pointer";
+    tr.innerHTML = `
+      <td>
+        <div class="font-medium">${b.filename}</div>
+        ${b.error ? `<div class="text-[.7rem] mt-0.5" style="color:var(--destructive)">${b.error}</div>` : ""}
+      </td>
+      <td>${acc.name}</td>
+      <td><span class="badge badge-outline">${b.file_type}</span></td>
+      <td><span class="badge ${STATUS_BADGE[b.status]}">${b.status.replace("_", " ")}</span></td>
+      <td class="text-right mono">${b.rows}</td>
+      <td class="text-right mono ${b.flagged > 0 ? "down" : ""}">${b.flagged}</td>
+      <td class="mono" style="font-size:.72rem;">${b.created_at}</td>
+      <td class="mono" style="font-size:.72rem;">${b.committed_at || "—"}</td>
+    `;
+    tr.addEventListener("click", () => {
+      window.location.href = b.status === "NEEDS_MAPPING" ? `import-mapping.html?batch=${b.id}` : `import-review.html?batch=${b.id}`;
+    });
+    body.appendChild(tr);
+  });
+</script>
+</body>
+</html>

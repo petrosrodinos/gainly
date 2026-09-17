@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Import triage · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Import triage</div>
+          <div class="page-subtitle">A cross-user view of failed or low-confidence parses, to spot patterns and improve global mapping templates (product spec §8).</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div class="stat-tile">
+          <div class="stat-label">Flagged this week</div>
+          <div class="stat-value" id="stat-flagged"></div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Failure rate</div>
+          <div class="stat-value" id="stat-rate"></div>
+          <div class="stat-delta" style="color:var(--muted-foreground)">Across all import batches, 30d</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Most common reason</div>
+          <div class="text-sm font-semibold mt-2">No template match ≥ 0.6 confidence</div>
+          <div class="stat-delta" style="color:var(--muted-foreground)">2 of 4 flagged batches</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bordered flex items-center justify-between">
+          <div class="card-title">Flagged batches</div>
+          <input class="input !w-64" id="triage-filter" placeholder="Filter by user or filename…" />
+        </div>
+        <div class="table-wrap !border-0 !rounded-none">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User</th><th>File</th><th>Status</th><th>Reason</th><th>Created</th><th class="text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="triage-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "admin-imports", title: "Import triage", crumbs: [{ label: "Admin", href: "admin-imports.html" }, { label: "Import triage" }] });
+
+  document.getElementById("stat-flagged").textContent = ADMIN_TRIAGE.length;
+  document.getElementById("stat-rate").textContent = "18.2%";
+
+  const statusBadge = (s) => {
+    const map = { NEEDS_MAPPING: "badge-outline", FAILED: "badge-destructive", NEEDS_REVIEW: "badge-warning" };
+    return `<span class="badge ${map[s] || "badge-neutral"}">${s.replace("_", " ")}</span>`;
+  };
+
+  const body = document.getElementById("triage-body");
+  ADMIN_TRIAGE.forEach((row) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${row.user}</td>
+      <td class="font-medium">${row.filename}</td>
+      <td>${statusBadge(row.status)}</td>
+      <td style="max-width:280px; color:var(--muted-foreground);" class="text-xs">${row.reason}</td>
+      <td class="mono">${row.created_at}</td>
+      <td class="text-right">
+        <div class="flex items-center justify-end gap-1">
+          <a class="btn btn-ghost btn-sm" href="import-review.html?batch=${row.id}">View batch</a>
+          <div class="dropdown">
+            <button class="btn btn-ghost btn-icon" aria-label="More actions">${icon("moreHorizontal")}</button>
+            <div class="dropdown-menu">
+              <div class="dropdown-label">Reassign template</div>
+              ${MAPPING_TEMPLATES.map((t) => `<div class="dropdown-item" onclick="showToast('Template reassigned', '${t.name}')">${t.name}</div>`).join("")}
+              <div class="dropdown-sep"></div>
+              <div class="dropdown-item" onclick="resolveRow(this, '${row.id}')">${icon("check")}Mark resolved</div>
+            </div>
+          </div>
+        </div>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+
+  initTableFilter("#triage-filter", "#triage-body");
+
+  function resolveRow(el, id) {
+    const tr = el.closest("tr");
+    tr.style.opacity = "0.4";
+    showToast("Batch marked resolved", id, "success");
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Accounts · invest-tax</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="shared/styles.css" />
+</head>
+<body>
+<div class="app-shell">
+  <aside id="sidebar-root"></aside>
+  <div class="app-main">
+    <header id="topbar-root"></header>
+
+    <main class="app-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Accounts</div>
+          <div class="page-subtitle">Each account is its own portfolio — with its own base currency, jurisdiction, and cost-basis method.</div>
+        </div>
+        <button class="btn btn-primary" onclick="openDialog('dlg-new-account')">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          New account
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="accounts-grid"></div>
+    </main>
+  </div>
+</div>
+
+<!-- New account dialog -->
+<div class="overlay" id="dlg-new-account">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">New account</div>
+        <div class="dialog-description">A portfolio with its own base currency and jurisdiction.</div>
+      </div>
+      <button class="btn btn-ghost btn-icon" onclick="closeDialog('dlg-new-account')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="dialog-body space-y-4">
+      <div class="field">
+        <label class="field-label">Account name</label>
+        <input class="input" placeholder="e.g. Interactive Brokers — Main" />
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="field">
+          <label class="field-label">Base currency</label>
+          <select class="select">
+            <option>USD</option><option>EUR</option><option>GBP</option><option>CHF</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Jurisdiction</label>
+          <select class="select">
+            <option>LT — Lithuania</option>
+            <option disabled>More jurisdictions coming soon</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Cost-basis method</label>
+        <select class="select">
+          <option>FIFO (default)</option>
+          <option>Average cost</option>
+          <option disabled>LIFO — not permitted for LT jurisdiction</option>
+        </select>
+        <span class="field-hint">Applied consistently to all lot matching for this account. FIFO is always available; LIFO only where the jurisdiction explicitly permits it.</span>
+      </div>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-new-account')">Cancel</button>
+      <button class="btn btn-primary" onclick="closeDialog('dlg-new-account'); showToast('Account created', 'You can start importing statements into it right away.', 'success')">Create account</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm dialog -->
+<div class="overlay" id="dlg-delete-account">
+  <div class="dialog">
+    <div class="dialog-header">
+      <div>
+        <div class="dialog-title">Delete account?</div>
+        <div class="dialog-description" id="delete-account-desc">This cannot be undone.</div>
+      </div>
+    </div>
+    <div class="dialog-body">
+      <p class="text-xs" style="color:var(--muted-foreground)">All transactions, lots, and computed positions tied to this account will be removed. Documents and audit history are retained for compliance. Consider exporting the ledger first.</p>
+    </div>
+    <div class="dialog-footer">
+      <button class="btn btn-outline" onclick="closeDialog('dlg-delete-account')">Cancel</button>
+      <button class="btn btn-destructive" onclick="closeDialog('dlg-delete-account'); showToast('Account deleted', null, 'destructive')">Delete account</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared/icons.js"></script>
+<script src="shared/mock-data.js"></script>
+<script src="shared/layout.js"></script>
+<script src="shared/app.js"></script>
+<script>
+  mountLayout({ active: "accounts", title: "Accounts", crumbs: [{ label: "Accounts", href: "accounts.html" }] });
+
+  const grid = document.getElementById("accounts-grid");
+  ACCOUNTS.forEach((a) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="card-header bordered flex items-start justify-between">
+        <div>
+          <a href="account-detail.html?id=${a.id}" class="card-title link" style="text-decoration:none;">${a.name}</a>
+          <div class="card-description">Opened ${a.created_at}</div>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-ghost btn-icon">${icon("moreHorizontal")}</button>
+          <div class="dropdown-menu">
+            <a href="account-detail.html?id=${a.id}&tab=settings" class="dropdown-item">${icon("edit")}Edit account</a>
+            <div class="dropdown-item" onclick="showToast('Export started', '${a.name} ledger.csv will download shortly.')">${icon("download")}Export ledger CSV</div>
+            <div class="dropdown-sep"></div>
+            <div class="dropdown-item danger" onclick="document.getElementById('delete-account-desc').textContent='This will permanently delete ' + '${a.name}' + ' and its transaction history.'; openDialog('dlg-delete-account')">${icon("trash")}Delete account</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="flex items-end justify-between mb-3">
+          <div>
+            <div class="text-[.68rem]" style="color:var(--muted-foreground)">Value</div>
+            <div class="text-xl font-bold mono">${fmtMoney(a.value, a.currency)}</div>
+          </div>
+          <div class="stat-delta ${a.day_change >= 0 ? "up" : "down"}">
+            ${icon(a.day_change >= 0 ? "arrowUpRight" : "arrowDownRight")} ${fmtMoney(a.day_change, a.currency)} (${fmtPct(a.day_change_pct)})
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-1.5">
+          <span class="badge badge-outline">${a.currency}</span>
+          <span class="badge badge-outline">${a.jurisdiction}</span>
+          <span class="badge badge-neutral">${a.cost_basis_method.replace("_"," ")}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="account-detail.html?id=${a.id}" class="btn btn-outline btn-sm w-full">View account</a>
+        <a href="import-upload.html?account=${a.id}" class="btn btn-secondary btn-sm w-full">Import statement</a>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  // "Add account" placeholder tile
+  const addTile = document.createElement("button");
+  addTile.className = "card flex flex-col items-center justify-center gap-2 py-10 text-sm";
+  addTile.style.color = "var(--muted-foreground)";
+  addTile.style.borderStyle = "dashed";
+  addTile.onclick = () => openDialog("dlg-new-account");
+  addTile.innerHTML = `${icon("plus", "icon")} Add another account`;
+  grid.appendChild(addTile);
+</script>
+</body>
+</html>
