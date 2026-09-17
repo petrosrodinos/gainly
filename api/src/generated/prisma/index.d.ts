@@ -29,16 +29,6 @@ export type PasswordResetToken = $Result.DefaultSelection<Prisma.$PasswordResetT
  */
 export type Document = $Result.DefaultSelection<Prisma.$DocumentPayload>
 /**
- * Model Organization
- * 
- */
-export type Organization = $Result.DefaultSelection<Prisma.$OrganizationPayload>
-/**
- * Model Membership
- * 
- */
-export type Membership = $Result.DefaultSelection<Prisma.$MembershipPayload>
-/**
  * Model Account
  * 
  */
@@ -150,16 +140,6 @@ export const DocumentCategory: {
 };
 
 export type DocumentCategory = (typeof DocumentCategory)[keyof typeof DocumentCategory]
-
-
-export const MembershipRole: {
-  OWNER: 'OWNER',
-  ADMIN: 'ADMIN',
-  MEMBER: 'MEMBER',
-  ACCOUNTANT_READONLY: 'ACCOUNTANT_READONLY'
-};
-
-export type MembershipRole = (typeof MembershipRole)[keyof typeof MembershipRole]
 
 
 export const SourceFileType: {
@@ -301,10 +281,6 @@ export const DocumentType: typeof $Enums.DocumentType
 export type DocumentCategory = $Enums.DocumentCategory
 
 export const DocumentCategory: typeof $Enums.DocumentCategory
-
-export type MembershipRole = $Enums.MembershipRole
-
-export const MembershipRole: typeof $Enums.MembershipRole
 
 export type SourceFileType = $Enums.SourceFileType
 
@@ -496,26 +472,6 @@ export class PrismaClient<
     * ```
     */
   get document(): Prisma.DocumentDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.organization`: Exposes CRUD operations for the **Organization** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Organizations
-    * const organizations = await prisma.organization.findMany()
-    * ```
-    */
-  get organization(): Prisma.OrganizationDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.membership`: Exposes CRUD operations for the **Membership** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Memberships
-    * const memberships = await prisma.membership.findMany()
-    * ```
-    */
-  get membership(): Prisma.MembershipDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.account`: Exposes CRUD operations for the **Account** model.
@@ -1103,8 +1059,6 @@ export namespace Prisma {
     User: 'User',
     PasswordResetToken: 'PasswordResetToken',
     Document: 'Document',
-    Organization: 'Organization',
-    Membership: 'Membership',
     Account: 'Account',
     MappingTemplate: 'MappingTemplate',
     ImportBatch: 'ImportBatch',
@@ -1135,7 +1089,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "passwordResetToken" | "document" | "organization" | "membership" | "account" | "mappingTemplate" | "importBatch" | "stagedTransaction" | "instrument" | "transaction" | "corporateAction" | "lot" | "positionSnapshot" | "priceSnapshot" | "fxRateSnapshot" | "taxJurisdictionModule" | "taxYearComputation" | "taxForm" | "auditLog"
+      modelProps: "user" | "passwordResetToken" | "document" | "account" | "mappingTemplate" | "importBatch" | "stagedTransaction" | "instrument" | "transaction" | "corporateAction" | "lot" | "positionSnapshot" | "priceSnapshot" | "fxRateSnapshot" | "taxJurisdictionModule" | "taxYearComputation" | "taxForm" | "auditLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1358,154 +1312,6 @@ export namespace Prisma {
           count: {
             args: Prisma.DocumentCountArgs<ExtArgs>
             result: $Utils.Optional<DocumentCountAggregateOutputType> | number
-          }
-        }
-      }
-      Organization: {
-        payload: Prisma.$OrganizationPayload<ExtArgs>
-        fields: Prisma.OrganizationFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.OrganizationFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.OrganizationFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          findFirst: {
-            args: Prisma.OrganizationFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.OrganizationFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          findMany: {
-            args: Prisma.OrganizationFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-          }
-          create: {
-            args: Prisma.OrganizationCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          createMany: {
-            args: Prisma.OrganizationCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.OrganizationCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-          }
-          delete: {
-            args: Prisma.OrganizationDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          update: {
-            args: Prisma.OrganizationUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          deleteMany: {
-            args: Prisma.OrganizationDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.OrganizationUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.OrganizationUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>[]
-          }
-          upsert: {
-            args: Prisma.OrganizationUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$OrganizationPayload>
-          }
-          aggregate: {
-            args: Prisma.OrganizationAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateOrganization>
-          }
-          groupBy: {
-            args: Prisma.OrganizationGroupByArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.OrganizationCountArgs<ExtArgs>
-            result: $Utils.Optional<OrganizationCountAggregateOutputType> | number
-          }
-        }
-      }
-      Membership: {
-        payload: Prisma.$MembershipPayload<ExtArgs>
-        fields: Prisma.MembershipFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.MembershipFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.MembershipFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          findFirst: {
-            args: Prisma.MembershipFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.MembershipFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          findMany: {
-            args: Prisma.MembershipFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>[]
-          }
-          create: {
-            args: Prisma.MembershipCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          createMany: {
-            args: Prisma.MembershipCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.MembershipCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>[]
-          }
-          delete: {
-            args: Prisma.MembershipDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          update: {
-            args: Prisma.MembershipUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          deleteMany: {
-            args: Prisma.MembershipDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.MembershipUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.MembershipUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>[]
-          }
-          upsert: {
-            args: Prisma.MembershipUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$MembershipPayload>
-          }
-          aggregate: {
-            args: Prisma.MembershipAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateMembership>
-          }
-          groupBy: {
-            args: Prisma.MembershipGroupByArgs<ExtArgs>
-            result: $Utils.Optional<MembershipGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.MembershipCountArgs<ExtArgs>
-            result: $Utils.Optional<MembershipCountAggregateOutputType> | number
           }
         }
       }
@@ -2730,8 +2536,6 @@ export namespace Prisma {
     user?: UserOmit
     passwordResetToken?: PasswordResetTokenOmit
     document?: DocumentOmit
-    organization?: OrganizationOmit
-    membership?: MembershipOmit
     account?: AccountOmit
     mappingTemplate?: MappingTemplateOmit
     importBatch?: ImportBatchOmit
@@ -2828,12 +2632,22 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     password_reset_tokens: number
-    memberships: number
+    accounts: number
+    mapping_templates: number
+    import_batches: number
+    custom_instruments: number
+    transactions: number
+    tax_year_computations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     password_reset_tokens?: boolean | UserCountOutputTypeCountPassword_reset_tokensArgs
-    memberships?: boolean | UserCountOutputTypeCountMembershipsArgs
+    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    mapping_templates?: boolean | UserCountOutputTypeCountMapping_templatesArgs
+    import_batches?: boolean | UserCountOutputTypeCountImport_batchesArgs
+    custom_instruments?: boolean | UserCountOutputTypeCountCustom_instrumentsArgs
+    transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
+    tax_year_computations?: boolean | UserCountOutputTypeCountTax_year_computationsArgs
   }
 
   // Custom InputTypes
@@ -2857,8 +2671,43 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MembershipWhereInput
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMapping_templatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MappingTemplateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountImport_batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImportBatchWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCustom_instrumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InstrumentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTax_year_computationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaxYearComputationWhereInput
   }
 
 
@@ -2899,109 +2748,6 @@ export namespace Prisma {
    */
   export type DocumentCountOutputTypeCountTax_formsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TaxFormWhereInput
-  }
-
-
-  /**
-   * Count Type OrganizationCountOutputType
-   */
-
-  export type OrganizationCountOutputType = {
-    memberships: number
-    accounts: number
-    mapping_templates: number
-    import_batches: number
-    transactions: number
-    custom_instruments: number
-    tax_year_computations: number
-    documents: number
-    audit_logs: number
-  }
-
-  export type OrganizationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    memberships?: boolean | OrganizationCountOutputTypeCountMembershipsArgs
-    accounts?: boolean | OrganizationCountOutputTypeCountAccountsArgs
-    mapping_templates?: boolean | OrganizationCountOutputTypeCountMapping_templatesArgs
-    import_batches?: boolean | OrganizationCountOutputTypeCountImport_batchesArgs
-    transactions?: boolean | OrganizationCountOutputTypeCountTransactionsArgs
-    custom_instruments?: boolean | OrganizationCountOutputTypeCountCustom_instrumentsArgs
-    tax_year_computations?: boolean | OrganizationCountOutputTypeCountTax_year_computationsArgs
-    documents?: boolean | OrganizationCountOutputTypeCountDocumentsArgs
-    audit_logs?: boolean | OrganizationCountOutputTypeCountAudit_logsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the OrganizationCountOutputType
-     */
-    select?: OrganizationCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MembershipWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AccountWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountMapping_templatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MappingTemplateWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountImport_batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImportBatchWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TransactionWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountCustom_instrumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: InstrumentWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountTax_year_computationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TaxYearComputationWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DocumentWhereInput
-  }
-
-  /**
-   * OrganizationCountOutputType without action
-   */
-  export type OrganizationCountOutputTypeCountAudit_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AuditLogWhereInput
   }
 
 
@@ -3475,7 +3221,12 @@ export namespace Prisma {
     created_at?: boolean
     updated_at?: boolean
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
-    memberships?: boolean | User$membershipsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    mapping_templates?: boolean | User$mapping_templatesArgs<ExtArgs>
+    import_batches?: boolean | User$import_batchesArgs<ExtArgs>
+    custom_instruments?: boolean | User$custom_instrumentsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
+    tax_year_computations?: boolean | User$tax_year_computationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3512,7 +3263,12 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "phone" | "password" | "role" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     password_reset_tokens?: boolean | User$password_reset_tokensArgs<ExtArgs>
-    memberships?: boolean | User$membershipsArgs<ExtArgs>
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    mapping_templates?: boolean | User$mapping_templatesArgs<ExtArgs>
+    import_batches?: boolean | User$import_batchesArgs<ExtArgs>
+    custom_instruments?: boolean | User$custom_instrumentsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
+    tax_year_computations?: boolean | User$tax_year_computationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3522,7 +3278,12 @@ export namespace Prisma {
     name: "User"
     objects: {
       password_reset_tokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
-      memberships: Prisma.$MembershipPayload<ExtArgs>[]
+      accounts: Prisma.$AccountPayload<ExtArgs>[]
+      mapping_templates: Prisma.$MappingTemplatePayload<ExtArgs>[]
+      import_batches: Prisma.$ImportBatchPayload<ExtArgs>[]
+      custom_instruments: Prisma.$InstrumentPayload<ExtArgs>[]
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+      tax_year_computations: Prisma.$TaxYearComputationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3927,7 +3688,12 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     password_reset_tokens<T extends User$password_reset_tokensArgs<ExtArgs> = {}>(args?: Subset<T, User$password_reset_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    memberships<T extends User$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, User$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mapping_templates<T extends User$mapping_templatesArgs<ExtArgs> = {}>(args?: Subset<T, User$mapping_templatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MappingTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    import_batches<T extends User$import_batchesArgs<ExtArgs> = {}>(args?: Subset<T, User$import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    custom_instruments<T extends User$custom_instrumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$custom_instrumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstrumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tax_year_computations<T extends User$tax_year_computationsArgs<ExtArgs> = {}>(args?: Subset<T, User$tax_year_computationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxYearComputationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4376,27 +4142,147 @@ export namespace Prisma {
   }
 
   /**
-   * User.memberships
+   * User.accounts
    */
-  export type User$membershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Membership
+     * Select specific fields to fetch from the Account
      */
-    select?: MembershipSelect<ExtArgs> | null
+    select?: AccountSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Membership
+     * Omit specific fields from the Account
      */
-    omit?: MembershipOmit<ExtArgs> | null
+    omit?: AccountOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: MembershipInclude<ExtArgs> | null
-    where?: MembershipWhereInput
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    cursor?: MembershipWhereUniqueInput
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.mapping_templates
+   */
+  export type User$mapping_templatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MappingTemplate
+     */
+    select?: MappingTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MappingTemplate
+     */
+    omit?: MappingTemplateOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MappingTemplateInclude<ExtArgs> | null
+    where?: MappingTemplateWhereInput
+    orderBy?: MappingTemplateOrderByWithRelationInput | MappingTemplateOrderByWithRelationInput[]
+    cursor?: MappingTemplateWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MappingTemplateScalarFieldEnum | MappingTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * User.import_batches
+   */
+  export type User$import_batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImportBatch
+     */
+    select?: ImportBatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImportBatch
+     */
+    omit?: ImportBatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImportBatchInclude<ExtArgs> | null
+    where?: ImportBatchWhereInput
+    orderBy?: ImportBatchOrderByWithRelationInput | ImportBatchOrderByWithRelationInput[]
+    cursor?: ImportBatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ImportBatchScalarFieldEnum | ImportBatchScalarFieldEnum[]
+  }
+
+  /**
+   * User.custom_instruments
+   */
+  export type User$custom_instrumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Instrument
+     */
+    select?: InstrumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Instrument
+     */
+    omit?: InstrumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InstrumentInclude<ExtArgs> | null
+    where?: InstrumentWhereInput
+    orderBy?: InstrumentOrderByWithRelationInput | InstrumentOrderByWithRelationInput[]
+    cursor?: InstrumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InstrumentScalarFieldEnum | InstrumentScalarFieldEnum[]
+  }
+
+  /**
+   * User.transactions
+   */
+  export type User$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.tax_year_computations
+   */
+  export type User$tax_year_computationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TaxYearComputation
+     */
+    select?: TaxYearComputationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TaxYearComputation
+     */
+    omit?: TaxYearComputationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaxYearComputationInclude<ExtArgs> | null
+    where?: TaxYearComputationWhereInput
+    orderBy?: TaxYearComputationOrderByWithRelationInput | TaxYearComputationOrderByWithRelationInput[]
+    cursor?: TaxYearComputationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaxYearComputationScalarFieldEnum | TaxYearComputationScalarFieldEnum[]
   }
 
   /**
@@ -5512,7 +5398,6 @@ export namespace Prisma {
   export type DocumentMinAggregateOutputType = {
     id: string | null
     user_uuid: string | null
-    org_uuid: string | null
     import_batch_uuid: string | null
     filename: string | null
     mimetype: string | null
@@ -5527,7 +5412,6 @@ export namespace Prisma {
   export type DocumentMaxAggregateOutputType = {
     id: string | null
     user_uuid: string | null
-    org_uuid: string | null
     import_batch_uuid: string | null
     filename: string | null
     mimetype: string | null
@@ -5542,7 +5426,6 @@ export namespace Prisma {
   export type DocumentCountAggregateOutputType = {
     id: number
     user_uuid: number
-    org_uuid: number
     import_batch_uuid: number
     filename: number
     mimetype: number
@@ -5567,7 +5450,6 @@ export namespace Prisma {
   export type DocumentMinAggregateInputType = {
     id?: true
     user_uuid?: true
-    org_uuid?: true
     import_batch_uuid?: true
     filename?: true
     mimetype?: true
@@ -5582,7 +5464,6 @@ export namespace Prisma {
   export type DocumentMaxAggregateInputType = {
     id?: true
     user_uuid?: true
-    org_uuid?: true
     import_batch_uuid?: true
     filename?: true
     mimetype?: true
@@ -5597,7 +5478,6 @@ export namespace Prisma {
   export type DocumentCountAggregateInputType = {
     id?: true
     user_uuid?: true
-    org_uuid?: true
     import_batch_uuid?: true
     filename?: true
     mimetype?: true
@@ -5699,7 +5579,6 @@ export namespace Prisma {
   export type DocumentGroupByOutputType = {
     id: string
     user_uuid: string
-    org_uuid: string | null
     import_batch_uuid: string | null
     filename: string
     mimetype: string
@@ -5733,7 +5612,6 @@ export namespace Prisma {
   export type DocumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     user_uuid?: boolean
-    org_uuid?: boolean
     import_batch_uuid?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5743,7 +5621,6 @@ export namespace Prisma {
     type?: boolean
     category?: boolean
     created_at?: boolean
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
     source_for_import_batches?: boolean | Document$source_for_import_batchesArgs<ExtArgs>
     tax_forms?: boolean | Document$tax_formsArgs<ExtArgs>
@@ -5753,7 +5630,6 @@ export namespace Prisma {
   export type DocumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     user_uuid?: boolean
-    org_uuid?: boolean
     import_batch_uuid?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5763,14 +5639,12 @@ export namespace Prisma {
     type?: boolean
     category?: boolean
     created_at?: boolean
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     user_uuid?: boolean
-    org_uuid?: boolean
     import_batch_uuid?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5780,14 +5654,12 @@ export namespace Prisma {
     type?: boolean
     category?: boolean
     created_at?: boolean
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
   }, ExtArgs["result"]["document"]>
 
   export type DocumentSelectScalar = {
     id?: boolean
     user_uuid?: boolean
-    org_uuid?: boolean
     import_batch_uuid?: boolean
     filename?: boolean
     mimetype?: boolean
@@ -5799,27 +5671,23 @@ export namespace Prisma {
     created_at?: boolean
   }
 
-  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "org_uuid" | "import_batch_uuid" | "filename" | "mimetype" | "size" | "url" | "path" | "type" | "category" | "created_at", ExtArgs["result"]["document"]>
+  export type DocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "import_batch_uuid" | "filename" | "mimetype" | "size" | "url" | "path" | "type" | "category" | "created_at", ExtArgs["result"]["document"]>
   export type DocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
     source_for_import_batches?: boolean | Document$source_for_import_batchesArgs<ExtArgs>
     tax_forms?: boolean | Document$tax_formsArgs<ExtArgs>
     _count?: boolean | DocumentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DocumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
   }
   export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Document$organizationArgs<ExtArgs>
     import_batch?: boolean | Document$import_batchArgs<ExtArgs>
   }
 
   export type $DocumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Document"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs> | null
       import_batch: Prisma.$ImportBatchPayload<ExtArgs> | null
       source_for_import_batches: Prisma.$ImportBatchPayload<ExtArgs>[]
       tax_forms: Prisma.$TaxFormPayload<ExtArgs>[]
@@ -5827,7 +5695,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       user_uuid: string
-      org_uuid: string | null
       import_batch_uuid: string | null
       filename: string
       mimetype: string
@@ -6231,7 +6098,6 @@ export namespace Prisma {
    */
   export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends Document$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Document$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     import_batch<T extends Document$import_batchArgs<ExtArgs> = {}>(args?: Subset<T, Document$import_batchArgs<ExtArgs>>): Prisma__ImportBatchClient<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     source_for_import_batches<T extends Document$source_for_import_batchesArgs<ExtArgs> = {}>(args?: Subset<T, Document$source_for_import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tax_forms<T extends Document$tax_formsArgs<ExtArgs> = {}>(args?: Subset<T, Document$tax_formsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxFormPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -6266,7 +6132,6 @@ export namespace Prisma {
   interface DocumentFieldRefs {
     readonly id: FieldRef<"Document", 'String'>
     readonly user_uuid: FieldRef<"Document", 'String'>
-    readonly org_uuid: FieldRef<"Document", 'String'>
     readonly import_batch_uuid: FieldRef<"Document", 'String'>
     readonly filename: FieldRef<"Document", 'String'>
     readonly mimetype: FieldRef<"Document", 'String'>
@@ -6672,25 +6537,6 @@ export namespace Prisma {
   }
 
   /**
-   * Document.organization
-   */
-  export type Document$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    where?: OrganizationWhereInput
-  }
-
-  /**
    * Document.import_batch
    */
   export type Document$import_batchArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6777,2405 +6623,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Organization
-   */
-
-  export type AggregateOrganization = {
-    _count: OrganizationCountAggregateOutputType | null
-    _min: OrganizationMinAggregateOutputType | null
-    _max: OrganizationMaxAggregateOutputType | null
-  }
-
-  export type OrganizationMinAggregateOutputType = {
-    id: string | null
-    name: string | null
-    base_currency: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type OrganizationMaxAggregateOutputType = {
-    id: string | null
-    name: string | null
-    base_currency: string | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type OrganizationCountAggregateOutputType = {
-    id: number
-    name: number
-    base_currency: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type OrganizationMinAggregateInputType = {
-    id?: true
-    name?: true
-    base_currency?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type OrganizationMaxAggregateInputType = {
-    id?: true
-    name?: true
-    base_currency?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type OrganizationCountAggregateInputType = {
-    id?: true
-    name?: true
-    base_currency?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type OrganizationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Organization to aggregate.
-     */
-    where?: OrganizationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Organizations to fetch.
-     */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: OrganizationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Organizations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Organizations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Organizations
-    **/
-    _count?: true | OrganizationCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: OrganizationMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: OrganizationMaxAggregateInputType
-  }
-
-  export type GetOrganizationAggregateType<T extends OrganizationAggregateArgs> = {
-        [P in keyof T & keyof AggregateOrganization]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateOrganization[P]>
-      : GetScalarType<T[P], AggregateOrganization[P]>
-  }
-
-
-
-
-  export type OrganizationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrganizationWhereInput
-    orderBy?: OrganizationOrderByWithAggregationInput | OrganizationOrderByWithAggregationInput[]
-    by: OrganizationScalarFieldEnum[] | OrganizationScalarFieldEnum
-    having?: OrganizationScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: OrganizationCountAggregateInputType | true
-    _min?: OrganizationMinAggregateInputType
-    _max?: OrganizationMaxAggregateInputType
-  }
-
-  export type OrganizationGroupByOutputType = {
-    id: string
-    name: string
-    base_currency: string
-    created_at: Date
-    updated_at: Date
-    _count: OrganizationCountAggregateOutputType | null
-    _min: OrganizationMinAggregateOutputType | null
-    _max: OrganizationMaxAggregateOutputType | null
-  }
-
-  type GetOrganizationGroupByPayload<T extends OrganizationGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<OrganizationGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof OrganizationGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
-            : GetScalarType<T[P], OrganizationGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type OrganizationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    base_currency?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    memberships?: boolean | Organization$membershipsArgs<ExtArgs>
-    accounts?: boolean | Organization$accountsArgs<ExtArgs>
-    mapping_templates?: boolean | Organization$mapping_templatesArgs<ExtArgs>
-    import_batches?: boolean | Organization$import_batchesArgs<ExtArgs>
-    transactions?: boolean | Organization$transactionsArgs<ExtArgs>
-    custom_instruments?: boolean | Organization$custom_instrumentsArgs<ExtArgs>
-    tax_year_computations?: boolean | Organization$tax_year_computationsArgs<ExtArgs>
-    documents?: boolean | Organization$documentsArgs<ExtArgs>
-    audit_logs?: boolean | Organization$audit_logsArgs<ExtArgs>
-    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["organization"]>
-
-  export type OrganizationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    base_currency?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }, ExtArgs["result"]["organization"]>
-
-  export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    name?: boolean
-    base_currency?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }, ExtArgs["result"]["organization"]>
-
-  export type OrganizationSelectScalar = {
-    id?: boolean
-    name?: boolean
-    base_currency?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type OrganizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "base_currency" | "created_at" | "updated_at", ExtArgs["result"]["organization"]>
-  export type OrganizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    memberships?: boolean | Organization$membershipsArgs<ExtArgs>
-    accounts?: boolean | Organization$accountsArgs<ExtArgs>
-    mapping_templates?: boolean | Organization$mapping_templatesArgs<ExtArgs>
-    import_batches?: boolean | Organization$import_batchesArgs<ExtArgs>
-    transactions?: boolean | Organization$transactionsArgs<ExtArgs>
-    custom_instruments?: boolean | Organization$custom_instrumentsArgs<ExtArgs>
-    tax_year_computations?: boolean | Organization$tax_year_computationsArgs<ExtArgs>
-    documents?: boolean | Organization$documentsArgs<ExtArgs>
-    audit_logs?: boolean | Organization$audit_logsArgs<ExtArgs>
-    _count?: boolean | OrganizationCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type OrganizationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-
-  export type $OrganizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Organization"
-    objects: {
-      memberships: Prisma.$MembershipPayload<ExtArgs>[]
-      accounts: Prisma.$AccountPayload<ExtArgs>[]
-      mapping_templates: Prisma.$MappingTemplatePayload<ExtArgs>[]
-      import_batches: Prisma.$ImportBatchPayload<ExtArgs>[]
-      transactions: Prisma.$TransactionPayload<ExtArgs>[]
-      custom_instruments: Prisma.$InstrumentPayload<ExtArgs>[]
-      tax_year_computations: Prisma.$TaxYearComputationPayload<ExtArgs>[]
-      documents: Prisma.$DocumentPayload<ExtArgs>[]
-      audit_logs: Prisma.$AuditLogPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      name: string
-      base_currency: string
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["organization"]>
-    composites: {}
-  }
-
-  type OrganizationGetPayload<S extends boolean | null | undefined | OrganizationDefaultArgs> = $Result.GetResult<Prisma.$OrganizationPayload, S>
-
-  type OrganizationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<OrganizationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: OrganizationCountAggregateInputType | true
-    }
-
-  export interface OrganizationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Organization'], meta: { name: 'Organization' } }
-    /**
-     * Find zero or one Organization that matches the filter.
-     * @param {OrganizationFindUniqueArgs} args - Arguments to find a Organization
-     * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends OrganizationFindUniqueArgs>(args: SelectSubset<T, OrganizationFindUniqueArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Organization that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {OrganizationFindUniqueOrThrowArgs} args - Arguments to find a Organization
-     * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends OrganizationFindUniqueOrThrowArgs>(args: SelectSubset<T, OrganizationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Organization that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindFirstArgs} args - Arguments to find a Organization
-     * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends OrganizationFindFirstArgs>(args?: SelectSubset<T, OrganizationFindFirstArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Organization that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindFirstOrThrowArgs} args - Arguments to find a Organization
-     * @example
-     * // Get one Organization
-     * const organization = await prisma.organization.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends OrganizationFindFirstOrThrowArgs>(args?: SelectSubset<T, OrganizationFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Organizations that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Organizations
-     * const organizations = await prisma.organization.findMany()
-     * 
-     * // Get first 10 Organizations
-     * const organizations = await prisma.organization.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const organizationWithIdOnly = await prisma.organization.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends OrganizationFindManyArgs>(args?: SelectSubset<T, OrganizationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Organization.
-     * @param {OrganizationCreateArgs} args - Arguments to create a Organization.
-     * @example
-     * // Create one Organization
-     * const Organization = await prisma.organization.create({
-     *   data: {
-     *     // ... data to create a Organization
-     *   }
-     * })
-     * 
-     */
-    create<T extends OrganizationCreateArgs>(args: SelectSubset<T, OrganizationCreateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Organizations.
-     * @param {OrganizationCreateManyArgs} args - Arguments to create many Organizations.
-     * @example
-     * // Create many Organizations
-     * const organization = await prisma.organization.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends OrganizationCreateManyArgs>(args?: SelectSubset<T, OrganizationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Organizations and returns the data saved in the database.
-     * @param {OrganizationCreateManyAndReturnArgs} args - Arguments to create many Organizations.
-     * @example
-     * // Create many Organizations
-     * const organization = await prisma.organization.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Organizations and only return the `id`
-     * const organizationWithIdOnly = await prisma.organization.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends OrganizationCreateManyAndReturnArgs>(args?: SelectSubset<T, OrganizationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Organization.
-     * @param {OrganizationDeleteArgs} args - Arguments to delete one Organization.
-     * @example
-     * // Delete one Organization
-     * const Organization = await prisma.organization.delete({
-     *   where: {
-     *     // ... filter to delete one Organization
-     *   }
-     * })
-     * 
-     */
-    delete<T extends OrganizationDeleteArgs>(args: SelectSubset<T, OrganizationDeleteArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Organization.
-     * @param {OrganizationUpdateArgs} args - Arguments to update one Organization.
-     * @example
-     * // Update one Organization
-     * const organization = await prisma.organization.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends OrganizationUpdateArgs>(args: SelectSubset<T, OrganizationUpdateArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Organizations.
-     * @param {OrganizationDeleteManyArgs} args - Arguments to filter Organizations to delete.
-     * @example
-     * // Delete a few Organizations
-     * const { count } = await prisma.organization.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends OrganizationDeleteManyArgs>(args?: SelectSubset<T, OrganizationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Organizations.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Organizations
-     * const organization = await prisma.organization.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends OrganizationUpdateManyArgs>(args: SelectSubset<T, OrganizationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Organizations and returns the data updated in the database.
-     * @param {OrganizationUpdateManyAndReturnArgs} args - Arguments to update many Organizations.
-     * @example
-     * // Update many Organizations
-     * const organization = await prisma.organization.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Organizations and only return the `id`
-     * const organizationWithIdOnly = await prisma.organization.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends OrganizationUpdateManyAndReturnArgs>(args: SelectSubset<T, OrganizationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Organization.
-     * @param {OrganizationUpsertArgs} args - Arguments to update or create a Organization.
-     * @example
-     * // Update or create a Organization
-     * const organization = await prisma.organization.upsert({
-     *   create: {
-     *     // ... data to create a Organization
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Organization we want to update
-     *   }
-     * })
-     */
-    upsert<T extends OrganizationUpsertArgs>(args: SelectSubset<T, OrganizationUpsertArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Organizations.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationCountArgs} args - Arguments to filter Organizations to count.
-     * @example
-     * // Count the number of Organizations
-     * const count = await prisma.organization.count({
-     *   where: {
-     *     // ... the filter for the Organizations we want to count
-     *   }
-     * })
-    **/
-    count<T extends OrganizationCountArgs>(
-      args?: Subset<T, OrganizationCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], OrganizationCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Organization.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends OrganizationAggregateArgs>(args: Subset<T, OrganizationAggregateArgs>): Prisma.PrismaPromise<GetOrganizationAggregateType<T>>
-
-    /**
-     * Group by Organization.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {OrganizationGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends OrganizationGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: OrganizationGroupByArgs['orderBy'] }
-        : { orderBy?: OrganizationGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, OrganizationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrganizationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Organization model
-   */
-  readonly fields: OrganizationFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Organization.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    memberships<T extends Organization$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    accounts<T extends Organization$accountsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    mapping_templates<T extends Organization$mapping_templatesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$mapping_templatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MappingTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    import_batches<T extends Organization$import_batchesArgs<ExtArgs> = {}>(args?: Subset<T, Organization$import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    transactions<T extends Organization$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    custom_instruments<T extends Organization$custom_instrumentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$custom_instrumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InstrumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    tax_year_computations<T extends Organization$tax_year_computationsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$tax_year_computationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxYearComputationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    documents<T extends Organization$documentsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    audit_logs<T extends Organization$audit_logsArgs<ExtArgs> = {}>(args?: Subset<T, Organization$audit_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Organization model
-   */
-  interface OrganizationFieldRefs {
-    readonly id: FieldRef<"Organization", 'String'>
-    readonly name: FieldRef<"Organization", 'String'>
-    readonly base_currency: FieldRef<"Organization", 'String'>
-    readonly created_at: FieldRef<"Organization", 'DateTime'>
-    readonly updated_at: FieldRef<"Organization", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Organization findUnique
-   */
-  export type OrganizationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter, which Organization to fetch.
-     */
-    where: OrganizationWhereUniqueInput
-  }
-
-  /**
-   * Organization findUniqueOrThrow
-   */
-  export type OrganizationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter, which Organization to fetch.
-     */
-    where: OrganizationWhereUniqueInput
-  }
-
-  /**
-   * Organization findFirst
-   */
-  export type OrganizationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter, which Organization to fetch.
-     */
-    where?: OrganizationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Organizations to fetch.
-     */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Organizations.
-     */
-    cursor?: OrganizationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Organizations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Organizations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Organizations.
-     */
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
-  }
-
-  /**
-   * Organization findFirstOrThrow
-   */
-  export type OrganizationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter, which Organization to fetch.
-     */
-    where?: OrganizationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Organizations to fetch.
-     */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Organizations.
-     */
-    cursor?: OrganizationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Organizations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Organizations.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Organizations.
-     */
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
-  }
-
-  /**
-   * Organization findMany
-   */
-  export type OrganizationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter, which Organizations to fetch.
-     */
-    where?: OrganizationWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Organizations to fetch.
-     */
-    orderBy?: OrganizationOrderByWithRelationInput | OrganizationOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Organizations.
-     */
-    cursor?: OrganizationWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Organizations from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Organizations.
-     */
-    skip?: number
-    distinct?: OrganizationScalarFieldEnum | OrganizationScalarFieldEnum[]
-  }
-
-  /**
-   * Organization create
-   */
-  export type OrganizationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Organization.
-     */
-    data: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
-  }
-
-  /**
-   * Organization createMany
-   */
-  export type OrganizationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Organizations.
-     */
-    data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Organization createManyAndReturn
-   */
-  export type OrganizationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * The data used to create many Organizations.
-     */
-    data: OrganizationCreateManyInput | OrganizationCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Organization update
-   */
-  export type OrganizationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Organization.
-     */
-    data: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
-    /**
-     * Choose, which Organization to update.
-     */
-    where: OrganizationWhereUniqueInput
-  }
-
-  /**
-   * Organization updateMany
-   */
-  export type OrganizationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Organizations.
-     */
-    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyInput>
-    /**
-     * Filter which Organizations to update
-     */
-    where?: OrganizationWhereInput
-    /**
-     * Limit how many Organizations to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Organization updateManyAndReturn
-   */
-  export type OrganizationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * The data used to update Organizations.
-     */
-    data: XOR<OrganizationUpdateManyMutationInput, OrganizationUncheckedUpdateManyInput>
-    /**
-     * Filter which Organizations to update
-     */
-    where?: OrganizationWhereInput
-    /**
-     * Limit how many Organizations to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Organization upsert
-   */
-  export type OrganizationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Organization to update in case it exists.
-     */
-    where: OrganizationWhereUniqueInput
-    /**
-     * In case the Organization found by the `where` argument doesn't exist, create a new Organization with this data.
-     */
-    create: XOR<OrganizationCreateInput, OrganizationUncheckedCreateInput>
-    /**
-     * In case the Organization was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<OrganizationUpdateInput, OrganizationUncheckedUpdateInput>
-  }
-
-  /**
-   * Organization delete
-   */
-  export type OrganizationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    /**
-     * Filter which Organization to delete.
-     */
-    where: OrganizationWhereUniqueInput
-  }
-
-  /**
-   * Organization deleteMany
-   */
-  export type OrganizationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Organizations to delete
-     */
-    where?: OrganizationWhereInput
-    /**
-     * Limit how many Organizations to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Organization.memberships
-   */
-  export type Organization$membershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    where?: MembershipWhereInput
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    cursor?: MembershipWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.accounts
-   */
-  export type Organization$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Account
-     */
-    select?: AccountSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Account
-     */
-    omit?: AccountOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AccountInclude<ExtArgs> | null
-    where?: AccountWhereInput
-    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
-    cursor?: AccountWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.mapping_templates
-   */
-  export type Organization$mapping_templatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the MappingTemplate
-     */
-    select?: MappingTemplateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the MappingTemplate
-     */
-    omit?: MappingTemplateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MappingTemplateInclude<ExtArgs> | null
-    where?: MappingTemplateWhereInput
-    orderBy?: MappingTemplateOrderByWithRelationInput | MappingTemplateOrderByWithRelationInput[]
-    cursor?: MappingTemplateWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MappingTemplateScalarFieldEnum | MappingTemplateScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.import_batches
-   */
-  export type Organization$import_batchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImportBatch
-     */
-    select?: ImportBatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImportBatch
-     */
-    omit?: ImportBatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImportBatchInclude<ExtArgs> | null
-    where?: ImportBatchWhereInput
-    orderBy?: ImportBatchOrderByWithRelationInput | ImportBatchOrderByWithRelationInput[]
-    cursor?: ImportBatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ImportBatchScalarFieldEnum | ImportBatchScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.transactions
-   */
-  export type Organization$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Transaction
-     */
-    select?: TransactionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TransactionInclude<ExtArgs> | null
-    where?: TransactionWhereInput
-    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
-    cursor?: TransactionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.custom_instruments
-   */
-  export type Organization$custom_instrumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Instrument
-     */
-    select?: InstrumentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Instrument
-     */
-    omit?: InstrumentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: InstrumentInclude<ExtArgs> | null
-    where?: InstrumentWhereInput
-    orderBy?: InstrumentOrderByWithRelationInput | InstrumentOrderByWithRelationInput[]
-    cursor?: InstrumentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: InstrumentScalarFieldEnum | InstrumentScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.tax_year_computations
-   */
-  export type Organization$tax_year_computationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the TaxYearComputation
-     */
-    select?: TaxYearComputationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the TaxYearComputation
-     */
-    omit?: TaxYearComputationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TaxYearComputationInclude<ExtArgs> | null
-    where?: TaxYearComputationWhereInput
-    orderBy?: TaxYearComputationOrderByWithRelationInput | TaxYearComputationOrderByWithRelationInput[]
-    cursor?: TaxYearComputationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TaxYearComputationScalarFieldEnum | TaxYearComputationScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.documents
-   */
-  export type Organization$documentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Document
-     */
-    select?: DocumentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Document
-     */
-    omit?: DocumentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: DocumentInclude<ExtArgs> | null
-    where?: DocumentWhereInput
-    orderBy?: DocumentOrderByWithRelationInput | DocumentOrderByWithRelationInput[]
-    cursor?: DocumentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: DocumentScalarFieldEnum | DocumentScalarFieldEnum[]
-  }
-
-  /**
-   * Organization.audit_logs
-   */
-  export type Organization$audit_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AuditLog
-     */
-    select?: AuditLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AuditLog
-     */
-    omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    where?: AuditLogWhereInput
-    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
-    cursor?: AuditLogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
-  }
-
-  /**
-   * Organization without action
-   */
-  export type OrganizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model Membership
-   */
-
-  export type AggregateMembership = {
-    _count: MembershipCountAggregateOutputType | null
-    _min: MembershipMinAggregateOutputType | null
-    _max: MembershipMaxAggregateOutputType | null
-  }
-
-  export type MembershipMinAggregateOutputType = {
-    id: string | null
-    org_uuid: string | null
-    user_uuid: string | null
-    role: $Enums.MembershipRole | null
-    invited_at: Date | null
-    accepted_at: Date | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type MembershipMaxAggregateOutputType = {
-    id: string | null
-    org_uuid: string | null
-    user_uuid: string | null
-    role: $Enums.MembershipRole | null
-    invited_at: Date | null
-    accepted_at: Date | null
-    created_at: Date | null
-    updated_at: Date | null
-  }
-
-  export type MembershipCountAggregateOutputType = {
-    id: number
-    org_uuid: number
-    user_uuid: number
-    role: number
-    invited_at: number
-    accepted_at: number
-    created_at: number
-    updated_at: number
-    _all: number
-  }
-
-
-  export type MembershipMinAggregateInputType = {
-    id?: true
-    org_uuid?: true
-    user_uuid?: true
-    role?: true
-    invited_at?: true
-    accepted_at?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type MembershipMaxAggregateInputType = {
-    id?: true
-    org_uuid?: true
-    user_uuid?: true
-    role?: true
-    invited_at?: true
-    accepted_at?: true
-    created_at?: true
-    updated_at?: true
-  }
-
-  export type MembershipCountAggregateInputType = {
-    id?: true
-    org_uuid?: true
-    user_uuid?: true
-    role?: true
-    invited_at?: true
-    accepted_at?: true
-    created_at?: true
-    updated_at?: true
-    _all?: true
-  }
-
-  export type MembershipAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Membership to aggregate.
-     */
-    where?: MembershipWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Memberships to fetch.
-     */
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: MembershipWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Memberships from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Memberships.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Memberships
-    **/
-    _count?: true | MembershipCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: MembershipMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: MembershipMaxAggregateInputType
-  }
-
-  export type GetMembershipAggregateType<T extends MembershipAggregateArgs> = {
-        [P in keyof T & keyof AggregateMembership]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateMembership[P]>
-      : GetScalarType<T[P], AggregateMembership[P]>
-  }
-
-
-
-
-  export type MembershipGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MembershipWhereInput
-    orderBy?: MembershipOrderByWithAggregationInput | MembershipOrderByWithAggregationInput[]
-    by: MembershipScalarFieldEnum[] | MembershipScalarFieldEnum
-    having?: MembershipScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: MembershipCountAggregateInputType | true
-    _min?: MembershipMinAggregateInputType
-    _max?: MembershipMaxAggregateInputType
-  }
-
-  export type MembershipGroupByOutputType = {
-    id: string
-    org_uuid: string
-    user_uuid: string
-    role: $Enums.MembershipRole
-    invited_at: Date
-    accepted_at: Date | null
-    created_at: Date
-    updated_at: Date
-    _count: MembershipCountAggregateOutputType | null
-    _min: MembershipMinAggregateOutputType | null
-    _max: MembershipMaxAggregateOutputType | null
-  }
-
-  type GetMembershipGroupByPayload<T extends MembershipGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<MembershipGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof MembershipGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], MembershipGroupByOutputType[P]>
-            : GetScalarType<T[P], MembershipGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type MembershipSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    org_uuid?: boolean
-    user_uuid?: boolean
-    role?: boolean
-    invited_at?: boolean
-    accepted_at?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["membership"]>
-
-  export type MembershipSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    org_uuid?: boolean
-    user_uuid?: boolean
-    role?: boolean
-    invited_at?: boolean
-    accepted_at?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["membership"]>
-
-  export type MembershipSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    org_uuid?: boolean
-    user_uuid?: boolean
-    role?: boolean
-    invited_at?: boolean
-    accepted_at?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["membership"]>
-
-  export type MembershipSelectScalar = {
-    id?: boolean
-    org_uuid?: boolean
-    user_uuid?: boolean
-    role?: boolean
-    invited_at?: boolean
-    accepted_at?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-  }
-
-  export type MembershipOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "user_uuid" | "role" | "invited_at" | "accepted_at" | "created_at" | "updated_at", ExtArgs["result"]["membership"]>
-  export type MembershipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type MembershipIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type MembershipIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $MembershipPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Membership"
-    objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      org_uuid: string
-      user_uuid: string
-      role: $Enums.MembershipRole
-      invited_at: Date
-      accepted_at: Date | null
-      created_at: Date
-      updated_at: Date
-    }, ExtArgs["result"]["membership"]>
-    composites: {}
-  }
-
-  type MembershipGetPayload<S extends boolean | null | undefined | MembershipDefaultArgs> = $Result.GetResult<Prisma.$MembershipPayload, S>
-
-  type MembershipCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<MembershipFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: MembershipCountAggregateInputType | true
-    }
-
-  export interface MembershipDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Membership'], meta: { name: 'Membership' } }
-    /**
-     * Find zero or one Membership that matches the filter.
-     * @param {MembershipFindUniqueArgs} args - Arguments to find a Membership
-     * @example
-     * // Get one Membership
-     * const membership = await prisma.membership.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends MembershipFindUniqueArgs>(args: SelectSubset<T, MembershipFindUniqueArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Membership that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {MembershipFindUniqueOrThrowArgs} args - Arguments to find a Membership
-     * @example
-     * // Get one Membership
-     * const membership = await prisma.membership.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends MembershipFindUniqueOrThrowArgs>(args: SelectSubset<T, MembershipFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Membership that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipFindFirstArgs} args - Arguments to find a Membership
-     * @example
-     * // Get one Membership
-     * const membership = await prisma.membership.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends MembershipFindFirstArgs>(args?: SelectSubset<T, MembershipFindFirstArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Membership that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipFindFirstOrThrowArgs} args - Arguments to find a Membership
-     * @example
-     * // Get one Membership
-     * const membership = await prisma.membership.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends MembershipFindFirstOrThrowArgs>(args?: SelectSubset<T, MembershipFindFirstOrThrowArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Memberships that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Memberships
-     * const memberships = await prisma.membership.findMany()
-     * 
-     * // Get first 10 Memberships
-     * const memberships = await prisma.membership.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const membershipWithIdOnly = await prisma.membership.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends MembershipFindManyArgs>(args?: SelectSubset<T, MembershipFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Membership.
-     * @param {MembershipCreateArgs} args - Arguments to create a Membership.
-     * @example
-     * // Create one Membership
-     * const Membership = await prisma.membership.create({
-     *   data: {
-     *     // ... data to create a Membership
-     *   }
-     * })
-     * 
-     */
-    create<T extends MembershipCreateArgs>(args: SelectSubset<T, MembershipCreateArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Memberships.
-     * @param {MembershipCreateManyArgs} args - Arguments to create many Memberships.
-     * @example
-     * // Create many Memberships
-     * const membership = await prisma.membership.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends MembershipCreateManyArgs>(args?: SelectSubset<T, MembershipCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Memberships and returns the data saved in the database.
-     * @param {MembershipCreateManyAndReturnArgs} args - Arguments to create many Memberships.
-     * @example
-     * // Create many Memberships
-     * const membership = await prisma.membership.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Memberships and only return the `id`
-     * const membershipWithIdOnly = await prisma.membership.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends MembershipCreateManyAndReturnArgs>(args?: SelectSubset<T, MembershipCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Membership.
-     * @param {MembershipDeleteArgs} args - Arguments to delete one Membership.
-     * @example
-     * // Delete one Membership
-     * const Membership = await prisma.membership.delete({
-     *   where: {
-     *     // ... filter to delete one Membership
-     *   }
-     * })
-     * 
-     */
-    delete<T extends MembershipDeleteArgs>(args: SelectSubset<T, MembershipDeleteArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Membership.
-     * @param {MembershipUpdateArgs} args - Arguments to update one Membership.
-     * @example
-     * // Update one Membership
-     * const membership = await prisma.membership.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends MembershipUpdateArgs>(args: SelectSubset<T, MembershipUpdateArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Memberships.
-     * @param {MembershipDeleteManyArgs} args - Arguments to filter Memberships to delete.
-     * @example
-     * // Delete a few Memberships
-     * const { count } = await prisma.membership.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends MembershipDeleteManyArgs>(args?: SelectSubset<T, MembershipDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Memberships.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Memberships
-     * const membership = await prisma.membership.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends MembershipUpdateManyArgs>(args: SelectSubset<T, MembershipUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Memberships and returns the data updated in the database.
-     * @param {MembershipUpdateManyAndReturnArgs} args - Arguments to update many Memberships.
-     * @example
-     * // Update many Memberships
-     * const membership = await prisma.membership.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Memberships and only return the `id`
-     * const membershipWithIdOnly = await prisma.membership.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends MembershipUpdateManyAndReturnArgs>(args: SelectSubset<T, MembershipUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Membership.
-     * @param {MembershipUpsertArgs} args - Arguments to update or create a Membership.
-     * @example
-     * // Update or create a Membership
-     * const membership = await prisma.membership.upsert({
-     *   create: {
-     *     // ... data to create a Membership
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Membership we want to update
-     *   }
-     * })
-     */
-    upsert<T extends MembershipUpsertArgs>(args: SelectSubset<T, MembershipUpsertArgs<ExtArgs>>): Prisma__MembershipClient<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Memberships.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipCountArgs} args - Arguments to filter Memberships to count.
-     * @example
-     * // Count the number of Memberships
-     * const count = await prisma.membership.count({
-     *   where: {
-     *     // ... the filter for the Memberships we want to count
-     *   }
-     * })
-    **/
-    count<T extends MembershipCountArgs>(
-      args?: Subset<T, MembershipCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], MembershipCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Membership.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends MembershipAggregateArgs>(args: Subset<T, MembershipAggregateArgs>): Prisma.PrismaPromise<GetMembershipAggregateType<T>>
-
-    /**
-     * Group by Membership.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {MembershipGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends MembershipGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: MembershipGroupByArgs['orderBy'] }
-        : { orderBy?: MembershipGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, MembershipGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMembershipGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Membership model
-   */
-  readonly fields: MembershipFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Membership.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__MembershipClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Membership model
-   */
-  interface MembershipFieldRefs {
-    readonly id: FieldRef<"Membership", 'String'>
-    readonly org_uuid: FieldRef<"Membership", 'String'>
-    readonly user_uuid: FieldRef<"Membership", 'String'>
-    readonly role: FieldRef<"Membership", 'MembershipRole'>
-    readonly invited_at: FieldRef<"Membership", 'DateTime'>
-    readonly accepted_at: FieldRef<"Membership", 'DateTime'>
-    readonly created_at: FieldRef<"Membership", 'DateTime'>
-    readonly updated_at: FieldRef<"Membership", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Membership findUnique
-   */
-  export type MembershipFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter, which Membership to fetch.
-     */
-    where: MembershipWhereUniqueInput
-  }
-
-  /**
-   * Membership findUniqueOrThrow
-   */
-  export type MembershipFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter, which Membership to fetch.
-     */
-    where: MembershipWhereUniqueInput
-  }
-
-  /**
-   * Membership findFirst
-   */
-  export type MembershipFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter, which Membership to fetch.
-     */
-    where?: MembershipWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Memberships to fetch.
-     */
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Memberships.
-     */
-    cursor?: MembershipWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Memberships from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Memberships.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Memberships.
-     */
-    distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
-  }
-
-  /**
-   * Membership findFirstOrThrow
-   */
-  export type MembershipFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter, which Membership to fetch.
-     */
-    where?: MembershipWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Memberships to fetch.
-     */
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Memberships.
-     */
-    cursor?: MembershipWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Memberships from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Memberships.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Memberships.
-     */
-    distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
-  }
-
-  /**
-   * Membership findMany
-   */
-  export type MembershipFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter, which Memberships to fetch.
-     */
-    where?: MembershipWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Memberships to fetch.
-     */
-    orderBy?: MembershipOrderByWithRelationInput | MembershipOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Memberships.
-     */
-    cursor?: MembershipWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Memberships from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Memberships.
-     */
-    skip?: number
-    distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
-  }
-
-  /**
-   * Membership create
-   */
-  export type MembershipCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Membership.
-     */
-    data: XOR<MembershipCreateInput, MembershipUncheckedCreateInput>
-  }
-
-  /**
-   * Membership createMany
-   */
-  export type MembershipCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Memberships.
-     */
-    data: MembershipCreateManyInput | MembershipCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Membership createManyAndReturn
-   */
-  export type MembershipCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * The data used to create many Memberships.
-     */
-    data: MembershipCreateManyInput | MembershipCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Membership update
-   */
-  export type MembershipUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Membership.
-     */
-    data: XOR<MembershipUpdateInput, MembershipUncheckedUpdateInput>
-    /**
-     * Choose, which Membership to update.
-     */
-    where: MembershipWhereUniqueInput
-  }
-
-  /**
-   * Membership updateMany
-   */
-  export type MembershipUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Memberships.
-     */
-    data: XOR<MembershipUpdateManyMutationInput, MembershipUncheckedUpdateManyInput>
-    /**
-     * Filter which Memberships to update
-     */
-    where?: MembershipWhereInput
-    /**
-     * Limit how many Memberships to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Membership updateManyAndReturn
-   */
-  export type MembershipUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * The data used to update Memberships.
-     */
-    data: XOR<MembershipUpdateManyMutationInput, MembershipUncheckedUpdateManyInput>
-    /**
-     * Filter which Memberships to update
-     */
-    where?: MembershipWhereInput
-    /**
-     * Limit how many Memberships to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Membership upsert
-   */
-  export type MembershipUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Membership to update in case it exists.
-     */
-    where: MembershipWhereUniqueInput
-    /**
-     * In case the Membership found by the `where` argument doesn't exist, create a new Membership with this data.
-     */
-    create: XOR<MembershipCreateInput, MembershipUncheckedCreateInput>
-    /**
-     * In case the Membership was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<MembershipUpdateInput, MembershipUncheckedUpdateInput>
-  }
-
-  /**
-   * Membership delete
-   */
-  export type MembershipDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-    /**
-     * Filter which Membership to delete.
-     */
-    where: MembershipWhereUniqueInput
-  }
-
-  /**
-   * Membership deleteMany
-   */
-  export type MembershipDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Memberships to delete
-     */
-    where?: MembershipWhereInput
-    /**
-     * Limit how many Memberships to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Membership without action
-   */
-  export type MembershipDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Membership
-     */
-    select?: MembershipSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Membership
-     */
-    omit?: MembershipOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MembershipInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model Account
    */
 
@@ -9187,7 +6634,7 @@ export namespace Prisma {
 
   export type AccountMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     name: string | null
     currency: string | null
     jurisdiction: string | null
@@ -9197,7 +6644,7 @@ export namespace Prisma {
 
   export type AccountMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     name: string | null
     currency: string | null
     jurisdiction: string | null
@@ -9207,7 +6654,7 @@ export namespace Prisma {
 
   export type AccountCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     name: number
     currency: number
     jurisdiction: number
@@ -9219,7 +6666,7 @@ export namespace Prisma {
 
   export type AccountMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     currency?: true
     jurisdiction?: true
@@ -9229,7 +6676,7 @@ export namespace Prisma {
 
   export type AccountMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     currency?: true
     jurisdiction?: true
@@ -9239,7 +6686,7 @@ export namespace Prisma {
 
   export type AccountCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     currency?: true
     jurisdiction?: true
@@ -9322,7 +6769,7 @@ export namespace Prisma {
 
   export type AccountGroupByOutputType = {
     id: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -9349,13 +6796,13 @@ export namespace Prisma {
 
   export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     currency?: boolean
     jurisdiction?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     import_batches?: boolean | Account$import_batchesArgs<ExtArgs>
     transactions?: boolean | Account$transactionsArgs<ExtArgs>
     lots?: boolean | Account$lotsArgs<ExtArgs>
@@ -9366,29 +6813,29 @@ export namespace Prisma {
 
   export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     currency?: boolean
     jurisdiction?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     currency?: boolean
     jurisdiction?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type AccountSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     currency?: boolean
     jurisdiction?: boolean
@@ -9396,9 +6843,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "name" | "currency" | "jurisdiction" | "created_at" | "updated_at", ExtArgs["result"]["account"]>
+  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "name" | "currency" | "jurisdiction" | "created_at" | "updated_at", ExtArgs["result"]["account"]>
   export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     import_batches?: boolean | Account$import_batchesArgs<ExtArgs>
     transactions?: boolean | Account$transactionsArgs<ExtArgs>
     lots?: boolean | Account$lotsArgs<ExtArgs>
@@ -9407,16 +6854,16 @@ export namespace Prisma {
     _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Account"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       import_batches: Prisma.$ImportBatchPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       lots: Prisma.$LotPayload<ExtArgs>[]
@@ -9425,7 +6872,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string
+      user_uuid: string
       name: string
       currency: string
       jurisdiction: string
@@ -9825,7 +7272,7 @@ export namespace Prisma {
    */
   export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     import_batches<T extends Account$import_batchesArgs<ExtArgs> = {}>(args?: Subset<T, Account$import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Account$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Account$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lots<T extends Account$lotsArgs<ExtArgs> = {}>(args?: Subset<T, Account$lotsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9861,7 +7308,7 @@ export namespace Prisma {
    */
   interface AccountFieldRefs {
     readonly id: FieldRef<"Account", 'String'>
-    readonly org_uuid: FieldRef<"Account", 'String'>
+    readonly user_uuid: FieldRef<"Account", 'String'>
     readonly name: FieldRef<"Account", 'String'>
     readonly currency: FieldRef<"Account", 'String'>
     readonly jurisdiction: FieldRef<"Account", 'String'>
@@ -10423,7 +7870,7 @@ export namespace Prisma {
 
   export type MappingTemplateMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     name: string | null
     file_type: $Enums.SourceFileType | null
     version: number | null
@@ -10433,7 +7880,7 @@ export namespace Prisma {
 
   export type MappingTemplateMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     name: string | null
     file_type: $Enums.SourceFileType | null
     version: number | null
@@ -10443,7 +7890,7 @@ export namespace Prisma {
 
   export type MappingTemplateCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     name: number
     file_type: number
     detection_signature: number
@@ -10465,7 +7912,7 @@ export namespace Prisma {
 
   export type MappingTemplateMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     file_type?: true
     version?: true
@@ -10475,7 +7922,7 @@ export namespace Prisma {
 
   export type MappingTemplateMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     file_type?: true
     version?: true
@@ -10485,7 +7932,7 @@ export namespace Prisma {
 
   export type MappingTemplateCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     name?: true
     file_type?: true
     detection_signature?: true
@@ -10584,7 +8031,7 @@ export namespace Prisma {
 
   export type MappingTemplateGroupByOutputType = {
     id: string
-    org_uuid: string | null
+    user_uuid: string | null
     name: string
     file_type: $Enums.SourceFileType
     detection_signature: JsonValue
@@ -10615,7 +8062,7 @@ export namespace Prisma {
 
   export type MappingTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     file_type?: boolean
     detection_signature?: boolean
@@ -10623,14 +8070,14 @@ export namespace Prisma {
     version?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
     import_batches?: boolean | MappingTemplate$import_batchesArgs<ExtArgs>
     _count?: boolean | MappingTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mappingTemplate"]>
 
   export type MappingTemplateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     file_type?: boolean
     detection_signature?: boolean
@@ -10638,12 +8085,12 @@ export namespace Prisma {
     version?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
   }, ExtArgs["result"]["mappingTemplate"]>
 
   export type MappingTemplateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     file_type?: boolean
     detection_signature?: boolean
@@ -10651,12 +8098,12 @@ export namespace Prisma {
     version?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
   }, ExtArgs["result"]["mappingTemplate"]>
 
   export type MappingTemplateSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     name?: boolean
     file_type?: boolean
     detection_signature?: boolean
@@ -10666,28 +8113,28 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type MappingTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "name" | "file_type" | "detection_signature" | "column_mapping" | "version" | "created_at" | "updated_at", ExtArgs["result"]["mappingTemplate"]>
+  export type MappingTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "name" | "file_type" | "detection_signature" | "column_mapping" | "version" | "created_at" | "updated_at", ExtArgs["result"]["mappingTemplate"]>
   export type MappingTemplateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
     import_batches?: boolean | MappingTemplate$import_batchesArgs<ExtArgs>
     _count?: boolean | MappingTemplateCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MappingTemplateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
   }
   export type MappingTemplateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | MappingTemplate$organizationArgs<ExtArgs>
+    user?: boolean | MappingTemplate$userArgs<ExtArgs>
   }
 
   export type $MappingTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MappingTemplate"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
       import_batches: Prisma.$ImportBatchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string | null
+      user_uuid: string | null
       name: string
       file_type: $Enums.SourceFileType
       detection_signature: Prisma.JsonValue
@@ -11089,7 +8536,7 @@ export namespace Prisma {
    */
   export interface Prisma__MappingTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends MappingTemplate$organizationArgs<ExtArgs> = {}>(args?: Subset<T, MappingTemplate$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends MappingTemplate$userArgs<ExtArgs> = {}>(args?: Subset<T, MappingTemplate$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     import_batches<T extends MappingTemplate$import_batchesArgs<ExtArgs> = {}>(args?: Subset<T, MappingTemplate$import_batchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11121,7 +8568,7 @@ export namespace Prisma {
    */
   interface MappingTemplateFieldRefs {
     readonly id: FieldRef<"MappingTemplate", 'String'>
-    readonly org_uuid: FieldRef<"MappingTemplate", 'String'>
+    readonly user_uuid: FieldRef<"MappingTemplate", 'String'>
     readonly name: FieldRef<"MappingTemplate", 'String'>
     readonly file_type: FieldRef<"MappingTemplate", 'SourceFileType'>
     readonly detection_signature: FieldRef<"MappingTemplate", 'Json'>
@@ -11525,22 +8972,22 @@ export namespace Prisma {
   }
 
   /**
-   * MappingTemplate.organization
+   * MappingTemplate.user
    */
-  export type MappingTemplate$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MappingTemplate$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the User
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the User
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
-    where?: OrganizationWhereInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -11598,7 +9045,7 @@ export namespace Prisma {
 
   export type ImportBatchMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     source_document_uuid: string | null
     mapping_template_uuid: string | null
@@ -11611,7 +9058,7 @@ export namespace Prisma {
 
   export type ImportBatchMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     source_document_uuid: string | null
     mapping_template_uuid: string | null
@@ -11624,7 +9071,7 @@ export namespace Prisma {
 
   export type ImportBatchCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     account_uuid: number
     source_document_uuid: number
     mapping_template_uuid: number
@@ -11639,7 +9086,7 @@ export namespace Prisma {
 
   export type ImportBatchMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     source_document_uuid?: true
     mapping_template_uuid?: true
@@ -11652,7 +9099,7 @@ export namespace Prisma {
 
   export type ImportBatchMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     source_document_uuid?: true
     mapping_template_uuid?: true
@@ -11665,7 +9112,7 @@ export namespace Prisma {
 
   export type ImportBatchCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     source_document_uuid?: true
     mapping_template_uuid?: true
@@ -11751,7 +9198,7 @@ export namespace Prisma {
 
   export type ImportBatchGroupByOutputType = {
     id: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid: string | null
@@ -11781,7 +9228,7 @@ export namespace Prisma {
 
   export type ImportBatchSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     source_document_uuid?: boolean
     mapping_template_uuid?: boolean
@@ -11790,7 +9237,7 @@ export namespace Prisma {
     committed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
@@ -11802,7 +9249,7 @@ export namespace Prisma {
 
   export type ImportBatchSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     source_document_uuid?: boolean
     mapping_template_uuid?: boolean
@@ -11811,7 +9258,7 @@ export namespace Prisma {
     committed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
@@ -11819,7 +9266,7 @@ export namespace Prisma {
 
   export type ImportBatchSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     source_document_uuid?: boolean
     mapping_template_uuid?: boolean
@@ -11828,7 +9275,7 @@ export namespace Prisma {
     committed_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
@@ -11836,7 +9283,7 @@ export namespace Prisma {
 
   export type ImportBatchSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     source_document_uuid?: boolean
     mapping_template_uuid?: boolean
@@ -11847,9 +9294,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type ImportBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "account_uuid" | "source_document_uuid" | "mapping_template_uuid" | "status" | "error_summary" | "committed_at" | "created_at" | "updated_at", ExtArgs["result"]["importBatch"]>
+  export type ImportBatchOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "account_uuid" | "source_document_uuid" | "mapping_template_uuid" | "status" | "error_summary" | "committed_at" | "created_at" | "updated_at", ExtArgs["result"]["importBatch"]>
   export type ImportBatchInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
@@ -11859,13 +9306,13 @@ export namespace Prisma {
     _count?: boolean | ImportBatchCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ImportBatchIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
   }
   export type ImportBatchIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     source_document?: boolean | DocumentDefaultArgs<ExtArgs>
     mapping_template?: boolean | ImportBatch$mapping_templateArgs<ExtArgs>
@@ -11874,7 +9321,7 @@ export namespace Prisma {
   export type $ImportBatchPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ImportBatch"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       account: Prisma.$AccountPayload<ExtArgs>
       source_document: Prisma.$DocumentPayload<ExtArgs>
       mapping_template: Prisma.$MappingTemplatePayload<ExtArgs> | null
@@ -11884,7 +9331,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string
+      user_uuid: string
       account_uuid: string
       source_document_uuid: string
       mapping_template_uuid: string | null
@@ -12287,7 +9734,7 @@ export namespace Prisma {
    */
   export interface Prisma__ImportBatchClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     account<T extends AccountDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AccountDefaultArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     source_document<T extends DocumentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocumentDefaultArgs<ExtArgs>>): Prisma__DocumentClient<$Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     mapping_template<T extends ImportBatch$mapping_templateArgs<ExtArgs> = {}>(args?: Subset<T, ImportBatch$mapping_templateArgs<ExtArgs>>): Prisma__MappingTemplateClient<$Result.GetResult<Prisma.$MappingTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -12324,7 +9771,7 @@ export namespace Prisma {
    */
   interface ImportBatchFieldRefs {
     readonly id: FieldRef<"ImportBatch", 'String'>
-    readonly org_uuid: FieldRef<"ImportBatch", 'String'>
+    readonly user_uuid: FieldRef<"ImportBatch", 'String'>
     readonly account_uuid: FieldRef<"ImportBatch", 'String'>
     readonly source_document_uuid: FieldRef<"ImportBatch", 'String'>
     readonly mapping_template_uuid: FieldRef<"ImportBatch", 'String'>
@@ -14045,7 +11492,7 @@ export namespace Prisma {
 
   export type InstrumentMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     isin: string | null
     ticker: string | null
     name: string | null
@@ -14059,7 +11506,7 @@ export namespace Prisma {
 
   export type InstrumentMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     isin: string | null
     ticker: string | null
     name: string | null
@@ -14073,7 +11520,7 @@ export namespace Prisma {
 
   export type InstrumentCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     isin: number
     ticker: number
     name: number
@@ -14089,7 +11536,7 @@ export namespace Prisma {
 
   export type InstrumentMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     isin?: true
     ticker?: true
     name?: true
@@ -14103,7 +11550,7 @@ export namespace Prisma {
 
   export type InstrumentMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     isin?: true
     ticker?: true
     name?: true
@@ -14117,7 +11564,7 @@ export namespace Prisma {
 
   export type InstrumentCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     isin?: true
     ticker?: true
     name?: true
@@ -14204,7 +11651,7 @@ export namespace Prisma {
 
   export type InstrumentGroupByOutputType = {
     id: string
-    org_uuid: string | null
+    user_uuid: string | null
     isin: string | null
     ticker: string | null
     name: string | null
@@ -14235,7 +11682,7 @@ export namespace Prisma {
 
   export type InstrumentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     isin?: boolean
     ticker?: boolean
     name?: boolean
@@ -14245,7 +11692,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
     staged_transactions?: boolean | Instrument$staged_transactionsArgs<ExtArgs>
     transactions?: boolean | Instrument$transactionsArgs<ExtArgs>
     corporate_actions?: boolean | Instrument$corporate_actionsArgs<ExtArgs>
@@ -14257,7 +11704,7 @@ export namespace Prisma {
 
   export type InstrumentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     isin?: boolean
     ticker?: boolean
     name?: boolean
@@ -14267,12 +11714,12 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
   }, ExtArgs["result"]["instrument"]>
 
   export type InstrumentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     isin?: boolean
     ticker?: boolean
     name?: boolean
@@ -14282,12 +11729,12 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
   }, ExtArgs["result"]["instrument"]>
 
   export type InstrumentSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     isin?: boolean
     ticker?: boolean
     name?: boolean
@@ -14299,9 +11746,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type InstrumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "isin" | "ticker" | "name" | "asset_class" | "currency" | "exchange" | "is_custom" | "created_at" | "updated_at", ExtArgs["result"]["instrument"]>
+  export type InstrumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "isin" | "ticker" | "name" | "asset_class" | "currency" | "exchange" | "is_custom" | "created_at" | "updated_at", ExtArgs["result"]["instrument"]>
   export type InstrumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
     staged_transactions?: boolean | Instrument$staged_transactionsArgs<ExtArgs>
     transactions?: boolean | Instrument$transactionsArgs<ExtArgs>
     corporate_actions?: boolean | Instrument$corporate_actionsArgs<ExtArgs>
@@ -14311,16 +11758,16 @@ export namespace Prisma {
     _count?: boolean | InstrumentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InstrumentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
   }
   export type InstrumentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | Instrument$organizationArgs<ExtArgs>
+    user?: boolean | Instrument$userArgs<ExtArgs>
   }
 
   export type $InstrumentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Instrument"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs> | null
+      user: Prisma.$UserPayload<ExtArgs> | null
       staged_transactions: Prisma.$StagedTransactionPayload<ExtArgs>[]
       transactions: Prisma.$TransactionPayload<ExtArgs>[]
       corporate_actions: Prisma.$CorporateActionPayload<ExtArgs>[]
@@ -14330,7 +11777,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string | null
+      user_uuid: string | null
       isin: string | null
       ticker: string | null
       name: string | null
@@ -14734,7 +12181,7 @@ export namespace Prisma {
    */
   export interface Prisma__InstrumentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends Instrument$organizationArgs<ExtArgs> = {}>(args?: Subset<T, Instrument$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    user<T extends Instrument$userArgs<ExtArgs> = {}>(args?: Subset<T, Instrument$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     staged_transactions<T extends Instrument$staged_transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Instrument$staged_transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StagedTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     transactions<T extends Instrument$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, Instrument$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     corporate_actions<T extends Instrument$corporate_actionsArgs<ExtArgs> = {}>(args?: Subset<T, Instrument$corporate_actionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CorporateActionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -14771,7 +12218,7 @@ export namespace Prisma {
    */
   interface InstrumentFieldRefs {
     readonly id: FieldRef<"Instrument", 'String'>
-    readonly org_uuid: FieldRef<"Instrument", 'String'>
+    readonly user_uuid: FieldRef<"Instrument", 'String'>
     readonly isin: FieldRef<"Instrument", 'String'>
     readonly ticker: FieldRef<"Instrument", 'String'>
     readonly name: FieldRef<"Instrument", 'String'>
@@ -15177,22 +12624,22 @@ export namespace Prisma {
   }
 
   /**
-   * Instrument.organization
+   * Instrument.user
    */
-  export type Instrument$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Instrument$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Organization
+     * Select specific fields to fetch from the User
      */
-    select?: OrganizationSelect<ExtArgs> | null
+    select?: UserSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Organization
+     * Omit specific fields from the User
      */
-    omit?: OrganizationOmit<ExtArgs> | null
+    omit?: UserOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrganizationInclude<ExtArgs> | null
-    where?: OrganizationWhereInput
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -15392,7 +12839,7 @@ export namespace Prisma {
 
   export type TransactionMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     instrument_uuid: string | null
     type: $Enums.TransactionType | null
@@ -15417,7 +12864,7 @@ export namespace Prisma {
 
   export type TransactionMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     instrument_uuid: string | null
     type: $Enums.TransactionType | null
@@ -15442,7 +12889,7 @@ export namespace Prisma {
 
   export type TransactionCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     account_uuid: number
     instrument_uuid: number
     type: number
@@ -15489,7 +12936,7 @@ export namespace Prisma {
 
   export type TransactionMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     instrument_uuid?: true
     type?: true
@@ -15514,7 +12961,7 @@ export namespace Prisma {
 
   export type TransactionMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     instrument_uuid?: true
     type?: true
@@ -15539,7 +12986,7 @@ export namespace Prisma {
 
   export type TransactionCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     instrument_uuid?: true
     type?: true
@@ -15651,7 +13098,7 @@ export namespace Prisma {
 
   export type TransactionGroupByOutputType = {
     id: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid: string | null
     type: $Enums.TransactionType
@@ -15695,7 +13142,7 @@ export namespace Prisma {
 
   export type TransactionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     instrument_uuid?: boolean
     type?: boolean
@@ -15716,7 +13163,7 @@ export namespace Prisma {
     supersedes_uuid?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15729,7 +13176,7 @@ export namespace Prisma {
 
   export type TransactionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     instrument_uuid?: boolean
     type?: boolean
@@ -15750,7 +13197,7 @@ export namespace Prisma {
     supersedes_uuid?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15760,7 +13207,7 @@ export namespace Prisma {
 
   export type TransactionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     instrument_uuid?: boolean
     type?: boolean
@@ -15781,7 +13228,7 @@ export namespace Prisma {
     supersedes_uuid?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15791,7 +13238,7 @@ export namespace Prisma {
 
   export type TransactionSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     instrument_uuid?: boolean
     type?: boolean
@@ -15814,9 +13261,9 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "account_uuid" | "instrument_uuid" | "type" | "trade_date" | "settlement_date" | "quantity" | "price" | "amount" | "fee" | "tax_withheld" | "currency" | "fx_rate" | "amount_base_currency" | "broker_ref" | "import_batch_uuid" | "source_staged_transaction_uuid" | "is_correction" | "supersedes_uuid" | "created_at" | "updated_at", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "account_uuid" | "instrument_uuid" | "type" | "trade_date" | "settlement_date" | "quantity" | "price" | "amount" | "fee" | "tax_withheld" | "currency" | "fx_rate" | "amount_base_currency" | "broker_ref" | "import_batch_uuid" | "source_staged_transaction_uuid" | "is_correction" | "supersedes_uuid" | "created_at" | "updated_at", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15827,7 +13274,7 @@ export namespace Prisma {
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TransactionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15835,7 +13282,7 @@ export namespace Prisma {
     supersedes?: boolean | Transaction$supersedesArgs<ExtArgs>
   }
   export type TransactionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | AccountDefaultArgs<ExtArgs>
     instrument?: boolean | Transaction$instrumentArgs<ExtArgs>
     import_batch?: boolean | Transaction$import_batchArgs<ExtArgs>
@@ -15846,7 +13293,7 @@ export namespace Prisma {
   export type $TransactionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Transaction"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       account: Prisma.$AccountPayload<ExtArgs>
       instrument: Prisma.$InstrumentPayload<ExtArgs> | null
       import_batch: Prisma.$ImportBatchPayload<ExtArgs> | null
@@ -15857,7 +13304,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string
+      user_uuid: string
       account_uuid: string
       instrument_uuid: string | null
       type: $Enums.TransactionType
@@ -16272,7 +13719,7 @@ export namespace Prisma {
    */
   export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     account<T extends AccountDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AccountDefaultArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     instrument<T extends Transaction$instrumentArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$instrumentArgs<ExtArgs>>): Prisma__InstrumentClient<$Result.GetResult<Prisma.$InstrumentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     import_batch<T extends Transaction$import_batchArgs<ExtArgs> = {}>(args?: Subset<T, Transaction$import_batchArgs<ExtArgs>>): Prisma__ImportBatchClient<$Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -16310,7 +13757,7 @@ export namespace Prisma {
    */
   interface TransactionFieldRefs {
     readonly id: FieldRef<"Transaction", 'String'>
-    readonly org_uuid: FieldRef<"Transaction", 'String'>
+    readonly user_uuid: FieldRef<"Transaction", 'String'>
     readonly account_uuid: FieldRef<"Transaction", 'String'>
     readonly instrument_uuid: FieldRef<"Transaction", 'String'>
     readonly type: FieldRef<"Transaction", 'TransactionType'>
@@ -23542,7 +20989,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     country_code: string | null
     tax_year: number | null
@@ -23557,7 +21004,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
+    user_uuid: string | null
     account_uuid: string | null
     country_code: string | null
     tax_year: number | null
@@ -23572,7 +21019,7 @@ export namespace Prisma {
 
   export type TaxYearComputationCountAggregateOutputType = {
     id: number
-    org_uuid: number
+    user_uuid: number
     account_uuid: number
     country_code: number
     tax_year: number
@@ -23600,7 +21047,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMinAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     country_code?: true
     tax_year?: true
@@ -23615,7 +21062,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     country_code?: true
     tax_year?: true
@@ -23630,7 +21077,7 @@ export namespace Prisma {
 
   export type TaxYearComputationCountAggregateInputType = {
     id?: true
-    org_uuid?: true
+    user_uuid?: true
     account_uuid?: true
     country_code?: true
     tax_year?: true
@@ -23733,7 +21180,7 @@ export namespace Prisma {
 
   export type TaxYearComputationGroupByOutputType = {
     id: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string | null
     country_code: string
     tax_year: number
@@ -23768,7 +21215,7 @@ export namespace Prisma {
 
   export type TaxYearComputationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     country_code?: boolean
     tax_year?: boolean
@@ -23780,7 +21227,7 @@ export namespace Prisma {
     finalized_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
     tax_forms?: boolean | TaxYearComputation$tax_formsArgs<ExtArgs>
     _count?: boolean | TaxYearComputationCountOutputTypeDefaultArgs<ExtArgs>
@@ -23788,7 +21235,7 @@ export namespace Prisma {
 
   export type TaxYearComputationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     country_code?: boolean
     tax_year?: boolean
@@ -23800,13 +21247,13 @@ export namespace Prisma {
     finalized_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
   }, ExtArgs["result"]["taxYearComputation"]>
 
   export type TaxYearComputationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     country_code?: boolean
     tax_year?: boolean
@@ -23818,13 +21265,13 @@ export namespace Prisma {
     finalized_at?: boolean
     created_at?: boolean
     updated_at?: boolean
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
   }, ExtArgs["result"]["taxYearComputation"]>
 
   export type TaxYearComputationSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
+    user_uuid?: boolean
     account_uuid?: boolean
     country_code?: boolean
     tax_year?: boolean
@@ -23838,32 +21285,32 @@ export namespace Prisma {
     updated_at?: boolean
   }
 
-  export type TaxYearComputationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "account_uuid" | "country_code" | "tax_year" | "cost_basis_method" | "status" | "version" | "result" | "input_snapshot_hash" | "finalized_at" | "created_at" | "updated_at", ExtArgs["result"]["taxYearComputation"]>
+  export type TaxYearComputationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "account_uuid" | "country_code" | "tax_year" | "cost_basis_method" | "status" | "version" | "result" | "input_snapshot_hash" | "finalized_at" | "created_at" | "updated_at", ExtArgs["result"]["taxYearComputation"]>
   export type TaxYearComputationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
     tax_forms?: boolean | TaxYearComputation$tax_formsArgs<ExtArgs>
     _count?: boolean | TaxYearComputationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TaxYearComputationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
   }
   export type TaxYearComputationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | OrganizationDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     account?: boolean | TaxYearComputation$accountArgs<ExtArgs>
   }
 
   export type $TaxYearComputationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TaxYearComputation"
     objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
       account: Prisma.$AccountPayload<ExtArgs> | null
       tax_forms: Prisma.$TaxFormPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string
+      user_uuid: string
       account_uuid: string | null
       country_code: string
       tax_year: number
@@ -24269,7 +21716,7 @@ export namespace Prisma {
    */
   export interface Prisma__TaxYearComputationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends OrganizationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizationDefaultArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     account<T extends TaxYearComputation$accountArgs<ExtArgs> = {}>(args?: Subset<T, TaxYearComputation$accountArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     tax_forms<T extends TaxYearComputation$tax_formsArgs<ExtArgs> = {}>(args?: Subset<T, TaxYearComputation$tax_formsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaxFormPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -24302,7 +21749,7 @@ export namespace Prisma {
    */
   interface TaxYearComputationFieldRefs {
     readonly id: FieldRef<"TaxYearComputation", 'String'>
-    readonly org_uuid: FieldRef<"TaxYearComputation", 'String'>
+    readonly user_uuid: FieldRef<"TaxYearComputation", 'String'>
     readonly account_uuid: FieldRef<"TaxYearComputation", 'String'>
     readonly country_code: FieldRef<"TaxYearComputation", 'String'>
     readonly tax_year: FieldRef<"TaxYearComputation", 'Int'>
@@ -25862,7 +23309,6 @@ export namespace Prisma {
 
   export type AuditLogMinAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
     user_uuid: string | null
     entity_type: string | null
     entity_uuid: string | null
@@ -25872,7 +23318,6 @@ export namespace Prisma {
 
   export type AuditLogMaxAggregateOutputType = {
     id: string | null
-    org_uuid: string | null
     user_uuid: string | null
     entity_type: string | null
     entity_uuid: string | null
@@ -25882,7 +23327,6 @@ export namespace Prisma {
 
   export type AuditLogCountAggregateOutputType = {
     id: number
-    org_uuid: number
     user_uuid: number
     entity_type: number
     entity_uuid: number
@@ -25896,7 +23340,6 @@ export namespace Prisma {
 
   export type AuditLogMinAggregateInputType = {
     id?: true
-    org_uuid?: true
     user_uuid?: true
     entity_type?: true
     entity_uuid?: true
@@ -25906,7 +23349,6 @@ export namespace Prisma {
 
   export type AuditLogMaxAggregateInputType = {
     id?: true
-    org_uuid?: true
     user_uuid?: true
     entity_type?: true
     entity_uuid?: true
@@ -25916,7 +23358,6 @@ export namespace Prisma {
 
   export type AuditLogCountAggregateInputType = {
     id?: true
-    org_uuid?: true
     user_uuid?: true
     entity_type?: true
     entity_uuid?: true
@@ -26001,7 +23442,6 @@ export namespace Prisma {
 
   export type AuditLogGroupByOutputType = {
     id: string
-    org_uuid: string | null
     user_uuid: string | null
     entity_type: string
     entity_uuid: string
@@ -26030,7 +23470,6 @@ export namespace Prisma {
 
   export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
     user_uuid?: boolean
     entity_type?: boolean
     entity_uuid?: boolean
@@ -26038,12 +23477,10 @@ export namespace Prisma {
     before?: boolean
     after?: boolean
     created_at?: boolean
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
     user_uuid?: boolean
     entity_type?: boolean
     entity_uuid?: boolean
@@ -26051,12 +23488,10 @@ export namespace Prisma {
     before?: boolean
     after?: boolean
     created_at?: boolean
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    org_uuid?: boolean
     user_uuid?: boolean
     entity_type?: boolean
     entity_uuid?: boolean
@@ -26064,12 +23499,10 @@ export namespace Prisma {
     before?: boolean
     after?: boolean
     created_at?: boolean
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectScalar = {
     id?: boolean
-    org_uuid?: boolean
     user_uuid?: boolean
     entity_type?: boolean
     entity_uuid?: boolean
@@ -26079,25 +23512,13 @@ export namespace Prisma {
     created_at?: boolean
   }
 
-  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "org_uuid" | "user_uuid" | "entity_type" | "entity_uuid" | "action" | "before" | "after" | "created_at", ExtArgs["result"]["auditLog"]>
-  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
-  }
-  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
-  }
-  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organization?: boolean | AuditLog$organizationArgs<ExtArgs>
-  }
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "user_uuid" | "entity_type" | "entity_uuid" | "action" | "before" | "after" | "created_at", ExtArgs["result"]["auditLog"]>
 
   export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AuditLog"
-    objects: {
-      organization: Prisma.$OrganizationPayload<ExtArgs> | null
-    }
+    objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      org_uuid: string | null
       user_uuid: string | null
       entity_type: string
       entity_uuid: string
@@ -26499,7 +23920,6 @@ export namespace Prisma {
    */
   export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organization<T extends AuditLog$organizationArgs<ExtArgs> = {}>(args?: Subset<T, AuditLog$organizationArgs<ExtArgs>>): Prisma__OrganizationClient<$Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -26530,7 +23950,6 @@ export namespace Prisma {
    */
   interface AuditLogFieldRefs {
     readonly id: FieldRef<"AuditLog", 'String'>
-    readonly org_uuid: FieldRef<"AuditLog", 'String'>
     readonly user_uuid: FieldRef<"AuditLog", 'String'>
     readonly entity_type: FieldRef<"AuditLog", 'String'>
     readonly entity_uuid: FieldRef<"AuditLog", 'String'>
@@ -26555,10 +23974,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * Filter, which AuditLog to fetch.
      */
     where: AuditLogWhereUniqueInput
@@ -26577,10 +23992,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * Filter, which AuditLog to fetch.
      */
     where: AuditLogWhereUniqueInput
@@ -26598,10 +24009,6 @@ export namespace Prisma {
      * Omit specific fields from the AuditLog
      */
     omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
     /**
      * Filter, which AuditLog to fetch.
      */
@@ -26651,10 +24058,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * Filter, which AuditLog to fetch.
      */
     where?: AuditLogWhereInput
@@ -26703,10 +24106,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * Filter, which AuditLogs to fetch.
      */
     where?: AuditLogWhereInput
@@ -26750,10 +24149,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * The data needed to create a AuditLog.
      */
     data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
@@ -26787,10 +24182,6 @@ export namespace Prisma {
      */
     data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -26805,10 +24196,6 @@ export namespace Prisma {
      * Omit specific fields from the AuditLog
      */
     omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
     /**
      * The data needed to update a AuditLog.
      */
@@ -26861,10 +24248,6 @@ export namespace Prisma {
      * Limit how many AuditLogs to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -26879,10 +24262,6 @@ export namespace Prisma {
      * Omit specific fields from the AuditLog
      */
     omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
     /**
      * The filter to search for the AuditLog to update in case it exists.
      */
@@ -26910,10 +24289,6 @@ export namespace Prisma {
      */
     omit?: AuditLogOmit<ExtArgs> | null
     /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    /**
      * Filter which AuditLog to delete.
      */
     where: AuditLogWhereUniqueInput
@@ -26934,25 +24309,6 @@ export namespace Prisma {
   }
 
   /**
-   * AuditLog.organization
-   */
-  export type AuditLog$organizationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Organization
-     */
-    select?: OrganizationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Organization
-     */
-    omit?: OrganizationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrganizationInclude<ExtArgs> | null
-    where?: OrganizationWhereInput
-  }
-
-  /**
    * AuditLog without action
    */
   export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -26964,10 +24320,6 @@ export namespace Prisma {
      * Omit specific fields from the AuditLog
      */
     omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
   }
 
 
@@ -27013,7 +24365,6 @@ export namespace Prisma {
   export const DocumentScalarFieldEnum: {
     id: 'id',
     user_uuid: 'user_uuid',
-    org_uuid: 'org_uuid',
     import_batch_uuid: 'import_batch_uuid',
     filename: 'filename',
     mimetype: 'mimetype',
@@ -27028,34 +24379,9 @@ export namespace Prisma {
   export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
 
 
-  export const OrganizationScalarFieldEnum: {
-    id: 'id',
-    name: 'name',
-    base_currency: 'base_currency',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
-
-
-  export const MembershipScalarFieldEnum: {
-    id: 'id',
-    org_uuid: 'org_uuid',
-    user_uuid: 'user_uuid',
-    role: 'role',
-    invited_at: 'invited_at',
-    accepted_at: 'accepted_at',
-    created_at: 'created_at',
-    updated_at: 'updated_at'
-  };
-
-  export type MembershipScalarFieldEnum = (typeof MembershipScalarFieldEnum)[keyof typeof MembershipScalarFieldEnum]
-
-
   export const AccountScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     name: 'name',
     currency: 'currency',
     jurisdiction: 'jurisdiction',
@@ -27068,7 +24394,7 @@ export namespace Prisma {
 
   export const MappingTemplateScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     name: 'name',
     file_type: 'file_type',
     detection_signature: 'detection_signature',
@@ -27083,7 +24409,7 @@ export namespace Prisma {
 
   export const ImportBatchScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     account_uuid: 'account_uuid',
     source_document_uuid: 'source_document_uuid',
     mapping_template_uuid: 'mapping_template_uuid',
@@ -27115,7 +24441,7 @@ export namespace Prisma {
 
   export const InstrumentScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     isin: 'isin',
     ticker: 'ticker',
     name: 'name',
@@ -27132,7 +24458,7 @@ export namespace Prisma {
 
   export const TransactionScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     account_uuid: 'account_uuid',
     instrument_uuid: 'instrument_uuid',
     type: 'type',
@@ -27244,7 +24570,7 @@ export namespace Prisma {
 
   export const TaxYearComputationScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
+    user_uuid: 'user_uuid',
     account_uuid: 'account_uuid',
     country_code: 'country_code',
     tax_year: 'tax_year',
@@ -27275,7 +24601,6 @@ export namespace Prisma {
 
   export const AuditLogScalarFieldEnum: {
     id: 'id',
-    org_uuid: 'org_uuid',
     user_uuid: 'user_uuid',
     entity_type: 'entity_type',
     entity_uuid: 'entity_uuid',
@@ -27422,20 +24747,6 @@ export namespace Prisma {
    * Reference to a field of type 'DocumentCategory[]'
    */
   export type ListEnumDocumentCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentCategory[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'MembershipRole'
-   */
-  export type EnumMembershipRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'MembershipRole[]'
-   */
-  export type ListEnumMembershipRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MembershipRole[]'>
     
 
 
@@ -27657,7 +24968,12 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     password_reset_tokens?: PasswordResetTokenListRelationFilter
-    memberships?: MembershipListRelationFilter
+    accounts?: AccountListRelationFilter
+    mapping_templates?: MappingTemplateListRelationFilter
+    import_batches?: ImportBatchListRelationFilter
+    custom_instruments?: InstrumentListRelationFilter
+    transactions?: TransactionListRelationFilter
+    tax_year_computations?: TaxYearComputationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -27669,7 +24985,12 @@ export namespace Prisma {
     created_at?: SortOrder
     updated_at?: SortOrder
     password_reset_tokens?: PasswordResetTokenOrderByRelationAggregateInput
-    memberships?: MembershipOrderByRelationAggregateInput
+    accounts?: AccountOrderByRelationAggregateInput
+    mapping_templates?: MappingTemplateOrderByRelationAggregateInput
+    import_batches?: ImportBatchOrderByRelationAggregateInput
+    custom_instruments?: InstrumentOrderByRelationAggregateInput
+    transactions?: TransactionOrderByRelationAggregateInput
+    tax_year_computations?: TaxYearComputationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -27684,7 +25005,12 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"User"> | Date | string
     updated_at?: DateTimeFilter<"User"> | Date | string
     password_reset_tokens?: PasswordResetTokenListRelationFilter
-    memberships?: MembershipListRelationFilter
+    accounts?: AccountListRelationFilter
+    mapping_templates?: MappingTemplateListRelationFilter
+    import_batches?: ImportBatchListRelationFilter
+    custom_instruments?: InstrumentListRelationFilter
+    transactions?: TransactionListRelationFilter
+    tax_year_computations?: TaxYearComputationListRelationFilter
   }, "id" | "email" | "phone">
 
   export type UserOrderByWithAggregationInput = {
@@ -27779,7 +25105,6 @@ export namespace Prisma {
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     id?: StringFilter<"Document"> | string
     user_uuid?: StringFilter<"Document"> | string
-    org_uuid?: StringNullableFilter<"Document"> | string | null
     import_batch_uuid?: StringNullableFilter<"Document"> | string | null
     filename?: StringFilter<"Document"> | string
     mimetype?: StringFilter<"Document"> | string
@@ -27789,7 +25114,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
     category?: EnumDocumentCategoryFilter<"Document"> | $Enums.DocumentCategory
     created_at?: DateTimeFilter<"Document"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
     source_for_import_batches?: ImportBatchListRelationFilter
     tax_forms?: TaxFormListRelationFilter
@@ -27798,7 +25122,6 @@ export namespace Prisma {
   export type DocumentOrderByWithRelationInput = {
     id?: SortOrder
     user_uuid?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
     import_batch_uuid?: SortOrderInput | SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -27808,7 +25131,6 @@ export namespace Prisma {
     type?: SortOrder
     category?: SortOrder
     created_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
     import_batch?: ImportBatchOrderByWithRelationInput
     source_for_import_batches?: ImportBatchOrderByRelationAggregateInput
     tax_forms?: TaxFormOrderByRelationAggregateInput
@@ -27820,7 +25142,6 @@ export namespace Prisma {
     OR?: DocumentWhereInput[]
     NOT?: DocumentWhereInput | DocumentWhereInput[]
     user_uuid?: StringFilter<"Document"> | string
-    org_uuid?: StringNullableFilter<"Document"> | string | null
     import_batch_uuid?: StringNullableFilter<"Document"> | string | null
     filename?: StringFilter<"Document"> | string
     mimetype?: StringFilter<"Document"> | string
@@ -27830,7 +25151,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
     category?: EnumDocumentCategoryFilter<"Document"> | $Enums.DocumentCategory
     created_at?: DateTimeFilter<"Document"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
     import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
     source_for_import_batches?: ImportBatchListRelationFilter
     tax_forms?: TaxFormListRelationFilter
@@ -27839,7 +25159,6 @@ export namespace Prisma {
   export type DocumentOrderByWithAggregationInput = {
     id?: SortOrder
     user_uuid?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
     import_batch_uuid?: SortOrderInput | SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -27862,7 +25181,6 @@ export namespace Prisma {
     NOT?: DocumentScalarWhereWithAggregatesInput | DocumentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Document"> | string
     user_uuid?: StringWithAggregatesFilter<"Document"> | string
-    org_uuid?: StringNullableWithAggregatesFilter<"Document"> | string | null
     import_batch_uuid?: StringNullableWithAggregatesFilter<"Document"> | string | null
     filename?: StringWithAggregatesFilter<"Document"> | string
     mimetype?: StringWithAggregatesFilter<"Document"> | string
@@ -27874,171 +25192,18 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter<"Document"> | Date | string
   }
 
-  export type OrganizationWhereInput = {
-    AND?: OrganizationWhereInput | OrganizationWhereInput[]
-    OR?: OrganizationWhereInput[]
-    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
-    id?: StringFilter<"Organization"> | string
-    name?: StringFilter<"Organization"> | string
-    base_currency?: StringFilter<"Organization"> | string
-    created_at?: DateTimeFilter<"Organization"> | Date | string
-    updated_at?: DateTimeFilter<"Organization"> | Date | string
-    memberships?: MembershipListRelationFilter
-    accounts?: AccountListRelationFilter
-    mapping_templates?: MappingTemplateListRelationFilter
-    import_batches?: ImportBatchListRelationFilter
-    transactions?: TransactionListRelationFilter
-    custom_instruments?: InstrumentListRelationFilter
-    tax_year_computations?: TaxYearComputationListRelationFilter
-    documents?: DocumentListRelationFilter
-    audit_logs?: AuditLogListRelationFilter
-  }
-
-  export type OrganizationOrderByWithRelationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    base_currency?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    memberships?: MembershipOrderByRelationAggregateInput
-    accounts?: AccountOrderByRelationAggregateInput
-    mapping_templates?: MappingTemplateOrderByRelationAggregateInput
-    import_batches?: ImportBatchOrderByRelationAggregateInput
-    transactions?: TransactionOrderByRelationAggregateInput
-    custom_instruments?: InstrumentOrderByRelationAggregateInput
-    tax_year_computations?: TaxYearComputationOrderByRelationAggregateInput
-    documents?: DocumentOrderByRelationAggregateInput
-    audit_logs?: AuditLogOrderByRelationAggregateInput
-  }
-
-  export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: OrganizationWhereInput | OrganizationWhereInput[]
-    OR?: OrganizationWhereInput[]
-    NOT?: OrganizationWhereInput | OrganizationWhereInput[]
-    name?: StringFilter<"Organization"> | string
-    base_currency?: StringFilter<"Organization"> | string
-    created_at?: DateTimeFilter<"Organization"> | Date | string
-    updated_at?: DateTimeFilter<"Organization"> | Date | string
-    memberships?: MembershipListRelationFilter
-    accounts?: AccountListRelationFilter
-    mapping_templates?: MappingTemplateListRelationFilter
-    import_batches?: ImportBatchListRelationFilter
-    transactions?: TransactionListRelationFilter
-    custom_instruments?: InstrumentListRelationFilter
-    tax_year_computations?: TaxYearComputationListRelationFilter
-    documents?: DocumentListRelationFilter
-    audit_logs?: AuditLogListRelationFilter
-  }, "id">
-
-  export type OrganizationOrderByWithAggregationInput = {
-    id?: SortOrder
-    name?: SortOrder
-    base_currency?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: OrganizationCountOrderByAggregateInput
-    _max?: OrganizationMaxOrderByAggregateInput
-    _min?: OrganizationMinOrderByAggregateInput
-  }
-
-  export type OrganizationScalarWhereWithAggregatesInput = {
-    AND?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
-    OR?: OrganizationScalarWhereWithAggregatesInput[]
-    NOT?: OrganizationScalarWhereWithAggregatesInput | OrganizationScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Organization"> | string
-    name?: StringWithAggregatesFilter<"Organization"> | string
-    base_currency?: StringWithAggregatesFilter<"Organization"> | string
-    created_at?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"Organization"> | Date | string
-  }
-
-  export type MembershipWhereInput = {
-    AND?: MembershipWhereInput | MembershipWhereInput[]
-    OR?: MembershipWhereInput[]
-    NOT?: MembershipWhereInput | MembershipWhereInput[]
-    id?: StringFilter<"Membership"> | string
-    org_uuid?: StringFilter<"Membership"> | string
-    user_uuid?: StringFilter<"Membership"> | string
-    role?: EnumMembershipRoleFilter<"Membership"> | $Enums.MembershipRole
-    invited_at?: DateTimeFilter<"Membership"> | Date | string
-    accepted_at?: DateTimeNullableFilter<"Membership"> | Date | string | null
-    created_at?: DateTimeFilter<"Membership"> | Date | string
-    updated_at?: DateTimeFilter<"Membership"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type MembershipOrderByWithRelationInput = {
-    id?: SortOrder
-    org_uuid?: SortOrder
-    user_uuid?: SortOrder
-    role?: SortOrder
-    invited_at?: SortOrder
-    accepted_at?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type MembershipWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    org_uuid_user_uuid?: MembershipOrg_uuidUser_uuidCompoundUniqueInput
-    AND?: MembershipWhereInput | MembershipWhereInput[]
-    OR?: MembershipWhereInput[]
-    NOT?: MembershipWhereInput | MembershipWhereInput[]
-    org_uuid?: StringFilter<"Membership"> | string
-    user_uuid?: StringFilter<"Membership"> | string
-    role?: EnumMembershipRoleFilter<"Membership"> | $Enums.MembershipRole
-    invited_at?: DateTimeFilter<"Membership"> | Date | string
-    accepted_at?: DateTimeNullableFilter<"Membership"> | Date | string | null
-    created_at?: DateTimeFilter<"Membership"> | Date | string
-    updated_at?: DateTimeFilter<"Membership"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "org_uuid_user_uuid">
-
-  export type MembershipOrderByWithAggregationInput = {
-    id?: SortOrder
-    org_uuid?: SortOrder
-    user_uuid?: SortOrder
-    role?: SortOrder
-    invited_at?: SortOrder
-    accepted_at?: SortOrderInput | SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    _count?: MembershipCountOrderByAggregateInput
-    _max?: MembershipMaxOrderByAggregateInput
-    _min?: MembershipMinOrderByAggregateInput
-  }
-
-  export type MembershipScalarWhereWithAggregatesInput = {
-    AND?: MembershipScalarWhereWithAggregatesInput | MembershipScalarWhereWithAggregatesInput[]
-    OR?: MembershipScalarWhereWithAggregatesInput[]
-    NOT?: MembershipScalarWhereWithAggregatesInput | MembershipScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Membership"> | string
-    org_uuid?: StringWithAggregatesFilter<"Membership"> | string
-    user_uuid?: StringWithAggregatesFilter<"Membership"> | string
-    role?: EnumMembershipRoleWithAggregatesFilter<"Membership"> | $Enums.MembershipRole
-    invited_at?: DateTimeWithAggregatesFilter<"Membership"> | Date | string
-    accepted_at?: DateTimeNullableWithAggregatesFilter<"Membership"> | Date | string | null
-    created_at?: DateTimeWithAggregatesFilter<"Membership"> | Date | string
-    updated_at?: DateTimeWithAggregatesFilter<"Membership"> | Date | string
-  }
-
   export type AccountWhereInput = {
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
     id?: StringFilter<"Account"> | string
-    org_uuid?: StringFilter<"Account"> | string
+    user_uuid?: StringFilter<"Account"> | string
     name?: StringFilter<"Account"> | string
     currency?: StringFilter<"Account"> | string
     jurisdiction?: StringFilter<"Account"> | string
     created_at?: DateTimeFilter<"Account"> | Date | string
     updated_at?: DateTimeFilter<"Account"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     import_batches?: ImportBatchListRelationFilter
     transactions?: TransactionListRelationFilter
     lots?: LotListRelationFilter
@@ -28048,13 +25213,13 @@ export namespace Prisma {
 
   export type AccountOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     currency?: SortOrder
     jurisdiction?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     import_batches?: ImportBatchOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     lots?: LotOrderByRelationAggregateInput
@@ -28067,13 +25232,13 @@ export namespace Prisma {
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
-    org_uuid?: StringFilter<"Account"> | string
+    user_uuid?: StringFilter<"Account"> | string
     name?: StringFilter<"Account"> | string
     currency?: StringFilter<"Account"> | string
     jurisdiction?: StringFilter<"Account"> | string
     created_at?: DateTimeFilter<"Account"> | Date | string
     updated_at?: DateTimeFilter<"Account"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     import_batches?: ImportBatchListRelationFilter
     transactions?: TransactionListRelationFilter
     lots?: LotListRelationFilter
@@ -28083,7 +25248,7 @@ export namespace Prisma {
 
   export type AccountOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     currency?: SortOrder
     jurisdiction?: SortOrder
@@ -28099,7 +25264,7 @@ export namespace Prisma {
     OR?: AccountScalarWhereWithAggregatesInput[]
     NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Account"> | string
-    org_uuid?: StringWithAggregatesFilter<"Account"> | string
+    user_uuid?: StringWithAggregatesFilter<"Account"> | string
     name?: StringWithAggregatesFilter<"Account"> | string
     currency?: StringWithAggregatesFilter<"Account"> | string
     jurisdiction?: StringWithAggregatesFilter<"Account"> | string
@@ -28112,7 +25277,7 @@ export namespace Prisma {
     OR?: MappingTemplateWhereInput[]
     NOT?: MappingTemplateWhereInput | MappingTemplateWhereInput[]
     id?: StringFilter<"MappingTemplate"> | string
-    org_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
+    user_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
     name?: StringFilter<"MappingTemplate"> | string
     file_type?: EnumSourceFileTypeFilter<"MappingTemplate"> | $Enums.SourceFileType
     detection_signature?: JsonFilter<"MappingTemplate">
@@ -28120,13 +25285,13 @@ export namespace Prisma {
     version?: IntFilter<"MappingTemplate"> | number
     created_at?: DateTimeFilter<"MappingTemplate"> | Date | string
     updated_at?: DateTimeFilter<"MappingTemplate"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     import_batches?: ImportBatchListRelationFilter
   }
 
   export type MappingTemplateOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
+    user_uuid?: SortOrderInput | SortOrder
     name?: SortOrder
     file_type?: SortOrder
     detection_signature?: SortOrder
@@ -28134,7 +25299,7 @@ export namespace Prisma {
     version?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     import_batches?: ImportBatchOrderByRelationAggregateInput
   }
 
@@ -28143,7 +25308,7 @@ export namespace Prisma {
     AND?: MappingTemplateWhereInput | MappingTemplateWhereInput[]
     OR?: MappingTemplateWhereInput[]
     NOT?: MappingTemplateWhereInput | MappingTemplateWhereInput[]
-    org_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
+    user_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
     name?: StringFilter<"MappingTemplate"> | string
     file_type?: EnumSourceFileTypeFilter<"MappingTemplate"> | $Enums.SourceFileType
     detection_signature?: JsonFilter<"MappingTemplate">
@@ -28151,13 +25316,13 @@ export namespace Prisma {
     version?: IntFilter<"MappingTemplate"> | number
     created_at?: DateTimeFilter<"MappingTemplate"> | Date | string
     updated_at?: DateTimeFilter<"MappingTemplate"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     import_batches?: ImportBatchListRelationFilter
   }, "id">
 
   export type MappingTemplateOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
+    user_uuid?: SortOrderInput | SortOrder
     name?: SortOrder
     file_type?: SortOrder
     detection_signature?: SortOrder
@@ -28177,7 +25342,7 @@ export namespace Prisma {
     OR?: MappingTemplateScalarWhereWithAggregatesInput[]
     NOT?: MappingTemplateScalarWhereWithAggregatesInput | MappingTemplateScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MappingTemplate"> | string
-    org_uuid?: StringNullableWithAggregatesFilter<"MappingTemplate"> | string | null
+    user_uuid?: StringNullableWithAggregatesFilter<"MappingTemplate"> | string | null
     name?: StringWithAggregatesFilter<"MappingTemplate"> | string
     file_type?: EnumSourceFileTypeWithAggregatesFilter<"MappingTemplate"> | $Enums.SourceFileType
     detection_signature?: JsonWithAggregatesFilter<"MappingTemplate">
@@ -28192,7 +25357,7 @@ export namespace Prisma {
     OR?: ImportBatchWhereInput[]
     NOT?: ImportBatchWhereInput | ImportBatchWhereInput[]
     id?: StringFilter<"ImportBatch"> | string
-    org_uuid?: StringFilter<"ImportBatch"> | string
+    user_uuid?: StringFilter<"ImportBatch"> | string
     account_uuid?: StringFilter<"ImportBatch"> | string
     source_document_uuid?: StringFilter<"ImportBatch"> | string
     mapping_template_uuid?: StringNullableFilter<"ImportBatch"> | string | null
@@ -28201,7 +25366,7 @@ export namespace Prisma {
     committed_at?: DateTimeNullableFilter<"ImportBatch"> | Date | string | null
     created_at?: DateTimeFilter<"ImportBatch"> | Date | string
     updated_at?: DateTimeFilter<"ImportBatch"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountScalarRelationFilter, AccountWhereInput>
     source_document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
     mapping_template?: XOR<MappingTemplateNullableScalarRelationFilter, MappingTemplateWhereInput> | null
@@ -28212,7 +25377,7 @@ export namespace Prisma {
 
   export type ImportBatchOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     source_document_uuid?: SortOrder
     mapping_template_uuid?: SortOrderInput | SortOrder
@@ -28221,7 +25386,7 @@ export namespace Prisma {
     committed_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     account?: AccountOrderByWithRelationInput
     source_document?: DocumentOrderByWithRelationInput
     mapping_template?: MappingTemplateOrderByWithRelationInput
@@ -28235,7 +25400,7 @@ export namespace Prisma {
     AND?: ImportBatchWhereInput | ImportBatchWhereInput[]
     OR?: ImportBatchWhereInput[]
     NOT?: ImportBatchWhereInput | ImportBatchWhereInput[]
-    org_uuid?: StringFilter<"ImportBatch"> | string
+    user_uuid?: StringFilter<"ImportBatch"> | string
     account_uuid?: StringFilter<"ImportBatch"> | string
     source_document_uuid?: StringFilter<"ImportBatch"> | string
     mapping_template_uuid?: StringNullableFilter<"ImportBatch"> | string | null
@@ -28244,7 +25409,7 @@ export namespace Prisma {
     committed_at?: DateTimeNullableFilter<"ImportBatch"> | Date | string | null
     created_at?: DateTimeFilter<"ImportBatch"> | Date | string
     updated_at?: DateTimeFilter<"ImportBatch"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountScalarRelationFilter, AccountWhereInput>
     source_document?: XOR<DocumentScalarRelationFilter, DocumentWhereInput>
     mapping_template?: XOR<MappingTemplateNullableScalarRelationFilter, MappingTemplateWhereInput> | null
@@ -28255,7 +25420,7 @@ export namespace Prisma {
 
   export type ImportBatchOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     source_document_uuid?: SortOrder
     mapping_template_uuid?: SortOrderInput | SortOrder
@@ -28274,7 +25439,7 @@ export namespace Prisma {
     OR?: ImportBatchScalarWhereWithAggregatesInput[]
     NOT?: ImportBatchScalarWhereWithAggregatesInput | ImportBatchScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ImportBatch"> | string
-    org_uuid?: StringWithAggregatesFilter<"ImportBatch"> | string
+    user_uuid?: StringWithAggregatesFilter<"ImportBatch"> | string
     account_uuid?: StringWithAggregatesFilter<"ImportBatch"> | string
     source_document_uuid?: StringWithAggregatesFilter<"ImportBatch"> | string
     mapping_template_uuid?: StringNullableWithAggregatesFilter<"ImportBatch"> | string | null
@@ -28378,7 +25543,7 @@ export namespace Prisma {
     OR?: InstrumentWhereInput[]
     NOT?: InstrumentWhereInput | InstrumentWhereInput[]
     id?: StringFilter<"Instrument"> | string
-    org_uuid?: StringNullableFilter<"Instrument"> | string | null
+    user_uuid?: StringNullableFilter<"Instrument"> | string | null
     isin?: StringNullableFilter<"Instrument"> | string | null
     ticker?: StringNullableFilter<"Instrument"> | string | null
     name?: StringNullableFilter<"Instrument"> | string | null
@@ -28388,7 +25553,7 @@ export namespace Prisma {
     is_custom?: BoolFilter<"Instrument"> | boolean
     created_at?: DateTimeFilter<"Instrument"> | Date | string
     updated_at?: DateTimeFilter<"Instrument"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     staged_transactions?: StagedTransactionListRelationFilter
     transactions?: TransactionListRelationFilter
     corporate_actions?: CorporateActionListRelationFilter
@@ -28399,7 +25564,7 @@ export namespace Prisma {
 
   export type InstrumentOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
+    user_uuid?: SortOrderInput | SortOrder
     isin?: SortOrderInput | SortOrder
     ticker?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
@@ -28409,7 +25574,7 @@ export namespace Prisma {
     is_custom?: SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     staged_transactions?: StagedTransactionOrderByRelationAggregateInput
     transactions?: TransactionOrderByRelationAggregateInput
     corporate_actions?: CorporateActionOrderByRelationAggregateInput
@@ -28424,7 +25589,7 @@ export namespace Prisma {
     AND?: InstrumentWhereInput | InstrumentWhereInput[]
     OR?: InstrumentWhereInput[]
     NOT?: InstrumentWhereInput | InstrumentWhereInput[]
-    org_uuid?: StringNullableFilter<"Instrument"> | string | null
+    user_uuid?: StringNullableFilter<"Instrument"> | string | null
     ticker?: StringNullableFilter<"Instrument"> | string | null
     name?: StringNullableFilter<"Instrument"> | string | null
     asset_class?: EnumAssetClassFilter<"Instrument"> | $Enums.AssetClass
@@ -28433,7 +25598,7 @@ export namespace Prisma {
     is_custom?: BoolFilter<"Instrument"> | boolean
     created_at?: DateTimeFilter<"Instrument"> | Date | string
     updated_at?: DateTimeFilter<"Instrument"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     staged_transactions?: StagedTransactionListRelationFilter
     transactions?: TransactionListRelationFilter
     corporate_actions?: CorporateActionListRelationFilter
@@ -28444,7 +25609,7 @@ export namespace Prisma {
 
   export type InstrumentOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
+    user_uuid?: SortOrderInput | SortOrder
     isin?: SortOrderInput | SortOrder
     ticker?: SortOrderInput | SortOrder
     name?: SortOrderInput | SortOrder
@@ -28464,7 +25629,7 @@ export namespace Prisma {
     OR?: InstrumentScalarWhereWithAggregatesInput[]
     NOT?: InstrumentScalarWhereWithAggregatesInput | InstrumentScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Instrument"> | string
-    org_uuid?: StringNullableWithAggregatesFilter<"Instrument"> | string | null
+    user_uuid?: StringNullableWithAggregatesFilter<"Instrument"> | string | null
     isin?: StringNullableWithAggregatesFilter<"Instrument"> | string | null
     ticker?: StringNullableWithAggregatesFilter<"Instrument"> | string | null
     name?: StringNullableWithAggregatesFilter<"Instrument"> | string | null
@@ -28481,7 +25646,7 @@ export namespace Prisma {
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
     id?: StringFilter<"Transaction"> | string
-    org_uuid?: StringFilter<"Transaction"> | string
+    user_uuid?: StringFilter<"Transaction"> | string
     account_uuid?: StringFilter<"Transaction"> | string
     instrument_uuid?: StringNullableFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
@@ -28502,7 +25667,7 @@ export namespace Prisma {
     supersedes_uuid?: StringNullableFilter<"Transaction"> | string | null
     created_at?: DateTimeFilter<"Transaction"> | Date | string
     updated_at?: DateTimeFilter<"Transaction"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountScalarRelationFilter, AccountWhereInput>
     instrument?: XOR<InstrumentNullableScalarRelationFilter, InstrumentWhereInput> | null
     import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
@@ -28514,7 +25679,7 @@ export namespace Prisma {
 
   export type TransactionOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     instrument_uuid?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -28535,7 +25700,7 @@ export namespace Prisma {
     supersedes_uuid?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     account?: AccountOrderByWithRelationInput
     instrument?: InstrumentOrderByWithRelationInput
     import_batch?: ImportBatchOrderByWithRelationInput
@@ -28552,7 +25717,7 @@ export namespace Prisma {
     AND?: TransactionWhereInput | TransactionWhereInput[]
     OR?: TransactionWhereInput[]
     NOT?: TransactionWhereInput | TransactionWhereInput[]
-    org_uuid?: StringFilter<"Transaction"> | string
+    user_uuid?: StringFilter<"Transaction"> | string
     account_uuid?: StringFilter<"Transaction"> | string
     instrument_uuid?: StringNullableFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
@@ -28571,7 +25736,7 @@ export namespace Prisma {
     is_correction?: BoolFilter<"Transaction"> | boolean
     created_at?: DateTimeFilter<"Transaction"> | Date | string
     updated_at?: DateTimeFilter<"Transaction"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountScalarRelationFilter, AccountWhereInput>
     instrument?: XOR<InstrumentNullableScalarRelationFilter, InstrumentWhereInput> | null
     import_batch?: XOR<ImportBatchNullableScalarRelationFilter, ImportBatchWhereInput> | null
@@ -28583,7 +25748,7 @@ export namespace Prisma {
 
   export type TransactionOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     instrument_uuid?: SortOrderInput | SortOrder
     type?: SortOrder
@@ -28616,7 +25781,7 @@ export namespace Prisma {
     OR?: TransactionScalarWhereWithAggregatesInput[]
     NOT?: TransactionScalarWhereWithAggregatesInput | TransactionScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Transaction"> | string
-    org_uuid?: StringWithAggregatesFilter<"Transaction"> | string
+    user_uuid?: StringWithAggregatesFilter<"Transaction"> | string
     account_uuid?: StringWithAggregatesFilter<"Transaction"> | string
     instrument_uuid?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     type?: EnumTransactionTypeWithAggregatesFilter<"Transaction"> | $Enums.TransactionType
@@ -29080,7 +26245,7 @@ export namespace Prisma {
     OR?: TaxYearComputationWhereInput[]
     NOT?: TaxYearComputationWhereInput | TaxYearComputationWhereInput[]
     id?: StringFilter<"TaxYearComputation"> | string
-    org_uuid?: StringFilter<"TaxYearComputation"> | string
+    user_uuid?: StringFilter<"TaxYearComputation"> | string
     account_uuid?: StringNullableFilter<"TaxYearComputation"> | string | null
     country_code?: StringFilter<"TaxYearComputation"> | string
     tax_year?: IntFilter<"TaxYearComputation"> | number
@@ -29092,14 +26257,14 @@ export namespace Prisma {
     finalized_at?: DateTimeNullableFilter<"TaxYearComputation"> | Date | string | null
     created_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
     updated_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountNullableScalarRelationFilter, AccountWhereInput> | null
     tax_forms?: TaxFormListRelationFilter
   }
 
   export type TaxYearComputationOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrderInput | SortOrder
     country_code?: SortOrder
     tax_year?: SortOrder
@@ -29111,7 +26276,7 @@ export namespace Prisma {
     finalized_at?: SortOrderInput | SortOrder
     created_at?: SortOrder
     updated_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
     account?: AccountOrderByWithRelationInput
     tax_forms?: TaxFormOrderByRelationAggregateInput
   }
@@ -29121,7 +26286,7 @@ export namespace Prisma {
     AND?: TaxYearComputationWhereInput | TaxYearComputationWhereInput[]
     OR?: TaxYearComputationWhereInput[]
     NOT?: TaxYearComputationWhereInput | TaxYearComputationWhereInput[]
-    org_uuid?: StringFilter<"TaxYearComputation"> | string
+    user_uuid?: StringFilter<"TaxYearComputation"> | string
     account_uuid?: StringNullableFilter<"TaxYearComputation"> | string | null
     country_code?: StringFilter<"TaxYearComputation"> | string
     tax_year?: IntFilter<"TaxYearComputation"> | number
@@ -29133,14 +26298,14 @@ export namespace Prisma {
     finalized_at?: DateTimeNullableFilter<"TaxYearComputation"> | Date | string | null
     created_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
     updated_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
-    organization?: XOR<OrganizationScalarRelationFilter, OrganizationWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     account?: XOR<AccountNullableScalarRelationFilter, AccountWhereInput> | null
     tax_forms?: TaxFormListRelationFilter
   }, "id">
 
   export type TaxYearComputationOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrderInput | SortOrder
     country_code?: SortOrder
     tax_year?: SortOrder
@@ -29164,7 +26329,7 @@ export namespace Prisma {
     OR?: TaxYearComputationScalarWhereWithAggregatesInput[]
     NOT?: TaxYearComputationScalarWhereWithAggregatesInput | TaxYearComputationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"TaxYearComputation"> | string
-    org_uuid?: StringWithAggregatesFilter<"TaxYearComputation"> | string
+    user_uuid?: StringWithAggregatesFilter<"TaxYearComputation"> | string
     account_uuid?: StringNullableWithAggregatesFilter<"TaxYearComputation"> | string | null
     country_code?: StringWithAggregatesFilter<"TaxYearComputation"> | string
     tax_year?: IntWithAggregatesFilter<"TaxYearComputation"> | number
@@ -29246,7 +26411,6 @@ export namespace Prisma {
     OR?: AuditLogWhereInput[]
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
     id?: StringFilter<"AuditLog"> | string
-    org_uuid?: StringNullableFilter<"AuditLog"> | string | null
     user_uuid?: StringNullableFilter<"AuditLog"> | string | null
     entity_type?: StringFilter<"AuditLog"> | string
     entity_uuid?: StringFilter<"AuditLog"> | string
@@ -29254,12 +26418,10 @@ export namespace Prisma {
     before?: JsonNullableFilter<"AuditLog">
     after?: JsonNullableFilter<"AuditLog">
     created_at?: DateTimeFilter<"AuditLog"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
   }
 
   export type AuditLogOrderByWithRelationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
     user_uuid?: SortOrderInput | SortOrder
     entity_type?: SortOrder
     entity_uuid?: SortOrder
@@ -29267,7 +26429,6 @@ export namespace Prisma {
     before?: SortOrderInput | SortOrder
     after?: SortOrderInput | SortOrder
     created_at?: SortOrder
-    organization?: OrganizationOrderByWithRelationInput
   }
 
   export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
@@ -29275,7 +26436,6 @@ export namespace Prisma {
     AND?: AuditLogWhereInput | AuditLogWhereInput[]
     OR?: AuditLogWhereInput[]
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
-    org_uuid?: StringNullableFilter<"AuditLog"> | string | null
     user_uuid?: StringNullableFilter<"AuditLog"> | string | null
     entity_type?: StringFilter<"AuditLog"> | string
     entity_uuid?: StringFilter<"AuditLog"> | string
@@ -29283,12 +26443,10 @@ export namespace Prisma {
     before?: JsonNullableFilter<"AuditLog">
     after?: JsonNullableFilter<"AuditLog">
     created_at?: DateTimeFilter<"AuditLog"> | Date | string
-    organization?: XOR<OrganizationNullableScalarRelationFilter, OrganizationWhereInput> | null
   }, "id">
 
   export type AuditLogOrderByWithAggregationInput = {
     id?: SortOrder
-    org_uuid?: SortOrderInput | SortOrder
     user_uuid?: SortOrderInput | SortOrder
     entity_type?: SortOrder
     entity_uuid?: SortOrder
@@ -29306,7 +26464,6 @@ export namespace Prisma {
     OR?: AuditLogScalarWhereWithAggregatesInput[]
     NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AuditLog"> | string
-    org_uuid?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     user_uuid?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     entity_type?: StringWithAggregatesFilter<"AuditLog"> | string
     entity_uuid?: StringWithAggregatesFilter<"AuditLog"> | string
@@ -29325,7 +26482,12 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
-    memberships?: MembershipCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -29337,7 +26499,12 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
-    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -29349,7 +26516,12 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -29361,7 +26533,12 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -29467,7 +26644,6 @@ export namespace Prisma {
     type?: $Enums.DocumentType
     category?: $Enums.DocumentCategory
     created_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutDocumentsInput
     import_batch?: ImportBatchCreateNestedOneWithoutDocumentsInput
     source_for_import_batches?: ImportBatchCreateNestedManyWithoutSource_documentInput
     tax_forms?: TaxFormCreateNestedManyWithoutDocumentInput
@@ -29476,7 +26652,6 @@ export namespace Prisma {
   export type DocumentUncheckedCreateInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     import_batch_uuid?: string | null
     filename: string
     mimetype: string
@@ -29501,7 +26676,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutDocumentsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutDocumentsNestedInput
     source_for_import_batches?: ImportBatchUpdateManyWithoutSource_documentNestedInput
     tax_forms?: TaxFormUpdateManyWithoutDocumentNestedInput
@@ -29510,7 +26684,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
@@ -29527,7 +26700,6 @@ export namespace Prisma {
   export type DocumentCreateManyInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     import_batch_uuid?: string | null
     filename: string
     mimetype: string
@@ -29555,7 +26727,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
@@ -29567,173 +26738,6 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrganizationCreateInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationCreateManyInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type OrganizationUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type OrganizationUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MembershipCreateInput = {
-    id?: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutMembershipsInput
-    user: UserCreateNestedOneWithoutMembershipsInput
-  }
-
-  export type MembershipUncheckedCreateInput = {
-    id?: string
-    org_uuid: string
-    user_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type MembershipUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
-    user?: UserUpdateOneRequiredWithoutMembershipsNestedInput
-  }
-
-  export type MembershipUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MembershipCreateManyInput = {
-    id?: string
-    org_uuid: string
-    user_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type MembershipUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MembershipUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type AccountCreateInput = {
     id?: string
     name: string
@@ -29741,7 +26745,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
     transactions?: TransactionCreateNestedManyWithoutAccountInput
     lots?: LotCreateNestedManyWithoutAccountInput
@@ -29751,7 +26755,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -29771,7 +26775,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
     lots?: LotUpdateManyWithoutAccountNestedInput
@@ -29781,7 +26785,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -29796,7 +26800,7 @@ export namespace Prisma {
 
   export type AccountCreateManyInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -29815,7 +26819,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -29832,13 +26836,13 @@ export namespace Prisma {
     version?: number
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutMapping_templatesInput
+    user?: UserCreateNestedOneWithoutMapping_templatesInput
     import_batches?: ImportBatchCreateNestedManyWithoutMapping_templateInput
   }
 
   export type MappingTemplateUncheckedCreateInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     name: string
     file_type: $Enums.SourceFileType
     detection_signature: JsonNullValueInput | InputJsonValue
@@ -29858,13 +26862,13 @@ export namespace Prisma {
     version?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutMapping_templatesNestedInput
+    user?: UserUpdateOneWithoutMapping_templatesNestedInput
     import_batches?: ImportBatchUpdateManyWithoutMapping_templateNestedInput
   }
 
   export type MappingTemplateUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
     detection_signature?: JsonNullValueInput | InputJsonValue
@@ -29877,7 +26881,7 @@ export namespace Prisma {
 
   export type MappingTemplateCreateManyInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     name: string
     file_type: $Enums.SourceFileType
     detection_signature: JsonNullValueInput | InputJsonValue
@@ -29900,7 +26904,7 @@ export namespace Prisma {
 
   export type MappingTemplateUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
     detection_signature?: JsonNullValueInput | InputJsonValue
@@ -29917,7 +26921,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
@@ -29928,7 +26932,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
@@ -29949,7 +26953,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
@@ -29960,7 +26964,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29976,7 +26980,7 @@ export namespace Prisma {
 
   export type ImportBatchCreateManyInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
@@ -29998,7 +27002,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30113,7 +27117,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
@@ -30124,7 +27128,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -30153,7 +27157,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
@@ -30164,7 +27168,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30184,7 +27188,7 @@ export namespace Prisma {
 
   export type InstrumentCreateManyInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -30211,7 +27215,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30240,7 +27244,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
@@ -30252,7 +27256,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -30294,7 +27298,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
@@ -30306,7 +27310,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -30333,7 +27337,7 @@ export namespace Prisma {
 
   export type TransactionCreateManyInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -30377,7 +27381,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -30867,14 +27871,14 @@ export namespace Prisma {
     finalized_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTax_year_computationsInput
+    user: UserCreateNestedOneWithoutTax_year_computationsInput
     account?: AccountCreateNestedOneWithoutTax_year_computationsInput
     tax_forms?: TaxFormCreateNestedManyWithoutTax_year_computationInput
   }
 
   export type TaxYearComputationUncheckedCreateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid?: string | null
     country_code: string
     tax_year: number
@@ -30901,14 +27905,14 @@ export namespace Prisma {
     finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTax_year_computationsNestedInput
+    user?: UserUpdateOneRequiredWithoutTax_year_computationsNestedInput
     account?: AccountUpdateOneWithoutTax_year_computationsNestedInput
     tax_forms?: TaxFormUpdateManyWithoutTax_year_computationNestedInput
   }
 
   export type TaxYearComputationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     country_code?: StringFieldUpdateOperationsInput | string
     tax_year?: IntFieldUpdateOperationsInput | number
@@ -30925,7 +27929,7 @@ export namespace Prisma {
 
   export type TaxYearComputationCreateManyInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid?: string | null
     country_code: string
     tax_year: number
@@ -30955,7 +27959,7 @@ export namespace Prisma {
 
   export type TaxYearComputationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     country_code?: StringFieldUpdateOperationsInput | string
     tax_year?: IntFieldUpdateOperationsInput | number
@@ -31039,12 +28043,10 @@ export namespace Prisma {
     before?: NullableJsonNullValueInput | InputJsonValue
     after?: NullableJsonNullValueInput | InputJsonValue
     created_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutAudit_logsInput
   }
 
   export type AuditLogUncheckedCreateInput = {
     id?: string
-    org_uuid?: string | null
     user_uuid?: string | null
     entity_type: string
     entity_uuid: string
@@ -31063,12 +28065,10 @@ export namespace Prisma {
     before?: NullableJsonNullValueInput | InputJsonValue
     after?: NullableJsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutAudit_logsNestedInput
   }
 
   export type AuditLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     entity_type?: StringFieldUpdateOperationsInput | string
     entity_uuid?: StringFieldUpdateOperationsInput | string
@@ -31080,7 +28080,6 @@ export namespace Prisma {
 
   export type AuditLogCreateManyInput = {
     id?: string
-    org_uuid?: string | null
     user_uuid?: string | null
     entity_type: string
     entity_uuid: string
@@ -31103,7 +28102,6 @@ export namespace Prisma {
 
   export type AuditLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     entity_type?: StringFieldUpdateOperationsInput | string
     entity_uuid?: StringFieldUpdateOperationsInput | string
@@ -31167,10 +28165,40 @@ export namespace Prisma {
     none?: PasswordResetTokenWhereInput
   }
 
-  export type MembershipListRelationFilter = {
-    every?: MembershipWhereInput
-    some?: MembershipWhereInput
-    none?: MembershipWhereInput
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type MappingTemplateListRelationFilter = {
+    every?: MappingTemplateWhereInput
+    some?: MappingTemplateWhereInput
+    none?: MappingTemplateWhereInput
+  }
+
+  export type ImportBatchListRelationFilter = {
+    every?: ImportBatchWhereInput
+    some?: ImportBatchWhereInput
+    none?: ImportBatchWhereInput
+  }
+
+  export type InstrumentListRelationFilter = {
+    every?: InstrumentWhereInput
+    some?: InstrumentWhereInput
+    none?: InstrumentWhereInput
+  }
+
+  export type TransactionListRelationFilter = {
+    every?: TransactionWhereInput
+    some?: TransactionWhereInput
+    none?: TransactionWhereInput
+  }
+
+  export type TaxYearComputationListRelationFilter = {
+    every?: TaxYearComputationWhereInput
+    some?: TaxYearComputationWhereInput
+    none?: TaxYearComputationWhereInput
   }
 
   export type SortOrderInput = {
@@ -31182,7 +28210,27 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type MembershipOrderByRelationAggregateInput = {
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MappingTemplateOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ImportBatchOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InstrumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaxYearComputationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31358,30 +28406,15 @@ export namespace Prisma {
     not?: NestedEnumDocumentCategoryFilter<$PrismaModel> | $Enums.DocumentCategory
   }
 
-  export type OrganizationNullableScalarRelationFilter = {
-    is?: OrganizationWhereInput | null
-    isNot?: OrganizationWhereInput | null
-  }
-
   export type ImportBatchNullableScalarRelationFilter = {
     is?: ImportBatchWhereInput | null
     isNot?: ImportBatchWhereInput | null
-  }
-
-  export type ImportBatchListRelationFilter = {
-    every?: ImportBatchWhereInput
-    some?: ImportBatchWhereInput
-    none?: ImportBatchWhereInput
   }
 
   export type TaxFormListRelationFilter = {
     every?: TaxFormWhereInput
     some?: TaxFormWhereInput
     none?: TaxFormWhereInput
-  }
-
-  export type ImportBatchOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type TaxFormOrderByRelationAggregateInput = {
@@ -31391,7 +28424,6 @@ export namespace Prisma {
   export type DocumentCountOrderByAggregateInput = {
     id?: SortOrder
     user_uuid?: SortOrder
-    org_uuid?: SortOrder
     import_batch_uuid?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -31410,7 +28442,6 @@ export namespace Prisma {
   export type DocumentMaxOrderByAggregateInput = {
     id?: SortOrder
     user_uuid?: SortOrder
-    org_uuid?: SortOrder
     import_batch_uuid?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -31425,7 +28456,6 @@ export namespace Prisma {
   export type DocumentMinOrderByAggregateInput = {
     id?: SortOrder
     user_uuid?: SortOrder
-    org_uuid?: SortOrder
     import_batch_uuid?: SortOrder
     filename?: SortOrder
     mimetype?: SortOrder
@@ -31477,160 +28507,6 @@ export namespace Prisma {
     _max?: NestedEnumDocumentCategoryFilter<$PrismaModel>
   }
 
-  export type AccountListRelationFilter = {
-    every?: AccountWhereInput
-    some?: AccountWhereInput
-    none?: AccountWhereInput
-  }
-
-  export type MappingTemplateListRelationFilter = {
-    every?: MappingTemplateWhereInput
-    some?: MappingTemplateWhereInput
-    none?: MappingTemplateWhereInput
-  }
-
-  export type TransactionListRelationFilter = {
-    every?: TransactionWhereInput
-    some?: TransactionWhereInput
-    none?: TransactionWhereInput
-  }
-
-  export type InstrumentListRelationFilter = {
-    every?: InstrumentWhereInput
-    some?: InstrumentWhereInput
-    none?: InstrumentWhereInput
-  }
-
-  export type TaxYearComputationListRelationFilter = {
-    every?: TaxYearComputationWhereInput
-    some?: TaxYearComputationWhereInput
-    none?: TaxYearComputationWhereInput
-  }
-
-  export type DocumentListRelationFilter = {
-    every?: DocumentWhereInput
-    some?: DocumentWhereInput
-    none?: DocumentWhereInput
-  }
-
-  export type AuditLogListRelationFilter = {
-    every?: AuditLogWhereInput
-    some?: AuditLogWhereInput
-    none?: AuditLogWhereInput
-  }
-
-  export type AccountOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type MappingTemplateOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TransactionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type InstrumentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TaxYearComputationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DocumentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AuditLogOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrganizationCountOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    base_currency?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type OrganizationMaxOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    base_currency?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type OrganizationMinOrderByAggregateInput = {
-    id?: SortOrder
-    name?: SortOrder
-    base_currency?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type EnumMembershipRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMembershipRoleFilter<$PrismaModel> | $Enums.MembershipRole
-  }
-
-  export type OrganizationScalarRelationFilter = {
-    is?: OrganizationWhereInput
-    isNot?: OrganizationWhereInput
-  }
-
-  export type MembershipOrg_uuidUser_uuidCompoundUniqueInput = {
-    org_uuid: string
-    user_uuid: string
-  }
-
-  export type MembershipCountOrderByAggregateInput = {
-    id?: SortOrder
-    org_uuid?: SortOrder
-    user_uuid?: SortOrder
-    role?: SortOrder
-    invited_at?: SortOrder
-    accepted_at?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type MembershipMaxOrderByAggregateInput = {
-    id?: SortOrder
-    org_uuid?: SortOrder
-    user_uuid?: SortOrder
-    role?: SortOrder
-    invited_at?: SortOrder
-    accepted_at?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type MembershipMinOrderByAggregateInput = {
-    id?: SortOrder
-    org_uuid?: SortOrder
-    user_uuid?: SortOrder
-    role?: SortOrder
-    invited_at?: SortOrder
-    accepted_at?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-  }
-
-  export type EnumMembershipRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMembershipRoleWithAggregatesFilter<$PrismaModel> | $Enums.MembershipRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMembershipRoleFilter<$PrismaModel>
-    _max?: NestedEnumMembershipRoleFilter<$PrismaModel>
-  }
-
   export type LotListRelationFilter = {
     every?: LotWhereInput
     some?: LotWhereInput
@@ -31653,7 +28529,7 @@ export namespace Prisma {
 
   export type AccountCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     currency?: SortOrder
     jurisdiction?: SortOrder
@@ -31663,7 +28539,7 @@ export namespace Prisma {
 
   export type AccountMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     currency?: SortOrder
     jurisdiction?: SortOrder
@@ -31673,7 +28549,7 @@ export namespace Prisma {
 
   export type AccountMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     currency?: SortOrder
     jurisdiction?: SortOrder
@@ -31711,9 +28587,14 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type MappingTemplateCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     file_type?: SortOrder
     detection_signature?: SortOrder
@@ -31729,7 +28610,7 @@ export namespace Prisma {
 
   export type MappingTemplateMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     file_type?: SortOrder
     version?: SortOrder
@@ -31739,7 +28620,7 @@ export namespace Prisma {
 
   export type MappingTemplateMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     name?: SortOrder
     file_type?: SortOrder
     version?: SortOrder
@@ -31815,13 +28696,23 @@ export namespace Prisma {
     none?: StagedTransactionWhereInput
   }
 
+  export type DocumentListRelationFilter = {
+    every?: DocumentWhereInput
+    some?: DocumentWhereInput
+    none?: DocumentWhereInput
+  }
+
   export type StagedTransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DocumentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type ImportBatchCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     source_document_uuid?: SortOrder
     mapping_template_uuid?: SortOrder
@@ -31834,7 +28725,7 @@ export namespace Prisma {
 
   export type ImportBatchMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     source_document_uuid?: SortOrder
     mapping_template_uuid?: SortOrder
@@ -31847,7 +28738,7 @@ export namespace Prisma {
 
   export type ImportBatchMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     source_document_uuid?: SortOrder
     mapping_template_uuid?: SortOrder
@@ -32024,7 +28915,7 @@ export namespace Prisma {
 
   export type InstrumentCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     isin?: SortOrder
     ticker?: SortOrder
     name?: SortOrder
@@ -32038,7 +28929,7 @@ export namespace Prisma {
 
   export type InstrumentMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     isin?: SortOrder
     ticker?: SortOrder
     name?: SortOrder
@@ -32052,7 +28943,7 @@ export namespace Prisma {
 
   export type InstrumentMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     isin?: SortOrder
     ticker?: SortOrder
     name?: SortOrder
@@ -32118,7 +29009,7 @@ export namespace Prisma {
 
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     instrument_uuid?: SortOrder
     type?: SortOrder
@@ -32153,7 +29044,7 @@ export namespace Prisma {
 
   export type TransactionMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     instrument_uuid?: SortOrder
     type?: SortOrder
@@ -32178,7 +29069,7 @@ export namespace Prisma {
 
   export type TransactionMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     instrument_uuid?: SortOrder
     type?: SortOrder
@@ -32595,7 +29486,7 @@ export namespace Prisma {
 
   export type TaxYearComputationCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     country_code?: SortOrder
     tax_year?: SortOrder
@@ -32616,7 +29507,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     country_code?: SortOrder
     tax_year?: SortOrder
@@ -32631,7 +29522,7 @@ export namespace Prisma {
 
   export type TaxYearComputationMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
+    user_uuid?: SortOrder
     account_uuid?: SortOrder
     country_code?: SortOrder
     tax_year?: SortOrder
@@ -32717,7 +29608,6 @@ export namespace Prisma {
 
   export type AuditLogCountOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
     user_uuid?: SortOrder
     entity_type?: SortOrder
     entity_uuid?: SortOrder
@@ -32729,7 +29619,6 @@ export namespace Prisma {
 
   export type AuditLogMaxOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
     user_uuid?: SortOrder
     entity_type?: SortOrder
     entity_uuid?: SortOrder
@@ -32739,7 +29628,6 @@ export namespace Prisma {
 
   export type AuditLogMinOrderByAggregateInput = {
     id?: SortOrder
-    org_uuid?: SortOrder
     user_uuid?: SortOrder
     entity_type?: SortOrder
     entity_uuid?: SortOrder
@@ -32764,11 +29652,46 @@ export namespace Prisma {
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
-  export type MembershipCreateNestedManyWithoutUserInput = {
-    create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
-    createMany?: MembershipCreateManyUserInputEnvelope
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type MappingTemplateCreateNestedManyWithoutUserInput = {
+    create?: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput> | MappingTemplateCreateWithoutUserInput[] | MappingTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MappingTemplateCreateOrConnectWithoutUserInput | MappingTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: MappingTemplateCreateManyUserInputEnvelope
+    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+  }
+
+  export type ImportBatchCreateNestedManyWithoutUserInput = {
+    create?: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput> | ImportBatchCreateWithoutUserInput[] | ImportBatchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutUserInput | ImportBatchCreateOrConnectWithoutUserInput[]
+    createMany?: ImportBatchCreateManyUserInputEnvelope
+    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+  }
+
+  export type InstrumentCreateNestedManyWithoutUserInput = {
+    create?: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput> | InstrumentCreateWithoutUserInput[] | InstrumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InstrumentCreateOrConnectWithoutUserInput | InstrumentCreateOrConnectWithoutUserInput[]
+    createMany?: InstrumentCreateManyUserInputEnvelope
+    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TaxYearComputationCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput> | TaxYearComputationCreateWithoutUserInput[] | TaxYearComputationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutUserInput | TaxYearComputationCreateOrConnectWithoutUserInput[]
+    createMany?: TaxYearComputationCreateManyUserInputEnvelope
+    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
   }
 
   export type PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput = {
@@ -32778,11 +29701,46 @@ export namespace Prisma {
     connect?: PasswordResetTokenWhereUniqueInput | PasswordResetTokenWhereUniqueInput[]
   }
 
-  export type MembershipUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
-    createMany?: MembershipCreateManyUserInputEnvelope
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type MappingTemplateUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput> | MappingTemplateCreateWithoutUserInput[] | MappingTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MappingTemplateCreateOrConnectWithoutUserInput | MappingTemplateCreateOrConnectWithoutUserInput[]
+    createMany?: MappingTemplateCreateManyUserInputEnvelope
+    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+  }
+
+  export type ImportBatchUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput> | ImportBatchCreateWithoutUserInput[] | ImportBatchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutUserInput | ImportBatchCreateOrConnectWithoutUserInput[]
+    createMany?: ImportBatchCreateManyUserInputEnvelope
+    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+  }
+
+  export type InstrumentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput> | InstrumentCreateWithoutUserInput[] | InstrumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InstrumentCreateOrConnectWithoutUserInput | InstrumentCreateOrConnectWithoutUserInput[]
+    createMany?: InstrumentCreateManyUserInputEnvelope
+    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type TaxYearComputationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput> | TaxYearComputationCreateWithoutUserInput[] | TaxYearComputationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutUserInput | TaxYearComputationCreateOrConnectWithoutUserInput[]
+    createMany?: TaxYearComputationCreateManyUserInputEnvelope
+    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -32815,18 +29773,88 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
   }
 
-  export type MembershipUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
-    upsert?: MembershipUpsertWithWhereUniqueWithoutUserInput | MembershipUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MembershipCreateManyUserInputEnvelope
-    set?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    disconnect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    delete?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    update?: MembershipUpdateWithWhereUniqueWithoutUserInput | MembershipUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MembershipUpdateManyWithWhereWithoutUserInput | MembershipUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type MappingTemplateUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput> | MappingTemplateCreateWithoutUserInput[] | MappingTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MappingTemplateCreateOrConnectWithoutUserInput | MappingTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: MappingTemplateUpsertWithWhereUniqueWithoutUserInput | MappingTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MappingTemplateCreateManyUserInputEnvelope
+    set?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    disconnect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    delete?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    update?: MappingTemplateUpdateWithWhereUniqueWithoutUserInput | MappingTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MappingTemplateUpdateManyWithWhereWithoutUserInput | MappingTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
+  }
+
+  export type ImportBatchUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput> | ImportBatchCreateWithoutUserInput[] | ImportBatchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutUserInput | ImportBatchCreateOrConnectWithoutUserInput[]
+    upsert?: ImportBatchUpsertWithWhereUniqueWithoutUserInput | ImportBatchUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ImportBatchCreateManyUserInputEnvelope
+    set?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    disconnect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    delete?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    update?: ImportBatchUpdateWithWhereUniqueWithoutUserInput | ImportBatchUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ImportBatchUpdateManyWithWhereWithoutUserInput | ImportBatchUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
+  }
+
+  export type InstrumentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput> | InstrumentCreateWithoutUserInput[] | InstrumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InstrumentCreateOrConnectWithoutUserInput | InstrumentCreateOrConnectWithoutUserInput[]
+    upsert?: InstrumentUpsertWithWhereUniqueWithoutUserInput | InstrumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InstrumentCreateManyUserInputEnvelope
+    set?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    disconnect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    delete?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    update?: InstrumentUpdateWithWhereUniqueWithoutUserInput | InstrumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InstrumentUpdateManyWithWhereWithoutUserInput | InstrumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
+  }
+
+  export type TransactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TaxYearComputationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput> | TaxYearComputationCreateWithoutUserInput[] | TaxYearComputationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutUserInput | TaxYearComputationCreateOrConnectWithoutUserInput[]
+    upsert?: TaxYearComputationUpsertWithWhereUniqueWithoutUserInput | TaxYearComputationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaxYearComputationCreateManyUserInputEnvelope
+    set?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    disconnect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    delete?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    update?: TaxYearComputationUpdateWithWhereUniqueWithoutUserInput | TaxYearComputationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaxYearComputationUpdateManyWithWhereWithoutUserInput | TaxYearComputationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
   }
 
   export type PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput = {
@@ -32843,18 +29871,88 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokenScalarWhereInput | PasswordResetTokenScalarWhereInput[]
   }
 
-  export type MembershipUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput> | MembershipCreateWithoutUserInput[] | MembershipUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutUserInput | MembershipCreateOrConnectWithoutUserInput[]
-    upsert?: MembershipUpsertWithWhereUniqueWithoutUserInput | MembershipUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: MembershipCreateManyUserInputEnvelope
-    set?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    disconnect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    delete?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    update?: MembershipUpdateWithWhereUniqueWithoutUserInput | MembershipUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: MembershipUpdateManyWithWhereWithoutUserInput | MembershipUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type MappingTemplateUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput> | MappingTemplateCreateWithoutUserInput[] | MappingTemplateUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MappingTemplateCreateOrConnectWithoutUserInput | MappingTemplateCreateOrConnectWithoutUserInput[]
+    upsert?: MappingTemplateUpsertWithWhereUniqueWithoutUserInput | MappingTemplateUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MappingTemplateCreateManyUserInputEnvelope
+    set?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    disconnect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    delete?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
+    update?: MappingTemplateUpdateWithWhereUniqueWithoutUserInput | MappingTemplateUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MappingTemplateUpdateManyWithWhereWithoutUserInput | MappingTemplateUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
+  }
+
+  export type ImportBatchUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput> | ImportBatchCreateWithoutUserInput[] | ImportBatchUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ImportBatchCreateOrConnectWithoutUserInput | ImportBatchCreateOrConnectWithoutUserInput[]
+    upsert?: ImportBatchUpsertWithWhereUniqueWithoutUserInput | ImportBatchUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ImportBatchCreateManyUserInputEnvelope
+    set?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    disconnect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    delete?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
+    update?: ImportBatchUpdateWithWhereUniqueWithoutUserInput | ImportBatchUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ImportBatchUpdateManyWithWhereWithoutUserInput | ImportBatchUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
+  }
+
+  export type InstrumentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput> | InstrumentCreateWithoutUserInput[] | InstrumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: InstrumentCreateOrConnectWithoutUserInput | InstrumentCreateOrConnectWithoutUserInput[]
+    upsert?: InstrumentUpsertWithWhereUniqueWithoutUserInput | InstrumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: InstrumentCreateManyUserInputEnvelope
+    set?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    disconnect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    delete?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
+    update?: InstrumentUpdateWithWhereUniqueWithoutUserInput | InstrumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: InstrumentUpdateManyWithWhereWithoutUserInput | InstrumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput> | TaxYearComputationCreateWithoutUserInput[] | TaxYearComputationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutUserInput | TaxYearComputationCreateOrConnectWithoutUserInput[]
+    upsert?: TaxYearComputationUpsertWithWhereUniqueWithoutUserInput | TaxYearComputationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TaxYearComputationCreateManyUserInputEnvelope
+    set?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    disconnect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    delete?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
+    update?: TaxYearComputationUpdateWithWhereUniqueWithoutUserInput | TaxYearComputationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TaxYearComputationUpdateManyWithWhereWithoutUserInput | TaxYearComputationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPassword_reset_tokensInput = {
@@ -32873,12 +29971,6 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPassword_reset_tokensInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPassword_reset_tokensInput, UserUpdateWithoutPassword_reset_tokensInput>, UserUncheckedUpdateWithoutPassword_reset_tokensInput>
-  }
-
-  export type OrganizationCreateNestedOneWithoutDocumentsInput = {
-    create?: XOR<OrganizationCreateWithoutDocumentsInput, OrganizationUncheckedCreateWithoutDocumentsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutDocumentsInput
-    connect?: OrganizationWhereUniqueInput
   }
 
   export type ImportBatchCreateNestedOneWithoutDocumentsInput = {
@@ -32929,16 +30021,6 @@ export namespace Prisma {
 
   export type EnumDocumentCategoryFieldUpdateOperationsInput = {
     set?: $Enums.DocumentCategory
-  }
-
-  export type OrganizationUpdateOneWithoutDocumentsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutDocumentsInput, OrganizationUncheckedCreateWithoutDocumentsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutDocumentsInput
-    upsert?: OrganizationUpsertWithoutDocumentsInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutDocumentsInput, OrganizationUpdateWithoutDocumentsInput>, OrganizationUncheckedUpdateWithoutDocumentsInput>
   }
 
   export type ImportBatchUpdateOneWithoutDocumentsNestedInput = {
@@ -33007,420 +30089,10 @@ export namespace Prisma {
     deleteMany?: TaxFormScalarWhereInput | TaxFormScalarWhereInput[]
   }
 
-  export type MembershipCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput> | MembershipCreateWithoutOrganizationInput[] | MembershipUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutOrganizationInput | MembershipCreateOrConnectWithoutOrganizationInput[]
-    createMany?: MembershipCreateManyOrganizationInputEnvelope
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-  }
-
-  export type AccountCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput> | AccountCreateWithoutOrganizationInput[] | AccountUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutOrganizationInput | AccountCreateOrConnectWithoutOrganizationInput[]
-    createMany?: AccountCreateManyOrganizationInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type MappingTemplateCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput> | MappingTemplateCreateWithoutOrganizationInput[] | MappingTemplateUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MappingTemplateCreateOrConnectWithoutOrganizationInput | MappingTemplateCreateOrConnectWithoutOrganizationInput[]
-    createMany?: MappingTemplateCreateManyOrganizationInputEnvelope
-    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-  }
-
-  export type ImportBatchCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput> | ImportBatchCreateWithoutOrganizationInput[] | ImportBatchUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ImportBatchCreateOrConnectWithoutOrganizationInput | ImportBatchCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ImportBatchCreateManyOrganizationInputEnvelope
-    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-  }
-
-  export type TransactionCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput> | TransactionCreateWithoutOrganizationInput[] | TransactionUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutOrganizationInput | TransactionCreateOrConnectWithoutOrganizationInput[]
-    createMany?: TransactionCreateManyOrganizationInputEnvelope
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-  }
-
-  export type InstrumentCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput> | InstrumentCreateWithoutOrganizationInput[] | InstrumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: InstrumentCreateOrConnectWithoutOrganizationInput | InstrumentCreateOrConnectWithoutOrganizationInput[]
-    createMany?: InstrumentCreateManyOrganizationInputEnvelope
-    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-  }
-
-  export type TaxYearComputationCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput> | TaxYearComputationCreateWithoutOrganizationInput[] | TaxYearComputationUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutOrganizationInput | TaxYearComputationCreateOrConnectWithoutOrganizationInput[]
-    createMany?: TaxYearComputationCreateManyOrganizationInputEnvelope
-    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-  }
-
-  export type DocumentCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput> | DocumentCreateWithoutOrganizationInput[] | DocumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutOrganizationInput | DocumentCreateOrConnectWithoutOrganizationInput[]
-    createMany?: DocumentCreateManyOrganizationInputEnvelope
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-  }
-
-  export type AuditLogCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
-    createMany?: AuditLogCreateManyOrganizationInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-  }
-
-  export type MembershipUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput> | MembershipCreateWithoutOrganizationInput[] | MembershipUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutOrganizationInput | MembershipCreateOrConnectWithoutOrganizationInput[]
-    createMany?: MembershipCreateManyOrganizationInputEnvelope
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-  }
-
-  export type AccountUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput> | AccountCreateWithoutOrganizationInput[] | AccountUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutOrganizationInput | AccountCreateOrConnectWithoutOrganizationInput[]
-    createMany?: AccountCreateManyOrganizationInputEnvelope
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-  }
-
-  export type MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput> | MappingTemplateCreateWithoutOrganizationInput[] | MappingTemplateUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MappingTemplateCreateOrConnectWithoutOrganizationInput | MappingTemplateCreateOrConnectWithoutOrganizationInput[]
-    createMany?: MappingTemplateCreateManyOrganizationInputEnvelope
-    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-  }
-
-  export type ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput> | ImportBatchCreateWithoutOrganizationInput[] | ImportBatchUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ImportBatchCreateOrConnectWithoutOrganizationInput | ImportBatchCreateOrConnectWithoutOrganizationInput[]
-    createMany?: ImportBatchCreateManyOrganizationInputEnvelope
-    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-  }
-
-  export type TransactionUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput> | TransactionCreateWithoutOrganizationInput[] | TransactionUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutOrganizationInput | TransactionCreateOrConnectWithoutOrganizationInput[]
-    createMany?: TransactionCreateManyOrganizationInputEnvelope
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-  }
-
-  export type InstrumentUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput> | InstrumentCreateWithoutOrganizationInput[] | InstrumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: InstrumentCreateOrConnectWithoutOrganizationInput | InstrumentCreateOrConnectWithoutOrganizationInput[]
-    createMany?: InstrumentCreateManyOrganizationInputEnvelope
-    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-  }
-
-  export type TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput> | TaxYearComputationCreateWithoutOrganizationInput[] | TaxYearComputationUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutOrganizationInput | TaxYearComputationCreateOrConnectWithoutOrganizationInput[]
-    createMany?: TaxYearComputationCreateManyOrganizationInputEnvelope
-    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-  }
-
-  export type DocumentUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput> | DocumentCreateWithoutOrganizationInput[] | DocumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutOrganizationInput | DocumentCreateOrConnectWithoutOrganizationInput[]
-    createMany?: DocumentCreateManyOrganizationInputEnvelope
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-  }
-
-  export type AuditLogUncheckedCreateNestedManyWithoutOrganizationInput = {
-    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
-    createMany?: AuditLogCreateManyOrganizationInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-  }
-
-  export type MembershipUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput> | MembershipCreateWithoutOrganizationInput[] | MembershipUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutOrganizationInput | MembershipCreateOrConnectWithoutOrganizationInput[]
-    upsert?: MembershipUpsertWithWhereUniqueWithoutOrganizationInput | MembershipUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: MembershipCreateManyOrganizationInputEnvelope
-    set?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    disconnect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    delete?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    update?: MembershipUpdateWithWhereUniqueWithoutOrganizationInput | MembershipUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: MembershipUpdateManyWithWhereWithoutOrganizationInput | MembershipUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
-  }
-
-  export type AccountUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput> | AccountCreateWithoutOrganizationInput[] | AccountUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutOrganizationInput | AccountCreateOrConnectWithoutOrganizationInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutOrganizationInput | AccountUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: AccountCreateManyOrganizationInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutOrganizationInput | AccountUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutOrganizationInput | AccountUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type MappingTemplateUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput> | MappingTemplateCreateWithoutOrganizationInput[] | MappingTemplateUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MappingTemplateCreateOrConnectWithoutOrganizationInput | MappingTemplateCreateOrConnectWithoutOrganizationInput[]
-    upsert?: MappingTemplateUpsertWithWhereUniqueWithoutOrganizationInput | MappingTemplateUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: MappingTemplateCreateManyOrganizationInputEnvelope
-    set?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    disconnect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    delete?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    update?: MappingTemplateUpdateWithWhereUniqueWithoutOrganizationInput | MappingTemplateUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: MappingTemplateUpdateManyWithWhereWithoutOrganizationInput | MappingTemplateUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
-  }
-
-  export type ImportBatchUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput> | ImportBatchCreateWithoutOrganizationInput[] | ImportBatchUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ImportBatchCreateOrConnectWithoutOrganizationInput | ImportBatchCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ImportBatchUpsertWithWhereUniqueWithoutOrganizationInput | ImportBatchUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ImportBatchCreateManyOrganizationInputEnvelope
-    set?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    disconnect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    delete?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    update?: ImportBatchUpdateWithWhereUniqueWithoutOrganizationInput | ImportBatchUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ImportBatchUpdateManyWithWhereWithoutOrganizationInput | ImportBatchUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
-  }
-
-  export type TransactionUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput> | TransactionCreateWithoutOrganizationInput[] | TransactionUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutOrganizationInput | TransactionCreateOrConnectWithoutOrganizationInput[]
-    upsert?: TransactionUpsertWithWhereUniqueWithoutOrganizationInput | TransactionUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: TransactionCreateManyOrganizationInputEnvelope
-    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    update?: TransactionUpdateWithWhereUniqueWithoutOrganizationInput | TransactionUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: TransactionUpdateManyWithWhereWithoutOrganizationInput | TransactionUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-  }
-
-  export type InstrumentUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput> | InstrumentCreateWithoutOrganizationInput[] | InstrumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: InstrumentCreateOrConnectWithoutOrganizationInput | InstrumentCreateOrConnectWithoutOrganizationInput[]
-    upsert?: InstrumentUpsertWithWhereUniqueWithoutOrganizationInput | InstrumentUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: InstrumentCreateManyOrganizationInputEnvelope
-    set?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    disconnect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    delete?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    update?: InstrumentUpdateWithWhereUniqueWithoutOrganizationInput | InstrumentUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: InstrumentUpdateManyWithWhereWithoutOrganizationInput | InstrumentUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
-  }
-
-  export type TaxYearComputationUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput> | TaxYearComputationCreateWithoutOrganizationInput[] | TaxYearComputationUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutOrganizationInput | TaxYearComputationCreateOrConnectWithoutOrganizationInput[]
-    upsert?: TaxYearComputationUpsertWithWhereUniqueWithoutOrganizationInput | TaxYearComputationUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: TaxYearComputationCreateManyOrganizationInputEnvelope
-    set?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    disconnect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    delete?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    update?: TaxYearComputationUpdateWithWhereUniqueWithoutOrganizationInput | TaxYearComputationUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: TaxYearComputationUpdateManyWithWhereWithoutOrganizationInput | TaxYearComputationUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
-  }
-
-  export type DocumentUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput> | DocumentCreateWithoutOrganizationInput[] | DocumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutOrganizationInput | DocumentCreateOrConnectWithoutOrganizationInput[]
-    upsert?: DocumentUpsertWithWhereUniqueWithoutOrganizationInput | DocumentUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: DocumentCreateManyOrganizationInputEnvelope
-    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    update?: DocumentUpdateWithWhereUniqueWithoutOrganizationInput | DocumentUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: DocumentUpdateManyWithWhereWithoutOrganizationInput | DocumentUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-  }
-
-  export type AuditLogUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutOrganizationInput | AuditLogUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: AuditLogCreateManyOrganizationInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutOrganizationInput | AuditLogUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutOrganizationInput | AuditLogUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-  }
-
-  export type MembershipUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput> | MembershipCreateWithoutOrganizationInput[] | MembershipUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MembershipCreateOrConnectWithoutOrganizationInput | MembershipCreateOrConnectWithoutOrganizationInput[]
-    upsert?: MembershipUpsertWithWhereUniqueWithoutOrganizationInput | MembershipUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: MembershipCreateManyOrganizationInputEnvelope
-    set?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    disconnect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    delete?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
-    update?: MembershipUpdateWithWhereUniqueWithoutOrganizationInput | MembershipUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: MembershipUpdateManyWithWhereWithoutOrganizationInput | MembershipUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
-  }
-
-  export type AccountUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput> | AccountCreateWithoutOrganizationInput[] | AccountUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AccountCreateOrConnectWithoutOrganizationInput | AccountCreateOrConnectWithoutOrganizationInput[]
-    upsert?: AccountUpsertWithWhereUniqueWithoutOrganizationInput | AccountUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: AccountCreateManyOrganizationInputEnvelope
-    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
-    update?: AccountUpdateWithWhereUniqueWithoutOrganizationInput | AccountUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: AccountUpdateManyWithWhereWithoutOrganizationInput | AccountUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
-  }
-
-  export type MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput> | MappingTemplateCreateWithoutOrganizationInput[] | MappingTemplateUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: MappingTemplateCreateOrConnectWithoutOrganizationInput | MappingTemplateCreateOrConnectWithoutOrganizationInput[]
-    upsert?: MappingTemplateUpsertWithWhereUniqueWithoutOrganizationInput | MappingTemplateUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: MappingTemplateCreateManyOrganizationInputEnvelope
-    set?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    disconnect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    delete?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    connect?: MappingTemplateWhereUniqueInput | MappingTemplateWhereUniqueInput[]
-    update?: MappingTemplateUpdateWithWhereUniqueWithoutOrganizationInput | MappingTemplateUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: MappingTemplateUpdateManyWithWhereWithoutOrganizationInput | MappingTemplateUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
-  }
-
-  export type ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput> | ImportBatchCreateWithoutOrganizationInput[] | ImportBatchUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: ImportBatchCreateOrConnectWithoutOrganizationInput | ImportBatchCreateOrConnectWithoutOrganizationInput[]
-    upsert?: ImportBatchUpsertWithWhereUniqueWithoutOrganizationInput | ImportBatchUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: ImportBatchCreateManyOrganizationInputEnvelope
-    set?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    disconnect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    delete?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    connect?: ImportBatchWhereUniqueInput | ImportBatchWhereUniqueInput[]
-    update?: ImportBatchUpdateWithWhereUniqueWithoutOrganizationInput | ImportBatchUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: ImportBatchUpdateManyWithWhereWithoutOrganizationInput | ImportBatchUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
-  }
-
-  export type TransactionUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput> | TransactionCreateWithoutOrganizationInput[] | TransactionUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutOrganizationInput | TransactionCreateOrConnectWithoutOrganizationInput[]
-    upsert?: TransactionUpsertWithWhereUniqueWithoutOrganizationInput | TransactionUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: TransactionCreateManyOrganizationInputEnvelope
-    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    update?: TransactionUpdateWithWhereUniqueWithoutOrganizationInput | TransactionUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: TransactionUpdateManyWithWhereWithoutOrganizationInput | TransactionUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-  }
-
-  export type InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput> | InstrumentCreateWithoutOrganizationInput[] | InstrumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: InstrumentCreateOrConnectWithoutOrganizationInput | InstrumentCreateOrConnectWithoutOrganizationInput[]
-    upsert?: InstrumentUpsertWithWhereUniqueWithoutOrganizationInput | InstrumentUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: InstrumentCreateManyOrganizationInputEnvelope
-    set?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    disconnect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    delete?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    connect?: InstrumentWhereUniqueInput | InstrumentWhereUniqueInput[]
-    update?: InstrumentUpdateWithWhereUniqueWithoutOrganizationInput | InstrumentUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: InstrumentUpdateManyWithWhereWithoutOrganizationInput | InstrumentUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
-  }
-
-  export type TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput> | TaxYearComputationCreateWithoutOrganizationInput[] | TaxYearComputationUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: TaxYearComputationCreateOrConnectWithoutOrganizationInput | TaxYearComputationCreateOrConnectWithoutOrganizationInput[]
-    upsert?: TaxYearComputationUpsertWithWhereUniqueWithoutOrganizationInput | TaxYearComputationUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: TaxYearComputationCreateManyOrganizationInputEnvelope
-    set?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    disconnect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    delete?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
-    update?: TaxYearComputationUpdateWithWhereUniqueWithoutOrganizationInput | TaxYearComputationUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: TaxYearComputationUpdateManyWithWhereWithoutOrganizationInput | TaxYearComputationUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
-  }
-
-  export type DocumentUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput> | DocumentCreateWithoutOrganizationInput[] | DocumentUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: DocumentCreateOrConnectWithoutOrganizationInput | DocumentCreateOrConnectWithoutOrganizationInput[]
-    upsert?: DocumentUpsertWithWhereUniqueWithoutOrganizationInput | DocumentUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: DocumentCreateManyOrganizationInputEnvelope
-    set?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    disconnect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    delete?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    connect?: DocumentWhereUniqueInput | DocumentWhereUniqueInput[]
-    update?: DocumentUpdateWithWhereUniqueWithoutOrganizationInput | DocumentUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: DocumentUpdateManyWithWhereWithoutOrganizationInput | DocumentUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-  }
-
-  export type AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput = {
-    create?: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput> | AuditLogCreateWithoutOrganizationInput[] | AuditLogUncheckedCreateWithoutOrganizationInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutOrganizationInput | AuditLogCreateOrConnectWithoutOrganizationInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutOrganizationInput | AuditLogUpsertWithWhereUniqueWithoutOrganizationInput[]
-    createMany?: AuditLogCreateManyOrganizationInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutOrganizationInput | AuditLogUpdateWithWhereUniqueWithoutOrganizationInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutOrganizationInput | AuditLogUpdateManyWithWhereWithoutOrganizationInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-  }
-
-  export type OrganizationCreateNestedOneWithoutMembershipsInput = {
-    create?: XOR<OrganizationCreateWithoutMembershipsInput, OrganizationUncheckedCreateWithoutMembershipsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembershipsInput
-    connect?: OrganizationWhereUniqueInput
-  }
-
-  export type UserCreateNestedOneWithoutMembershipsInput = {
-    create?: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMembershipsInput
+  export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type EnumMembershipRoleFieldUpdateOperationsInput = {
-    set?: $Enums.MembershipRole
-  }
-
-  export type OrganizationUpdateOneRequiredWithoutMembershipsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutMembershipsInput, OrganizationUncheckedCreateWithoutMembershipsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMembershipsInput
-    upsert?: OrganizationUpsertWithoutMembershipsInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMembershipsInput, OrganizationUpdateWithoutMembershipsInput>, OrganizationUncheckedUpdateWithoutMembershipsInput>
-  }
-
-  export type UserUpdateOneRequiredWithoutMembershipsNestedInput = {
-    create?: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMembershipsInput
-    upsert?: UserUpsertWithoutMembershipsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMembershipsInput, UserUpdateWithoutMembershipsInput>, UserUncheckedUpdateWithoutMembershipsInput>
-  }
-
-  export type OrganizationCreateNestedOneWithoutAccountsInput = {
-    create?: XOR<OrganizationCreateWithoutAccountsInput, OrganizationUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutAccountsInput
-    connect?: OrganizationWhereUniqueInput
   }
 
   export type ImportBatchCreateNestedManyWithoutAccountInput = {
@@ -33493,12 +30165,12 @@ export namespace Prisma {
     connect?: TaxYearComputationWhereUniqueInput | TaxYearComputationWhereUniqueInput[]
   }
 
-  export type OrganizationUpdateOneRequiredWithoutAccountsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutAccountsInput, OrganizationUncheckedCreateWithoutAccountsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutAccountsInput
-    upsert?: OrganizationUpsertWithoutAccountsInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutAccountsInput, OrganizationUpdateWithoutAccountsInput>, OrganizationUncheckedUpdateWithoutAccountsInput>
+  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    upsert?: UserUpsertWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
   }
 
   export type ImportBatchUpdateManyWithoutAccountNestedInput = {
@@ -33641,10 +30313,10 @@ export namespace Prisma {
     deleteMany?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
   }
 
-  export type OrganizationCreateNestedOneWithoutMapping_templatesInput = {
-    create?: XOR<OrganizationCreateWithoutMapping_templatesInput, OrganizationUncheckedCreateWithoutMapping_templatesInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMapping_templatesInput
-    connect?: OrganizationWhereUniqueInput
+  export type UserCreateNestedOneWithoutMapping_templatesInput = {
+    create?: XOR<UserCreateWithoutMapping_templatesInput, UserUncheckedCreateWithoutMapping_templatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMapping_templatesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ImportBatchCreateNestedManyWithoutMapping_templateInput = {
@@ -33665,14 +30337,14 @@ export namespace Prisma {
     set?: $Enums.SourceFileType
   }
 
-  export type OrganizationUpdateOneWithoutMapping_templatesNestedInput = {
-    create?: XOR<OrganizationCreateWithoutMapping_templatesInput, OrganizationUncheckedCreateWithoutMapping_templatesInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutMapping_templatesInput
-    upsert?: OrganizationUpsertWithoutMapping_templatesInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutMapping_templatesInput, OrganizationUpdateWithoutMapping_templatesInput>, OrganizationUncheckedUpdateWithoutMapping_templatesInput>
+  export type UserUpdateOneWithoutMapping_templatesNestedInput = {
+    create?: XOR<UserCreateWithoutMapping_templatesInput, UserUncheckedCreateWithoutMapping_templatesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMapping_templatesInput
+    upsert?: UserUpsertWithoutMapping_templatesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMapping_templatesInput, UserUpdateWithoutMapping_templatesInput>, UserUncheckedUpdateWithoutMapping_templatesInput>
   }
 
   export type ImportBatchUpdateManyWithoutMapping_templateNestedInput = {
@@ -33703,10 +30375,10 @@ export namespace Prisma {
     deleteMany?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
   }
 
-  export type OrganizationCreateNestedOneWithoutImport_batchesInput = {
-    create?: XOR<OrganizationCreateWithoutImport_batchesInput, OrganizationUncheckedCreateWithoutImport_batchesInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutImport_batchesInput
-    connect?: OrganizationWhereUniqueInput
+  export type UserCreateNestedOneWithoutImport_batchesInput = {
+    create?: XOR<UserCreateWithoutImport_batchesInput, UserUncheckedCreateWithoutImport_batchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutImport_batchesInput
+    connect?: UserWhereUniqueInput
   }
 
   export type AccountCreateNestedOneWithoutImport_batchesInput = {
@@ -33773,12 +30445,12 @@ export namespace Prisma {
     set?: $Enums.ImportBatchStatus
   }
 
-  export type OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput = {
-    create?: XOR<OrganizationCreateWithoutImport_batchesInput, OrganizationUncheckedCreateWithoutImport_batchesInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutImport_batchesInput
-    upsert?: OrganizationUpsertWithoutImport_batchesInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutImport_batchesInput, OrganizationUpdateWithoutImport_batchesInput>, OrganizationUncheckedUpdateWithoutImport_batchesInput>
+  export type UserUpdateOneRequiredWithoutImport_batchesNestedInput = {
+    create?: XOR<UserCreateWithoutImport_batchesInput, UserUncheckedCreateWithoutImport_batchesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutImport_batchesInput
+    upsert?: UserUpsertWithoutImport_batchesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutImport_batchesInput, UserUpdateWithoutImport_batchesInput>, UserUncheckedUpdateWithoutImport_batchesInput>
   }
 
   export type AccountUpdateOneRequiredWithoutImport_batchesNestedInput = {
@@ -33957,10 +30629,10 @@ export namespace Prisma {
     update?: XOR<XOR<TransactionUpdateToOneWithWhereWithoutSource_staged_transactionInput, TransactionUpdateWithoutSource_staged_transactionInput>, TransactionUncheckedUpdateWithoutSource_staged_transactionInput>
   }
 
-  export type OrganizationCreateNestedOneWithoutCustom_instrumentsInput = {
-    create?: XOR<OrganizationCreateWithoutCustom_instrumentsInput, OrganizationUncheckedCreateWithoutCustom_instrumentsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutCustom_instrumentsInput
-    connect?: OrganizationWhereUniqueInput
+  export type UserCreateNestedOneWithoutCustom_instrumentsInput = {
+    create?: XOR<UserCreateWithoutCustom_instrumentsInput, UserUncheckedCreateWithoutCustom_instrumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustom_instrumentsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type StagedTransactionCreateNestedManyWithoutResolved_instrumentInput = {
@@ -34055,14 +30727,14 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type OrganizationUpdateOneWithoutCustom_instrumentsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutCustom_instrumentsInput, OrganizationUncheckedCreateWithoutCustom_instrumentsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutCustom_instrumentsInput
-    upsert?: OrganizationUpsertWithoutCustom_instrumentsInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutCustom_instrumentsInput, OrganizationUpdateWithoutCustom_instrumentsInput>, OrganizationUncheckedUpdateWithoutCustom_instrumentsInput>
+  export type UserUpdateOneWithoutCustom_instrumentsNestedInput = {
+    create?: XOR<UserCreateWithoutCustom_instrumentsInput, UserUncheckedCreateWithoutCustom_instrumentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustom_instrumentsInput
+    upsert?: UserUpsertWithoutCustom_instrumentsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCustom_instrumentsInput, UserUpdateWithoutCustom_instrumentsInput>, UserUncheckedUpdateWithoutCustom_instrumentsInput>
   }
 
   export type StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput = {
@@ -34233,10 +30905,10 @@ export namespace Prisma {
     deleteMany?: PriceSnapshotScalarWhereInput | PriceSnapshotScalarWhereInput[]
   }
 
-  export type OrganizationCreateNestedOneWithoutTransactionsInput = {
-    create?: XOR<OrganizationCreateWithoutTransactionsInput, OrganizationUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTransactionsInput
-    connect?: OrganizationWhereUniqueInput
+  export type UserCreateNestedOneWithoutTransactionsInput = {
+    create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type AccountCreateNestedOneWithoutTransactionsInput = {
@@ -34315,12 +30987,12 @@ export namespace Prisma {
     divide?: Decimal | DecimalJsLike | number | string
   }
 
-  export type OrganizationUpdateOneRequiredWithoutTransactionsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutTransactionsInput, OrganizationUncheckedCreateWithoutTransactionsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTransactionsInput
-    upsert?: OrganizationUpsertWithoutTransactionsInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutTransactionsInput, OrganizationUpdateWithoutTransactionsInput>, OrganizationUncheckedUpdateWithoutTransactionsInput>
+  export type UserUpdateOneRequiredWithoutTransactionsNestedInput = {
+    create?: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTransactionsInput
+    upsert?: UserUpsertWithoutTransactionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
   export type AccountUpdateOneRequiredWithoutTransactionsNestedInput = {
@@ -34538,10 +31210,10 @@ export namespace Prisma {
     push?: $Enums.CostBasisMethod | $Enums.CostBasisMethod[]
   }
 
-  export type OrganizationCreateNestedOneWithoutTax_year_computationsInput = {
-    create?: XOR<OrganizationCreateWithoutTax_year_computationsInput, OrganizationUncheckedCreateWithoutTax_year_computationsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTax_year_computationsInput
-    connect?: OrganizationWhereUniqueInput
+  export type UserCreateNestedOneWithoutTax_year_computationsInput = {
+    create?: XOR<UserCreateWithoutTax_year_computationsInput, UserUncheckedCreateWithoutTax_year_computationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTax_year_computationsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type AccountCreateNestedOneWithoutTax_year_computationsInput = {
@@ -34568,12 +31240,12 @@ export namespace Prisma {
     set?: $Enums.TaxComputationStatus
   }
 
-  export type OrganizationUpdateOneRequiredWithoutTax_year_computationsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutTax_year_computationsInput, OrganizationUncheckedCreateWithoutTax_year_computationsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutTax_year_computationsInput
-    upsert?: OrganizationUpsertWithoutTax_year_computationsInput
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutTax_year_computationsInput, OrganizationUpdateWithoutTax_year_computationsInput>, OrganizationUncheckedUpdateWithoutTax_year_computationsInput>
+  export type UserUpdateOneRequiredWithoutTax_year_computationsNestedInput = {
+    create?: XOR<UserCreateWithoutTax_year_computationsInput, UserUncheckedCreateWithoutTax_year_computationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTax_year_computationsInput
+    upsert?: UserUpsertWithoutTax_year_computationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTax_year_computationsInput, UserUpdateWithoutTax_year_computationsInput>, UserUncheckedUpdateWithoutTax_year_computationsInput>
   }
 
   export type AccountUpdateOneWithoutTax_year_computationsNestedInput = {
@@ -34646,24 +31318,8 @@ export namespace Prisma {
     update?: XOR<XOR<DocumentUpdateToOneWithWhereWithoutTax_formsInput, DocumentUpdateWithoutTax_formsInput>, DocumentUncheckedUpdateWithoutTax_formsInput>
   }
 
-  export type OrganizationCreateNestedOneWithoutAudit_logsInput = {
-    create?: XOR<OrganizationCreateWithoutAudit_logsInput, OrganizationUncheckedCreateWithoutAudit_logsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutAudit_logsInput
-    connect?: OrganizationWhereUniqueInput
-  }
-
   export type EnumAuditActionFieldUpdateOperationsInput = {
     set?: $Enums.AuditAction
-  }
-
-  export type OrganizationUpdateOneWithoutAudit_logsNestedInput = {
-    create?: XOR<OrganizationCreateWithoutAudit_logsInput, OrganizationUncheckedCreateWithoutAudit_logsInput>
-    connectOrCreate?: OrganizationCreateOrConnectWithoutAudit_logsInput
-    upsert?: OrganizationUpsertWithoutAudit_logsInput
-    disconnect?: OrganizationWhereInput | boolean
-    delete?: OrganizationWhereInput | boolean
-    connect?: OrganizationWhereUniqueInput
-    update?: XOR<XOR<OrganizationUpdateToOneWithWhereWithoutAudit_logsInput, OrganizationUpdateWithoutAudit_logsInput>, OrganizationUncheckedUpdateWithoutAudit_logsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -34876,23 +31532,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumDocumentCategoryFilter<$PrismaModel>
     _max?: NestedEnumDocumentCategoryFilter<$PrismaModel>
-  }
-
-  export type NestedEnumMembershipRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMembershipRoleFilter<$PrismaModel> | $Enums.MembershipRole
-  }
-
-  export type NestedEnumMembershipRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MembershipRole | EnumMembershipRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MembershipRole[] | ListEnumMembershipRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumMembershipRoleWithAggregatesFilter<$PrismaModel> | $Enums.MembershipRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMembershipRoleFilter<$PrismaModel>
-    _max?: NestedEnumMembershipRoleFilter<$PrismaModel>
   }
 
   export type NestedEnumSourceFileTypeFilter<$PrismaModel = never> = {
@@ -35221,33 +31860,267 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type MembershipCreateWithoutUserInput = {
+  export type AccountCreateWithoutUserInput = {
     id?: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
+    name: string
+    currency: string
+    jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutMembershipsInput
+    import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
+    transactions?: TransactionCreateNestedManyWithoutAccountInput
+    lots?: LotCreateNestedManyWithoutAccountInput
+    position_snapshots?: PositionSnapshotCreateNestedManyWithoutAccountInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutAccountInput
   }
 
-  export type MembershipUncheckedCreateWithoutUserInput = {
+  export type AccountUncheckedCreateWithoutUserInput = {
     id?: string
-    org_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
+    name: string
+    currency: string
+    jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutAccountInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutAccountInput
+    lots?: LotUncheckedCreateNestedManyWithoutAccountInput
+    position_snapshots?: PositionSnapshotUncheckedCreateNestedManyWithoutAccountInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutAccountInput
   }
 
-  export type MembershipCreateOrConnectWithoutUserInput = {
-    where: MembershipWhereUniqueInput
-    create: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput>
+  export type AccountCreateOrConnectWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
   }
 
-  export type MembershipCreateManyUserInputEnvelope = {
-    data: MembershipCreateManyUserInput | MembershipCreateManyUserInput[]
+  export type AccountCreateManyUserInputEnvelope = {
+    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MappingTemplateCreateWithoutUserInput = {
+    id?: string
+    name: string
+    file_type: $Enums.SourceFileType
+    detection_signature: JsonNullValueInput | InputJsonValue
+    column_mapping: JsonNullValueInput | InputJsonValue
+    version?: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    import_batches?: ImportBatchCreateNestedManyWithoutMapping_templateInput
+  }
+
+  export type MappingTemplateUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    file_type: $Enums.SourceFileType
+    detection_signature: JsonNullValueInput | InputJsonValue
+    column_mapping: JsonNullValueInput | InputJsonValue
+    version?: number
+    created_at?: Date | string
+    updated_at?: Date | string
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutMapping_templateInput
+  }
+
+  export type MappingTemplateCreateOrConnectWithoutUserInput = {
+    where: MappingTemplateWhereUniqueInput
+    create: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput>
+  }
+
+  export type MappingTemplateCreateManyUserInputEnvelope = {
+    data: MappingTemplateCreateManyUserInput | MappingTemplateCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ImportBatchCreateWithoutUserInput = {
+    id?: string
+    status?: $Enums.ImportBatchStatus
+    error_summary?: string | null
+    committed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    account: AccountCreateNestedOneWithoutImport_batchesInput
+    source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
+    mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
+    staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
+    transactions?: TransactionCreateNestedManyWithoutImport_batchInput
+    documents?: DocumentCreateNestedManyWithoutImport_batchInput
+  }
+
+  export type ImportBatchUncheckedCreateWithoutUserInput = {
+    id?: string
+    account_uuid: string
+    source_document_uuid: string
+    mapping_template_uuid?: string | null
+    status?: $Enums.ImportBatchStatus
+    error_summary?: string | null
+    committed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
+    documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
+  }
+
+  export type ImportBatchCreateOrConnectWithoutUserInput = {
+    where: ImportBatchWhereUniqueInput
+    create: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput>
+  }
+
+  export type ImportBatchCreateManyUserInputEnvelope = {
+    data: ImportBatchCreateManyUserInput | ImportBatchCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InstrumentCreateWithoutUserInput = {
+    id?: string
+    isin?: string | null
+    ticker?: string | null
+    name?: string | null
+    asset_class?: $Enums.AssetClass
+    currency: string
+    exchange?: string | null
+    is_custom?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
+    transactions?: TransactionCreateNestedManyWithoutInstrumentInput
+    corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
+    lots?: LotCreateNestedManyWithoutInstrumentInput
+    position_snapshots?: PositionSnapshotCreateNestedManyWithoutInstrumentInput
+    price_snapshots?: PriceSnapshotCreateNestedManyWithoutInstrumentInput
+  }
+
+  export type InstrumentUncheckedCreateWithoutUserInput = {
+    id?: string
+    isin?: string | null
+    ticker?: string | null
+    name?: string | null
+    asset_class?: $Enums.AssetClass
+    currency: string
+    exchange?: string | null
+    is_custom?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutResolved_instrumentInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutInstrumentInput
+    corporate_actions?: CorporateActionUncheckedCreateNestedManyWithoutInstrumentInput
+    lots?: LotUncheckedCreateNestedManyWithoutInstrumentInput
+    position_snapshots?: PositionSnapshotUncheckedCreateNestedManyWithoutInstrumentInput
+    price_snapshots?: PriceSnapshotUncheckedCreateNestedManyWithoutInstrumentInput
+  }
+
+  export type InstrumentCreateOrConnectWithoutUserInput = {
+    where: InstrumentWhereUniqueInput
+    create: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type InstrumentCreateManyUserInputEnvelope = {
+    data: InstrumentCreateManyUserInput | InstrumentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.TransactionType
+    trade_date: Date | string
+    settlement_date?: Date | string | null
+    quantity?: Decimal | DecimalJsLike | number | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    tax_withheld?: Decimal | DecimalJsLike | number | string
+    currency: string
+    fx_rate?: Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
+    broker_ref?: string | null
+    is_correction?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+    account: AccountCreateNestedOneWithoutTransactionsInput
+    instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
+    import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
+    source_staged_transaction?: StagedTransactionCreateNestedOneWithoutCommitted_transactionInput
+    supersedes?: TransactionCreateNestedOneWithoutSuperseded_byInput
+    superseded_by?: TransactionCreateNestedOneWithoutSupersedesInput
+    opened_lots?: LotCreateNestedManyWithoutOpen_transactionInput
+  }
+
+  export type TransactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    account_uuid: string
+    instrument_uuid?: string | null
+    type: $Enums.TransactionType
+    trade_date: Date | string
+    settlement_date?: Date | string | null
+    quantity?: Decimal | DecimalJsLike | number | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    tax_withheld?: Decimal | DecimalJsLike | number | string
+    currency: string
+    fx_rate?: Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
+    broker_ref?: string | null
+    import_batch_uuid?: string | null
+    source_staged_transaction_uuid?: string | null
+    is_correction?: boolean
+    supersedes_uuid?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    superseded_by?: TransactionUncheckedCreateNestedOneWithoutSupersedesInput
+    opened_lots?: LotUncheckedCreateNestedManyWithoutOpen_transactionInput
+  }
+
+  export type TransactionCreateOrConnectWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionCreateManyUserInputEnvelope = {
+    data: TransactionCreateManyUserInput | TransactionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TaxYearComputationCreateWithoutUserInput = {
+    id?: string
+    country_code: string
+    tax_year: number
+    cost_basis_method?: $Enums.CostBasisMethod
+    status?: $Enums.TaxComputationStatus
+    version?: number
+    result: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash: string
+    finalized_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    account?: AccountCreateNestedOneWithoutTax_year_computationsInput
+    tax_forms?: TaxFormCreateNestedManyWithoutTax_year_computationInput
+  }
+
+  export type TaxYearComputationUncheckedCreateWithoutUserInput = {
+    id?: string
+    account_uuid?: string | null
+    country_code: string
+    tax_year: number
+    cost_basis_method?: $Enums.CostBasisMethod
+    status?: $Enums.TaxComputationStatus
+    version?: number
+    result: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash: string
+    finalized_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    tax_forms?: TaxFormUncheckedCreateNestedManyWithoutTax_year_computationInput
+  }
+
+  export type TaxYearComputationCreateOrConnectWithoutUserInput = {
+    where: TaxYearComputationWhereUniqueInput
+    create: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput>
+  }
+
+  export type TaxYearComputationCreateManyUserInputEnvelope = {
+    data: TaxYearComputationCreateManyUserInput | TaxYearComputationCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -35279,34 +32152,208 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
 
-  export type MembershipUpsertWithWhereUniqueWithoutUserInput = {
-    where: MembershipWhereUniqueInput
-    update: XOR<MembershipUpdateWithoutUserInput, MembershipUncheckedUpdateWithoutUserInput>
-    create: XOR<MembershipCreateWithoutUserInput, MembershipUncheckedCreateWithoutUserInput>
+  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
   }
 
-  export type MembershipUpdateWithWhereUniqueWithoutUserInput = {
-    where: MembershipWhereUniqueInput
-    data: XOR<MembershipUpdateWithoutUserInput, MembershipUncheckedUpdateWithoutUserInput>
+  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
   }
 
-  export type MembershipUpdateManyWithWhereWithoutUserInput = {
-    where: MembershipScalarWhereInput
-    data: XOR<MembershipUpdateManyMutationInput, MembershipUncheckedUpdateManyWithoutUserInput>
+  export type AccountUpdateManyWithWhereWithoutUserInput = {
+    where: AccountScalarWhereInput
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type MembershipScalarWhereInput = {
-    AND?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
-    OR?: MembershipScalarWhereInput[]
-    NOT?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
-    id?: StringFilter<"Membership"> | string
-    org_uuid?: StringFilter<"Membership"> | string
-    user_uuid?: StringFilter<"Membership"> | string
-    role?: EnumMembershipRoleFilter<"Membership"> | $Enums.MembershipRole
-    invited_at?: DateTimeFilter<"Membership"> | Date | string
-    accepted_at?: DateTimeNullableFilter<"Membership"> | Date | string | null
-    created_at?: DateTimeFilter<"Membership"> | Date | string
-    updated_at?: DateTimeFilter<"Membership"> | Date | string
+  export type AccountScalarWhereInput = {
+    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    OR?: AccountScalarWhereInput[]
+    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    id?: StringFilter<"Account"> | string
+    user_uuid?: StringFilter<"Account"> | string
+    name?: StringFilter<"Account"> | string
+    currency?: StringFilter<"Account"> | string
+    jurisdiction?: StringFilter<"Account"> | string
+    created_at?: DateTimeFilter<"Account"> | Date | string
+    updated_at?: DateTimeFilter<"Account"> | Date | string
+  }
+
+  export type MappingTemplateUpsertWithWhereUniqueWithoutUserInput = {
+    where: MappingTemplateWhereUniqueInput
+    update: XOR<MappingTemplateUpdateWithoutUserInput, MappingTemplateUncheckedUpdateWithoutUserInput>
+    create: XOR<MappingTemplateCreateWithoutUserInput, MappingTemplateUncheckedCreateWithoutUserInput>
+  }
+
+  export type MappingTemplateUpdateWithWhereUniqueWithoutUserInput = {
+    where: MappingTemplateWhereUniqueInput
+    data: XOR<MappingTemplateUpdateWithoutUserInput, MappingTemplateUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MappingTemplateUpdateManyWithWhereWithoutUserInput = {
+    where: MappingTemplateScalarWhereInput
+    data: XOR<MappingTemplateUpdateManyMutationInput, MappingTemplateUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MappingTemplateScalarWhereInput = {
+    AND?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
+    OR?: MappingTemplateScalarWhereInput[]
+    NOT?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
+    id?: StringFilter<"MappingTemplate"> | string
+    user_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
+    name?: StringFilter<"MappingTemplate"> | string
+    file_type?: EnumSourceFileTypeFilter<"MappingTemplate"> | $Enums.SourceFileType
+    detection_signature?: JsonFilter<"MappingTemplate">
+    column_mapping?: JsonFilter<"MappingTemplate">
+    version?: IntFilter<"MappingTemplate"> | number
+    created_at?: DateTimeFilter<"MappingTemplate"> | Date | string
+    updated_at?: DateTimeFilter<"MappingTemplate"> | Date | string
+  }
+
+  export type ImportBatchUpsertWithWhereUniqueWithoutUserInput = {
+    where: ImportBatchWhereUniqueInput
+    update: XOR<ImportBatchUpdateWithoutUserInput, ImportBatchUncheckedUpdateWithoutUserInput>
+    create: XOR<ImportBatchCreateWithoutUserInput, ImportBatchUncheckedCreateWithoutUserInput>
+  }
+
+  export type ImportBatchUpdateWithWhereUniqueWithoutUserInput = {
+    where: ImportBatchWhereUniqueInput
+    data: XOR<ImportBatchUpdateWithoutUserInput, ImportBatchUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ImportBatchUpdateManyWithWhereWithoutUserInput = {
+    where: ImportBatchScalarWhereInput
+    data: XOR<ImportBatchUpdateManyMutationInput, ImportBatchUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ImportBatchScalarWhereInput = {
+    AND?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
+    OR?: ImportBatchScalarWhereInput[]
+    NOT?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
+    id?: StringFilter<"ImportBatch"> | string
+    user_uuid?: StringFilter<"ImportBatch"> | string
+    account_uuid?: StringFilter<"ImportBatch"> | string
+    source_document_uuid?: StringFilter<"ImportBatch"> | string
+    mapping_template_uuid?: StringNullableFilter<"ImportBatch"> | string | null
+    status?: EnumImportBatchStatusFilter<"ImportBatch"> | $Enums.ImportBatchStatus
+    error_summary?: StringNullableFilter<"ImportBatch"> | string | null
+    committed_at?: DateTimeNullableFilter<"ImportBatch"> | Date | string | null
+    created_at?: DateTimeFilter<"ImportBatch"> | Date | string
+    updated_at?: DateTimeFilter<"ImportBatch"> | Date | string
+  }
+
+  export type InstrumentUpsertWithWhereUniqueWithoutUserInput = {
+    where: InstrumentWhereUniqueInput
+    update: XOR<InstrumentUpdateWithoutUserInput, InstrumentUncheckedUpdateWithoutUserInput>
+    create: XOR<InstrumentCreateWithoutUserInput, InstrumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type InstrumentUpdateWithWhereUniqueWithoutUserInput = {
+    where: InstrumentWhereUniqueInput
+    data: XOR<InstrumentUpdateWithoutUserInput, InstrumentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type InstrumentUpdateManyWithWhereWithoutUserInput = {
+    where: InstrumentScalarWhereInput
+    data: XOR<InstrumentUpdateManyMutationInput, InstrumentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type InstrumentScalarWhereInput = {
+    AND?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
+    OR?: InstrumentScalarWhereInput[]
+    NOT?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
+    id?: StringFilter<"Instrument"> | string
+    user_uuid?: StringNullableFilter<"Instrument"> | string | null
+    isin?: StringNullableFilter<"Instrument"> | string | null
+    ticker?: StringNullableFilter<"Instrument"> | string | null
+    name?: StringNullableFilter<"Instrument"> | string | null
+    asset_class?: EnumAssetClassFilter<"Instrument"> | $Enums.AssetClass
+    currency?: StringFilter<"Instrument"> | string
+    exchange?: StringNullableFilter<"Instrument"> | string | null
+    is_custom?: BoolFilter<"Instrument"> | boolean
+    created_at?: DateTimeFilter<"Instrument"> | Date | string
+    updated_at?: DateTimeFilter<"Instrument"> | Date | string
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutUserInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TransactionScalarWhereInput = {
+    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    OR?: TransactionScalarWhereInput[]
+    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    user_uuid?: StringFilter<"Transaction"> | string
+    account_uuid?: StringFilter<"Transaction"> | string
+    instrument_uuid?: StringNullableFilter<"Transaction"> | string | null
+    type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
+    trade_date?: DateTimeFilter<"Transaction"> | Date | string
+    settlement_date?: DateTimeNullableFilter<"Transaction"> | Date | string | null
+    quantity?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
+    price?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
+    tax_withheld?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"Transaction"> | string
+    fx_rate?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
+    broker_ref?: StringNullableFilter<"Transaction"> | string | null
+    import_batch_uuid?: StringNullableFilter<"Transaction"> | string | null
+    source_staged_transaction_uuid?: StringNullableFilter<"Transaction"> | string | null
+    is_correction?: BoolFilter<"Transaction"> | boolean
+    supersedes_uuid?: StringNullableFilter<"Transaction"> | string | null
+    created_at?: DateTimeFilter<"Transaction"> | Date | string
+    updated_at?: DateTimeFilter<"Transaction"> | Date | string
+  }
+
+  export type TaxYearComputationUpsertWithWhereUniqueWithoutUserInput = {
+    where: TaxYearComputationWhereUniqueInput
+    update: XOR<TaxYearComputationUpdateWithoutUserInput, TaxYearComputationUncheckedUpdateWithoutUserInput>
+    create: XOR<TaxYearComputationCreateWithoutUserInput, TaxYearComputationUncheckedCreateWithoutUserInput>
+  }
+
+  export type TaxYearComputationUpdateWithWhereUniqueWithoutUserInput = {
+    where: TaxYearComputationWhereUniqueInput
+    data: XOR<TaxYearComputationUpdateWithoutUserInput, TaxYearComputationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TaxYearComputationUpdateManyWithWhereWithoutUserInput = {
+    where: TaxYearComputationScalarWhereInput
+    data: XOR<TaxYearComputationUpdateManyMutationInput, TaxYearComputationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TaxYearComputationScalarWhereInput = {
+    AND?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
+    OR?: TaxYearComputationScalarWhereInput[]
+    NOT?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
+    id?: StringFilter<"TaxYearComputation"> | string
+    user_uuid?: StringFilter<"TaxYearComputation"> | string
+    account_uuid?: StringNullableFilter<"TaxYearComputation"> | string | null
+    country_code?: StringFilter<"TaxYearComputation"> | string
+    tax_year?: IntFilter<"TaxYearComputation"> | number
+    cost_basis_method?: EnumCostBasisMethodFilter<"TaxYearComputation"> | $Enums.CostBasisMethod
+    status?: EnumTaxComputationStatusFilter<"TaxYearComputation"> | $Enums.TaxComputationStatus
+    version?: IntFilter<"TaxYearComputation"> | number
+    result?: JsonFilter<"TaxYearComputation">
+    input_snapshot_hash?: StringFilter<"TaxYearComputation"> | string
+    finalized_at?: DateTimeNullableFilter<"TaxYearComputation"> | Date | string | null
+    created_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
+    updated_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
   }
 
   export type UserCreateWithoutPassword_reset_tokensInput = {
@@ -35317,7 +32364,12 @@ export namespace Prisma {
     role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPassword_reset_tokensInput = {
@@ -35328,7 +32380,12 @@ export namespace Prisma {
     role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPassword_reset_tokensInput = {
@@ -35355,7 +32412,12 @@ export namespace Prisma {
     role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPassword_reset_tokensInput = {
@@ -35366,44 +32428,12 @@ export namespace Prisma {
     role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type OrganizationCreateWithoutDocumentsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutDocumentsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutDocumentsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutDocumentsInput, OrganizationUncheckedCreateWithoutDocumentsInput>
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchCreateWithoutDocumentsInput = {
@@ -35413,7 +32443,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
@@ -35423,7 +32453,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutDocumentsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
@@ -35448,7 +32478,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
@@ -35458,7 +32488,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutSource_documentInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     mapping_template_uuid?: string | null
     status?: $Enums.ImportBatchStatus
@@ -35507,49 +32537,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutDocumentsInput = {
-    update: XOR<OrganizationUpdateWithoutDocumentsInput, OrganizationUncheckedUpdateWithoutDocumentsInput>
-    create: XOR<OrganizationCreateWithoutDocumentsInput, OrganizationUncheckedCreateWithoutDocumentsInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutDocumentsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutDocumentsInput, OrganizationUncheckedUpdateWithoutDocumentsInput>
-  }
-
-  export type OrganizationUpdateWithoutDocumentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutDocumentsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
   export type ImportBatchUpsertWithoutDocumentsInput = {
     update: XOR<ImportBatchUpdateWithoutDocumentsInput, ImportBatchUncheckedUpdateWithoutDocumentsInput>
     create: XOR<ImportBatchCreateWithoutDocumentsInput, ImportBatchUncheckedCreateWithoutDocumentsInput>
@@ -35568,7 +32555,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
@@ -35578,7 +32565,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutDocumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
@@ -35605,22 +32592,6 @@ export namespace Prisma {
   export type ImportBatchUpdateManyWithWhereWithoutSource_documentInput = {
     where: ImportBatchScalarWhereInput
     data: XOR<ImportBatchUpdateManyMutationInput, ImportBatchUncheckedUpdateManyWithoutSource_documentInput>
-  }
-
-  export type ImportBatchScalarWhereInput = {
-    AND?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
-    OR?: ImportBatchScalarWhereInput[]
-    NOT?: ImportBatchScalarWhereInput | ImportBatchScalarWhereInput[]
-    id?: StringFilter<"ImportBatch"> | string
-    org_uuid?: StringFilter<"ImportBatch"> | string
-    account_uuid?: StringFilter<"ImportBatch"> | string
-    source_document_uuid?: StringFilter<"ImportBatch"> | string
-    mapping_template_uuid?: StringNullableFilter<"ImportBatch"> | string | null
-    status?: EnumImportBatchStatusFilter<"ImportBatch"> | $Enums.ImportBatchStatus
-    error_summary?: StringNullableFilter<"ImportBatch"> | string | null
-    committed_at?: DateTimeNullableFilter<"ImportBatch"> | Date | string | null
-    created_at?: DateTimeFilter<"ImportBatch"> | Date | string
-    updated_at?: DateTimeFilter<"ImportBatch"> | Date | string
   }
 
   export type TaxFormUpsertWithWhereUniqueWithoutDocumentInput = {
@@ -35651,681 +32622,7 @@ export namespace Prisma {
     generated_at?: DateTimeFilter<"TaxForm"> | Date | string
   }
 
-  export type MembershipCreateWithoutOrganizationInput = {
-    id?: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    user: UserCreateNestedOneWithoutMembershipsInput
-  }
-
-  export type MembershipUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    user_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type MembershipCreateOrConnectWithoutOrganizationInput = {
-    where: MembershipWhereUniqueInput
-    create: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type MembershipCreateManyOrganizationInputEnvelope = {
-    data: MembershipCreateManyOrganizationInput | MembershipCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AccountCreateWithoutOrganizationInput = {
-    id?: string
-    name: string
-    currency: string
-    jurisdiction: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
-    transactions?: TransactionCreateNestedManyWithoutAccountInput
-    lots?: LotCreateNestedManyWithoutAccountInput
-    position_snapshots?: PositionSnapshotCreateNestedManyWithoutAccountInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutAccountInput
-  }
-
-  export type AccountUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    name: string
-    currency: string
-    jurisdiction: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutAccountInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutAccountInput
-    lots?: LotUncheckedCreateNestedManyWithoutAccountInput
-    position_snapshots?: PositionSnapshotUncheckedCreateNestedManyWithoutAccountInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutAccountInput
-  }
-
-  export type AccountCreateOrConnectWithoutOrganizationInput = {
-    where: AccountWhereUniqueInput
-    create: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type AccountCreateManyOrganizationInputEnvelope = {
-    data: AccountCreateManyOrganizationInput | AccountCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MappingTemplateCreateWithoutOrganizationInput = {
-    id?: string
-    name: string
-    file_type: $Enums.SourceFileType
-    detection_signature: JsonNullValueInput | InputJsonValue
-    column_mapping: JsonNullValueInput | InputJsonValue
-    version?: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    import_batches?: ImportBatchCreateNestedManyWithoutMapping_templateInput
-  }
-
-  export type MappingTemplateUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    name: string
-    file_type: $Enums.SourceFileType
-    detection_signature: JsonNullValueInput | InputJsonValue
-    column_mapping: JsonNullValueInput | InputJsonValue
-    version?: number
-    created_at?: Date | string
-    updated_at?: Date | string
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutMapping_templateInput
-  }
-
-  export type MappingTemplateCreateOrConnectWithoutOrganizationInput = {
-    where: MappingTemplateWhereUniqueInput
-    create: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type MappingTemplateCreateManyOrganizationInputEnvelope = {
-    data: MappingTemplateCreateManyOrganizationInput | MappingTemplateCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ImportBatchCreateWithoutOrganizationInput = {
-    id?: string
-    status?: $Enums.ImportBatchStatus
-    error_summary?: string | null
-    committed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    account: AccountCreateNestedOneWithoutImport_batchesInput
-    source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
-    mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
-    staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
-    transactions?: TransactionCreateNestedManyWithoutImport_batchInput
-    documents?: DocumentCreateNestedManyWithoutImport_batchInput
-  }
-
-  export type ImportBatchUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    account_uuid: string
-    source_document_uuid: string
-    mapping_template_uuid?: string | null
-    status?: $Enums.ImportBatchStatus
-    error_summary?: string | null
-    committed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutImport_batchInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutImport_batchInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutImport_batchInput
-  }
-
-  export type ImportBatchCreateOrConnectWithoutOrganizationInput = {
-    where: ImportBatchWhereUniqueInput
-    create: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type ImportBatchCreateManyOrganizationInputEnvelope = {
-    data: ImportBatchCreateManyOrganizationInput | ImportBatchCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TransactionCreateWithoutOrganizationInput = {
-    id?: string
-    type: $Enums.TransactionType
-    trade_date: Date | string
-    settlement_date?: Date | string | null
-    quantity?: Decimal | DecimalJsLike | number | string | null
-    price?: Decimal | DecimalJsLike | number | string | null
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    tax_withheld?: Decimal | DecimalJsLike | number | string
-    currency: string
-    fx_rate?: Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
-    broker_ref?: string | null
-    is_correction?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    account: AccountCreateNestedOneWithoutTransactionsInput
-    instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
-    import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
-    source_staged_transaction?: StagedTransactionCreateNestedOneWithoutCommitted_transactionInput
-    supersedes?: TransactionCreateNestedOneWithoutSuperseded_byInput
-    superseded_by?: TransactionCreateNestedOneWithoutSupersedesInput
-    opened_lots?: LotCreateNestedManyWithoutOpen_transactionInput
-  }
-
-  export type TransactionUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    account_uuid: string
-    instrument_uuid?: string | null
-    type: $Enums.TransactionType
-    trade_date: Date | string
-    settlement_date?: Date | string | null
-    quantity?: Decimal | DecimalJsLike | number | string | null
-    price?: Decimal | DecimalJsLike | number | string | null
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    tax_withheld?: Decimal | DecimalJsLike | number | string
-    currency: string
-    fx_rate?: Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
-    broker_ref?: string | null
-    import_batch_uuid?: string | null
-    source_staged_transaction_uuid?: string | null
-    is_correction?: boolean
-    supersedes_uuid?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    superseded_by?: TransactionUncheckedCreateNestedOneWithoutSupersedesInput
-    opened_lots?: LotUncheckedCreateNestedManyWithoutOpen_transactionInput
-  }
-
-  export type TransactionCreateOrConnectWithoutOrganizationInput = {
-    where: TransactionWhereUniqueInput
-    create: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type TransactionCreateManyOrganizationInputEnvelope = {
-    data: TransactionCreateManyOrganizationInput | TransactionCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type InstrumentCreateWithoutOrganizationInput = {
-    id?: string
-    isin?: string | null
-    ticker?: string | null
-    name?: string | null
-    asset_class?: $Enums.AssetClass
-    currency: string
-    exchange?: string | null
-    is_custom?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
-    transactions?: TransactionCreateNestedManyWithoutInstrumentInput
-    corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
-    lots?: LotCreateNestedManyWithoutInstrumentInput
-    position_snapshots?: PositionSnapshotCreateNestedManyWithoutInstrumentInput
-    price_snapshots?: PriceSnapshotCreateNestedManyWithoutInstrumentInput
-  }
-
-  export type InstrumentUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    isin?: string | null
-    ticker?: string | null
-    name?: string | null
-    asset_class?: $Enums.AssetClass
-    currency: string
-    exchange?: string | null
-    is_custom?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-    staged_transactions?: StagedTransactionUncheckedCreateNestedManyWithoutResolved_instrumentInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutInstrumentInput
-    corporate_actions?: CorporateActionUncheckedCreateNestedManyWithoutInstrumentInput
-    lots?: LotUncheckedCreateNestedManyWithoutInstrumentInput
-    position_snapshots?: PositionSnapshotUncheckedCreateNestedManyWithoutInstrumentInput
-    price_snapshots?: PriceSnapshotUncheckedCreateNestedManyWithoutInstrumentInput
-  }
-
-  export type InstrumentCreateOrConnectWithoutOrganizationInput = {
-    where: InstrumentWhereUniqueInput
-    create: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type InstrumentCreateManyOrganizationInputEnvelope = {
-    data: InstrumentCreateManyOrganizationInput | InstrumentCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TaxYearComputationCreateWithoutOrganizationInput = {
-    id?: string
-    country_code: string
-    tax_year: number
-    cost_basis_method?: $Enums.CostBasisMethod
-    status?: $Enums.TaxComputationStatus
-    version?: number
-    result: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash: string
-    finalized_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    account?: AccountCreateNestedOneWithoutTax_year_computationsInput
-    tax_forms?: TaxFormCreateNestedManyWithoutTax_year_computationInput
-  }
-
-  export type TaxYearComputationUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    account_uuid?: string | null
-    country_code: string
-    tax_year: number
-    cost_basis_method?: $Enums.CostBasisMethod
-    status?: $Enums.TaxComputationStatus
-    version?: number
-    result: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash: string
-    finalized_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-    tax_forms?: TaxFormUncheckedCreateNestedManyWithoutTax_year_computationInput
-  }
-
-  export type TaxYearComputationCreateOrConnectWithoutOrganizationInput = {
-    where: TaxYearComputationWhereUniqueInput
-    create: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type TaxYearComputationCreateManyOrganizationInputEnvelope = {
-    data: TaxYearComputationCreateManyOrganizationInput | TaxYearComputationCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type DocumentCreateWithoutOrganizationInput = {
-    id?: string
-    user_uuid: string
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
-    category?: $Enums.DocumentCategory
-    created_at?: Date | string
-    import_batch?: ImportBatchCreateNestedOneWithoutDocumentsInput
-    source_for_import_batches?: ImportBatchCreateNestedManyWithoutSource_documentInput
-    tax_forms?: TaxFormCreateNestedManyWithoutDocumentInput
-  }
-
-  export type DocumentUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    user_uuid: string
-    import_batch_uuid?: string | null
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
-    category?: $Enums.DocumentCategory
-    created_at?: Date | string
-    source_for_import_batches?: ImportBatchUncheckedCreateNestedManyWithoutSource_documentInput
-    tax_forms?: TaxFormUncheckedCreateNestedManyWithoutDocumentInput
-  }
-
-  export type DocumentCreateOrConnectWithoutOrganizationInput = {
-    where: DocumentWhereUniqueInput
-    create: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type DocumentCreateManyOrganizationInputEnvelope = {
-    data: DocumentCreateManyOrganizationInput | DocumentCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AuditLogCreateWithoutOrganizationInput = {
-    id?: string
-    user_uuid?: string | null
-    entity_type: string
-    entity_uuid: string
-    action: $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-  }
-
-  export type AuditLogUncheckedCreateWithoutOrganizationInput = {
-    id?: string
-    user_uuid?: string | null
-    entity_type: string
-    entity_uuid: string
-    action: $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-  }
-
-  export type AuditLogCreateOrConnectWithoutOrganizationInput = {
-    where: AuditLogWhereUniqueInput
-    create: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type AuditLogCreateManyOrganizationInputEnvelope = {
-    data: AuditLogCreateManyOrganizationInput | AuditLogCreateManyOrganizationInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type MembershipUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: MembershipWhereUniqueInput
-    update: XOR<MembershipUpdateWithoutOrganizationInput, MembershipUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<MembershipCreateWithoutOrganizationInput, MembershipUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type MembershipUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: MembershipWhereUniqueInput
-    data: XOR<MembershipUpdateWithoutOrganizationInput, MembershipUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type MembershipUpdateManyWithWhereWithoutOrganizationInput = {
-    where: MembershipScalarWhereInput
-    data: XOR<MembershipUpdateManyMutationInput, MembershipUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type AccountUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: AccountWhereUniqueInput
-    update: XOR<AccountUpdateWithoutOrganizationInput, AccountUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<AccountCreateWithoutOrganizationInput, AccountUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type AccountUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: AccountWhereUniqueInput
-    data: XOR<AccountUpdateWithoutOrganizationInput, AccountUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type AccountUpdateManyWithWhereWithoutOrganizationInput = {
-    where: AccountScalarWhereInput
-    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type AccountScalarWhereInput = {
-    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    OR?: AccountScalarWhereInput[]
-    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
-    id?: StringFilter<"Account"> | string
-    org_uuid?: StringFilter<"Account"> | string
-    name?: StringFilter<"Account"> | string
-    currency?: StringFilter<"Account"> | string
-    jurisdiction?: StringFilter<"Account"> | string
-    created_at?: DateTimeFilter<"Account"> | Date | string
-    updated_at?: DateTimeFilter<"Account"> | Date | string
-  }
-
-  export type MappingTemplateUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: MappingTemplateWhereUniqueInput
-    update: XOR<MappingTemplateUpdateWithoutOrganizationInput, MappingTemplateUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<MappingTemplateCreateWithoutOrganizationInput, MappingTemplateUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type MappingTemplateUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: MappingTemplateWhereUniqueInput
-    data: XOR<MappingTemplateUpdateWithoutOrganizationInput, MappingTemplateUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type MappingTemplateUpdateManyWithWhereWithoutOrganizationInput = {
-    where: MappingTemplateScalarWhereInput
-    data: XOR<MappingTemplateUpdateManyMutationInput, MappingTemplateUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type MappingTemplateScalarWhereInput = {
-    AND?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
-    OR?: MappingTemplateScalarWhereInput[]
-    NOT?: MappingTemplateScalarWhereInput | MappingTemplateScalarWhereInput[]
-    id?: StringFilter<"MappingTemplate"> | string
-    org_uuid?: StringNullableFilter<"MappingTemplate"> | string | null
-    name?: StringFilter<"MappingTemplate"> | string
-    file_type?: EnumSourceFileTypeFilter<"MappingTemplate"> | $Enums.SourceFileType
-    detection_signature?: JsonFilter<"MappingTemplate">
-    column_mapping?: JsonFilter<"MappingTemplate">
-    version?: IntFilter<"MappingTemplate"> | number
-    created_at?: DateTimeFilter<"MappingTemplate"> | Date | string
-    updated_at?: DateTimeFilter<"MappingTemplate"> | Date | string
-  }
-
-  export type ImportBatchUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: ImportBatchWhereUniqueInput
-    update: XOR<ImportBatchUpdateWithoutOrganizationInput, ImportBatchUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<ImportBatchCreateWithoutOrganizationInput, ImportBatchUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type ImportBatchUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: ImportBatchWhereUniqueInput
-    data: XOR<ImportBatchUpdateWithoutOrganizationInput, ImportBatchUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type ImportBatchUpdateManyWithWhereWithoutOrganizationInput = {
-    where: ImportBatchScalarWhereInput
-    data: XOR<ImportBatchUpdateManyMutationInput, ImportBatchUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type TransactionUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: TransactionWhereUniqueInput
-    update: XOR<TransactionUpdateWithoutOrganizationInput, TransactionUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<TransactionCreateWithoutOrganizationInput, TransactionUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type TransactionUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: TransactionWhereUniqueInput
-    data: XOR<TransactionUpdateWithoutOrganizationInput, TransactionUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type TransactionUpdateManyWithWhereWithoutOrganizationInput = {
-    where: TransactionScalarWhereInput
-    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type TransactionScalarWhereInput = {
-    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-    OR?: TransactionScalarWhereInput[]
-    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-    id?: StringFilter<"Transaction"> | string
-    org_uuid?: StringFilter<"Transaction"> | string
-    account_uuid?: StringFilter<"Transaction"> | string
-    instrument_uuid?: StringNullableFilter<"Transaction"> | string | null
-    type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-    trade_date?: DateTimeFilter<"Transaction"> | Date | string
-    settlement_date?: DateTimeNullableFilter<"Transaction"> | Date | string | null
-    quantity?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
-    price?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
-    amount?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
-    tax_withheld?: DecimalFilter<"Transaction"> | Decimal | DecimalJsLike | number | string
-    currency?: StringFilter<"Transaction"> | string
-    fx_rate?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: DecimalNullableFilter<"Transaction"> | Decimal | DecimalJsLike | number | string | null
-    broker_ref?: StringNullableFilter<"Transaction"> | string | null
-    import_batch_uuid?: StringNullableFilter<"Transaction"> | string | null
-    source_staged_transaction_uuid?: StringNullableFilter<"Transaction"> | string | null
-    is_correction?: BoolFilter<"Transaction"> | boolean
-    supersedes_uuid?: StringNullableFilter<"Transaction"> | string | null
-    created_at?: DateTimeFilter<"Transaction"> | Date | string
-    updated_at?: DateTimeFilter<"Transaction"> | Date | string
-  }
-
-  export type InstrumentUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: InstrumentWhereUniqueInput
-    update: XOR<InstrumentUpdateWithoutOrganizationInput, InstrumentUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<InstrumentCreateWithoutOrganizationInput, InstrumentUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type InstrumentUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: InstrumentWhereUniqueInput
-    data: XOR<InstrumentUpdateWithoutOrganizationInput, InstrumentUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type InstrumentUpdateManyWithWhereWithoutOrganizationInput = {
-    where: InstrumentScalarWhereInput
-    data: XOR<InstrumentUpdateManyMutationInput, InstrumentUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type InstrumentScalarWhereInput = {
-    AND?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
-    OR?: InstrumentScalarWhereInput[]
-    NOT?: InstrumentScalarWhereInput | InstrumentScalarWhereInput[]
-    id?: StringFilter<"Instrument"> | string
-    org_uuid?: StringNullableFilter<"Instrument"> | string | null
-    isin?: StringNullableFilter<"Instrument"> | string | null
-    ticker?: StringNullableFilter<"Instrument"> | string | null
-    name?: StringNullableFilter<"Instrument"> | string | null
-    asset_class?: EnumAssetClassFilter<"Instrument"> | $Enums.AssetClass
-    currency?: StringFilter<"Instrument"> | string
-    exchange?: StringNullableFilter<"Instrument"> | string | null
-    is_custom?: BoolFilter<"Instrument"> | boolean
-    created_at?: DateTimeFilter<"Instrument"> | Date | string
-    updated_at?: DateTimeFilter<"Instrument"> | Date | string
-  }
-
-  export type TaxYearComputationUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: TaxYearComputationWhereUniqueInput
-    update: XOR<TaxYearComputationUpdateWithoutOrganizationInput, TaxYearComputationUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<TaxYearComputationCreateWithoutOrganizationInput, TaxYearComputationUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type TaxYearComputationUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: TaxYearComputationWhereUniqueInput
-    data: XOR<TaxYearComputationUpdateWithoutOrganizationInput, TaxYearComputationUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type TaxYearComputationUpdateManyWithWhereWithoutOrganizationInput = {
-    where: TaxYearComputationScalarWhereInput
-    data: XOR<TaxYearComputationUpdateManyMutationInput, TaxYearComputationUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type TaxYearComputationScalarWhereInput = {
-    AND?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
-    OR?: TaxYearComputationScalarWhereInput[]
-    NOT?: TaxYearComputationScalarWhereInput | TaxYearComputationScalarWhereInput[]
-    id?: StringFilter<"TaxYearComputation"> | string
-    org_uuid?: StringFilter<"TaxYearComputation"> | string
-    account_uuid?: StringNullableFilter<"TaxYearComputation"> | string | null
-    country_code?: StringFilter<"TaxYearComputation"> | string
-    tax_year?: IntFilter<"TaxYearComputation"> | number
-    cost_basis_method?: EnumCostBasisMethodFilter<"TaxYearComputation"> | $Enums.CostBasisMethod
-    status?: EnumTaxComputationStatusFilter<"TaxYearComputation"> | $Enums.TaxComputationStatus
-    version?: IntFilter<"TaxYearComputation"> | number
-    result?: JsonFilter<"TaxYearComputation">
-    input_snapshot_hash?: StringFilter<"TaxYearComputation"> | string
-    finalized_at?: DateTimeNullableFilter<"TaxYearComputation"> | Date | string | null
-    created_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
-    updated_at?: DateTimeFilter<"TaxYearComputation"> | Date | string
-  }
-
-  export type DocumentUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: DocumentWhereUniqueInput
-    update: XOR<DocumentUpdateWithoutOrganizationInput, DocumentUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<DocumentCreateWithoutOrganizationInput, DocumentUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type DocumentUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: DocumentWhereUniqueInput
-    data: XOR<DocumentUpdateWithoutOrganizationInput, DocumentUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type DocumentUpdateManyWithWhereWithoutOrganizationInput = {
-    where: DocumentScalarWhereInput
-    data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type DocumentScalarWhereInput = {
-    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    OR?: DocumentScalarWhereInput[]
-    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
-    id?: StringFilter<"Document"> | string
-    user_uuid?: StringFilter<"Document"> | string
-    org_uuid?: StringNullableFilter<"Document"> | string | null
-    import_batch_uuid?: StringNullableFilter<"Document"> | string | null
-    filename?: StringFilter<"Document"> | string
-    mimetype?: StringFilter<"Document"> | string
-    size?: IntFilter<"Document"> | number
-    url?: StringFilter<"Document"> | string
-    path?: StringFilter<"Document"> | string
-    type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
-    category?: EnumDocumentCategoryFilter<"Document"> | $Enums.DocumentCategory
-    created_at?: DateTimeFilter<"Document"> | Date | string
-  }
-
-  export type AuditLogUpsertWithWhereUniqueWithoutOrganizationInput = {
-    where: AuditLogWhereUniqueInput
-    update: XOR<AuditLogUpdateWithoutOrganizationInput, AuditLogUncheckedUpdateWithoutOrganizationInput>
-    create: XOR<AuditLogCreateWithoutOrganizationInput, AuditLogUncheckedCreateWithoutOrganizationInput>
-  }
-
-  export type AuditLogUpdateWithWhereUniqueWithoutOrganizationInput = {
-    where: AuditLogWhereUniqueInput
-    data: XOR<AuditLogUpdateWithoutOrganizationInput, AuditLogUncheckedUpdateWithoutOrganizationInput>
-  }
-
-  export type AuditLogUpdateManyWithWhereWithoutOrganizationInput = {
-    where: AuditLogScalarWhereInput
-    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutOrganizationInput>
-  }
-
-  export type AuditLogScalarWhereInput = {
-    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    OR?: AuditLogScalarWhereInput[]
-    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    id?: StringFilter<"AuditLog"> | string
-    org_uuid?: StringNullableFilter<"AuditLog"> | string | null
-    user_uuid?: StringNullableFilter<"AuditLog"> | string | null
-    entity_type?: StringFilter<"AuditLog"> | string
-    entity_uuid?: StringFilter<"AuditLog"> | string
-    action?: EnumAuditActionFilter<"AuditLog"> | $Enums.AuditAction
-    before?: JsonNullableFilter<"AuditLog">
-    after?: JsonNullableFilter<"AuditLog">
-    created_at?: DateTimeFilter<"AuditLog"> | Date | string
-  }
-
-  export type OrganizationCreateWithoutMembershipsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutMembershipsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutMembershipsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutMembershipsInput, OrganizationUncheckedCreateWithoutMembershipsInput>
-  }
-
-  export type UserCreateWithoutMembershipsInput = {
+  export type UserCreateWithoutAccountsInput = {
     id?: string
     email: string
     phone?: string | null
@@ -36334,9 +32631,14 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutMembershipsInput = {
+  export type UserUncheckedCreateWithoutAccountsInput = {
     id?: string
     email: string
     phone?: string | null
@@ -36345,124 +32647,16 @@ export namespace Prisma {
     created_at?: Date | string
     updated_at?: Date | string
     password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutMembershipsInput = {
+  export type UserCreateOrConnectWithoutAccountsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
-  }
-
-  export type OrganizationUpsertWithoutMembershipsInput = {
-    update: XOR<OrganizationUpdateWithoutMembershipsInput, OrganizationUncheckedUpdateWithoutMembershipsInput>
-    create: XOR<OrganizationCreateWithoutMembershipsInput, OrganizationUncheckedCreateWithoutMembershipsInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutMembershipsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutMembershipsInput, OrganizationUncheckedUpdateWithoutMembershipsInput>
-  }
-
-  export type OrganizationUpdateWithoutMembershipsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutMembershipsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type UserUpsertWithoutMembershipsInput = {
-    update: XOR<UserUpdateWithoutMembershipsInput, UserUncheckedUpdateWithoutMembershipsInput>
-    create: XOR<UserCreateWithoutMembershipsInput, UserUncheckedCreateWithoutMembershipsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutMembershipsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutMembershipsInput, UserUncheckedUpdateWithoutMembershipsInput>
-  }
-
-  export type UserUpdateWithoutMembershipsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutMembershipsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type OrganizationCreateWithoutAccountsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutAccountsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutAccountsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutAccountsInput, OrganizationUncheckedCreateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
   }
 
   export type ImportBatchCreateWithoutAccountInput = {
@@ -36472,7 +32666,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
@@ -36482,7 +32676,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
     status?: $Enums.ImportBatchStatus
@@ -36522,7 +32716,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
     source_staged_transaction?: StagedTransactionCreateNestedOneWithoutCommitted_transactionInput
@@ -36533,7 +32727,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
     trade_date: Date | string
@@ -36643,13 +32837,13 @@ export namespace Prisma {
     finalized_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTax_year_computationsInput
+    user: UserCreateNestedOneWithoutTax_year_computationsInput
     tax_forms?: TaxFormCreateNestedManyWithoutTax_year_computationInput
   }
 
   export type TaxYearComputationUncheckedCreateWithoutAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     country_code: string
     tax_year: number
     cost_basis_method?: $Enums.CostBasisMethod
@@ -36673,47 +32867,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutAccountsInput = {
-    update: XOR<OrganizationUpdateWithoutAccountsInput, OrganizationUncheckedUpdateWithoutAccountsInput>
-    create: XOR<OrganizationCreateWithoutAccountsInput, OrganizationUncheckedCreateWithoutAccountsInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutAccountsInput = {
+    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutAccountsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutAccountsInput, OrganizationUncheckedUpdateWithoutAccountsInput>
+  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
   }
 
-  export type OrganizationUpdateWithoutAccountsInput = {
+  export type UserUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutAccountsInput = {
+  export type UserUncheckedUpdateWithoutAccountsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchUpsertWithWhereUniqueWithoutAccountInput = {
@@ -36826,41 +33020,41 @@ export namespace Prisma {
     data: XOR<TaxYearComputationUpdateManyMutationInput, TaxYearComputationUncheckedUpdateManyWithoutAccountInput>
   }
 
-  export type OrganizationCreateWithoutMapping_templatesInput = {
+  export type UserCreateWithoutMapping_templatesInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationUncheckedCreateWithoutMapping_templatesInput = {
+  export type UserUncheckedCreateWithoutMapping_templatesInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationCreateOrConnectWithoutMapping_templatesInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutMapping_templatesInput, OrganizationUncheckedCreateWithoutMapping_templatesInput>
+  export type UserCreateOrConnectWithoutMapping_templatesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMapping_templatesInput, UserUncheckedCreateWithoutMapping_templatesInput>
   }
 
   export type ImportBatchCreateWithoutMapping_templateInput = {
@@ -36870,7 +33064,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutImport_batchInput
@@ -36880,7 +33074,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutMapping_templateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     status?: $Enums.ImportBatchStatus
@@ -36903,47 +33097,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutMapping_templatesInput = {
-    update: XOR<OrganizationUpdateWithoutMapping_templatesInput, OrganizationUncheckedUpdateWithoutMapping_templatesInput>
-    create: XOR<OrganizationCreateWithoutMapping_templatesInput, OrganizationUncheckedCreateWithoutMapping_templatesInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutMapping_templatesInput = {
+    update: XOR<UserUpdateWithoutMapping_templatesInput, UserUncheckedUpdateWithoutMapping_templatesInput>
+    create: XOR<UserCreateWithoutMapping_templatesInput, UserUncheckedCreateWithoutMapping_templatesInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutMapping_templatesInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutMapping_templatesInput, OrganizationUncheckedUpdateWithoutMapping_templatesInput>
+  export type UserUpdateToOneWithWhereWithoutMapping_templatesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMapping_templatesInput, UserUncheckedUpdateWithoutMapping_templatesInput>
   }
 
-  export type OrganizationUpdateWithoutMapping_templatesInput = {
+  export type UserUpdateWithoutMapping_templatesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutMapping_templatesInput = {
+  export type UserUncheckedUpdateWithoutMapping_templatesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ImportBatchUpsertWithWhereUniqueWithoutMapping_templateInput = {
@@ -36962,41 +33156,41 @@ export namespace Prisma {
     data: XOR<ImportBatchUpdateManyMutationInput, ImportBatchUncheckedUpdateManyWithoutMapping_templateInput>
   }
 
-  export type OrganizationCreateWithoutImport_batchesInput = {
+  export type UserCreateWithoutImport_batchesInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationUncheckedCreateWithoutImport_batchesInput = {
+  export type UserUncheckedCreateWithoutImport_batchesInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationCreateOrConnectWithoutImport_batchesInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutImport_batchesInput, OrganizationUncheckedCreateWithoutImport_batchesInput>
+  export type UserCreateOrConnectWithoutImport_batchesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutImport_batchesInput, UserUncheckedCreateWithoutImport_batchesInput>
   }
 
   export type AccountCreateWithoutImport_batchesInput = {
@@ -37006,7 +33200,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     transactions?: TransactionCreateNestedManyWithoutAccountInput
     lots?: LotCreateNestedManyWithoutAccountInput
     position_snapshots?: PositionSnapshotCreateNestedManyWithoutAccountInput
@@ -37015,7 +33209,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateWithoutImport_batchesInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -37043,7 +33237,6 @@ export namespace Prisma {
     type?: $Enums.DocumentType
     category?: $Enums.DocumentCategory
     created_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutDocumentsInput
     import_batch?: ImportBatchCreateNestedOneWithoutDocumentsInput
     tax_forms?: TaxFormCreateNestedManyWithoutDocumentInput
   }
@@ -37051,7 +33244,6 @@ export namespace Prisma {
   export type DocumentUncheckedCreateWithoutSource_for_import_batchesInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     import_batch_uuid?: string | null
     filename: string
     mimetype: string
@@ -37078,12 +33270,12 @@ export namespace Prisma {
     version?: number
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutMapping_templatesInput
+    user?: UserCreateNestedOneWithoutMapping_templatesInput
   }
 
   export type MappingTemplateUncheckedCreateWithoutImport_batchesInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     name: string
     file_type: $Enums.SourceFileType
     detection_signature: JsonNullValueInput | InputJsonValue
@@ -37151,7 +33343,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     source_staged_transaction?: StagedTransactionCreateNestedOneWithoutCommitted_transactionInput
@@ -37162,7 +33354,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutImport_batchInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -37207,7 +33399,6 @@ export namespace Prisma {
     type?: $Enums.DocumentType
     category?: $Enums.DocumentCategory
     created_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutDocumentsInput
     source_for_import_batches?: ImportBatchCreateNestedManyWithoutSource_documentInput
     tax_forms?: TaxFormCreateNestedManyWithoutDocumentInput
   }
@@ -37215,7 +33406,6 @@ export namespace Prisma {
   export type DocumentUncheckedCreateWithoutImport_batchInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     filename: string
     mimetype: string
     size: number
@@ -37238,47 +33428,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutImport_batchesInput = {
-    update: XOR<OrganizationUpdateWithoutImport_batchesInput, OrganizationUncheckedUpdateWithoutImport_batchesInput>
-    create: XOR<OrganizationCreateWithoutImport_batchesInput, OrganizationUncheckedCreateWithoutImport_batchesInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutImport_batchesInput = {
+    update: XOR<UserUpdateWithoutImport_batchesInput, UserUncheckedUpdateWithoutImport_batchesInput>
+    create: XOR<UserCreateWithoutImport_batchesInput, UserUncheckedCreateWithoutImport_batchesInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutImport_batchesInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutImport_batchesInput, OrganizationUncheckedUpdateWithoutImport_batchesInput>
+  export type UserUpdateToOneWithWhereWithoutImport_batchesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutImport_batchesInput, UserUncheckedUpdateWithoutImport_batchesInput>
   }
 
-  export type OrganizationUpdateWithoutImport_batchesInput = {
+  export type UserUpdateWithoutImport_batchesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutImport_batchesInput = {
+  export type UserUncheckedUpdateWithoutImport_batchesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutImport_batchesInput = {
@@ -37299,7 +33489,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
     lots?: LotUpdateManyWithoutAccountNestedInput
     position_snapshots?: PositionSnapshotUpdateManyWithoutAccountNestedInput
@@ -37308,7 +33498,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateWithoutImport_batchesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -37342,7 +33532,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutDocumentsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutDocumentsNestedInput
     tax_forms?: TaxFormUpdateManyWithoutDocumentNestedInput
   }
@@ -37350,7 +33539,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateWithoutSource_for_import_batchesInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
@@ -37383,12 +33571,12 @@ export namespace Prisma {
     version?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutMapping_templatesNestedInput
+    user?: UserUpdateOneWithoutMapping_templatesNestedInput
   }
 
   export type MappingTemplateUncheckedUpdateWithoutImport_batchesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
     detection_signature?: JsonNullValueInput | InputJsonValue
@@ -37462,6 +33650,23 @@ export namespace Prisma {
     data: XOR<DocumentUpdateManyMutationInput, DocumentUncheckedUpdateManyWithoutImport_batchInput>
   }
 
+  export type DocumentScalarWhereInput = {
+    AND?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    OR?: DocumentScalarWhereInput[]
+    NOT?: DocumentScalarWhereInput | DocumentScalarWhereInput[]
+    id?: StringFilter<"Document"> | string
+    user_uuid?: StringFilter<"Document"> | string
+    import_batch_uuid?: StringNullableFilter<"Document"> | string | null
+    filename?: StringFilter<"Document"> | string
+    mimetype?: StringFilter<"Document"> | string
+    size?: IntFilter<"Document"> | number
+    url?: StringFilter<"Document"> | string
+    path?: StringFilter<"Document"> | string
+    type?: EnumDocumentTypeFilter<"Document"> | $Enums.DocumentType
+    category?: EnumDocumentCategoryFilter<"Document"> | $Enums.DocumentCategory
+    created_at?: DateTimeFilter<"Document"> | Date | string
+  }
+
   export type ImportBatchCreateWithoutStaged_transactionsInput = {
     id?: string
     status?: $Enums.ImportBatchStatus
@@ -37469,7 +33674,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
@@ -37479,7 +33684,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutStaged_transactionsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
@@ -37508,7 +33713,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
     lots?: LotCreateNestedManyWithoutInstrumentInput
@@ -37518,7 +33723,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutStaged_transactionsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -37557,7 +33762,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
@@ -37568,7 +33773,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutSource_staged_transactionInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -37615,7 +33820,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
@@ -37625,7 +33830,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutStaged_transactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37660,7 +33865,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
     lots?: LotUpdateManyWithoutInstrumentNestedInput
@@ -37670,7 +33875,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutStaged_transactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -37715,7 +33920,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
@@ -37726,7 +33931,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutSource_staged_transactionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -37750,41 +33955,41 @@ export namespace Prisma {
     opened_lots?: LotUncheckedUpdateManyWithoutOpen_transactionNestedInput
   }
 
-  export type OrganizationCreateWithoutCustom_instrumentsInput = {
+  export type UserCreateWithoutCustom_instrumentsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationUncheckedCreateWithoutCustom_instrumentsInput = {
+  export type UserUncheckedCreateWithoutCustom_instrumentsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationCreateOrConnectWithoutCustom_instrumentsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutCustom_instrumentsInput, OrganizationUncheckedCreateWithoutCustom_instrumentsInput>
+  export type UserCreateOrConnectWithoutCustom_instrumentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCustom_instrumentsInput, UserUncheckedCreateWithoutCustom_instrumentsInput>
   }
 
   export type StagedTransactionCreateWithoutResolved_instrumentInput = {
@@ -37840,7 +34045,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
     source_staged_transaction?: StagedTransactionCreateNestedOneWithoutCommitted_transactionInput
@@ -37851,7 +34056,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutInstrumentInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     type: $Enums.TransactionType
     trade_date: Date | string
@@ -38005,47 +34210,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutCustom_instrumentsInput = {
-    update: XOR<OrganizationUpdateWithoutCustom_instrumentsInput, OrganizationUncheckedUpdateWithoutCustom_instrumentsInput>
-    create: XOR<OrganizationCreateWithoutCustom_instrumentsInput, OrganizationUncheckedCreateWithoutCustom_instrumentsInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutCustom_instrumentsInput = {
+    update: XOR<UserUpdateWithoutCustom_instrumentsInput, UserUncheckedUpdateWithoutCustom_instrumentsInput>
+    create: XOR<UserCreateWithoutCustom_instrumentsInput, UserUncheckedCreateWithoutCustom_instrumentsInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutCustom_instrumentsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutCustom_instrumentsInput, OrganizationUncheckedUpdateWithoutCustom_instrumentsInput>
+  export type UserUpdateToOneWithWhereWithoutCustom_instrumentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCustom_instrumentsInput, UserUncheckedUpdateWithoutCustom_instrumentsInput>
   }
 
-  export type OrganizationUpdateWithoutCustom_instrumentsInput = {
+  export type UserUpdateWithoutCustom_instrumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutCustom_instrumentsInput = {
+  export type UserUncheckedUpdateWithoutCustom_instrumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StagedTransactionUpsertWithWhereUniqueWithoutResolved_instrumentInput = {
@@ -38170,41 +34375,41 @@ export namespace Prisma {
     created_at?: DateTimeFilter<"PriceSnapshot"> | Date | string
   }
 
-  export type OrganizationCreateWithoutTransactionsInput = {
+  export type UserCreateWithoutTransactionsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationUncheckedCreateWithoutTransactionsInput = {
+  export type UserUncheckedCreateWithoutTransactionsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationCreateOrConnectWithoutTransactionsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutTransactionsInput, OrganizationUncheckedCreateWithoutTransactionsInput>
+  export type UserCreateOrConnectWithoutTransactionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
   }
 
   export type AccountCreateWithoutTransactionsInput = {
@@ -38214,7 +34419,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
     lots?: LotCreateNestedManyWithoutAccountInput
     position_snapshots?: PositionSnapshotCreateNestedManyWithoutAccountInput
@@ -38223,7 +34428,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateWithoutTransactionsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -38251,7 +34456,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
     lots?: LotCreateNestedManyWithoutInstrumentInput
@@ -38261,7 +34466,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutTransactionsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -38290,7 +34495,7 @@ export namespace Prisma {
     committed_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutImport_batchesInput
+    user: UserCreateNestedOneWithoutImport_batchesInput
     account: AccountCreateNestedOneWithoutImport_batchesInput
     source_document: DocumentCreateNestedOneWithoutSource_for_import_batchesInput
     mapping_template?: MappingTemplateCreateNestedOneWithoutImport_batchesInput
@@ -38300,7 +34505,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedCreateWithoutTransactionsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
@@ -38366,7 +34571,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
@@ -38377,7 +34582,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutSuperseded_byInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -38423,7 +34628,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
@@ -38434,7 +34639,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutSupersedesInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -38497,47 +34702,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutTransactionsInput = {
-    update: XOR<OrganizationUpdateWithoutTransactionsInput, OrganizationUncheckedUpdateWithoutTransactionsInput>
-    create: XOR<OrganizationCreateWithoutTransactionsInput, OrganizationUncheckedCreateWithoutTransactionsInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutTransactionsInput = {
+    update: XOR<UserUpdateWithoutTransactionsInput, UserUncheckedUpdateWithoutTransactionsInput>
+    create: XOR<UserCreateWithoutTransactionsInput, UserUncheckedCreateWithoutTransactionsInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutTransactionsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutTransactionsInput, OrganizationUncheckedUpdateWithoutTransactionsInput>
+  export type UserUpdateToOneWithWhereWithoutTransactionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTransactionsInput, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
-  export type OrganizationUpdateWithoutTransactionsInput = {
+  export type UserUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutTransactionsInput = {
+  export type UserUncheckedUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutTransactionsInput = {
@@ -38558,7 +34763,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
     lots?: LotUpdateManyWithoutAccountNestedInput
     position_snapshots?: PositionSnapshotUpdateManyWithoutAccountNestedInput
@@ -38567,7 +34772,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -38601,7 +34806,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
     lots?: LotUpdateManyWithoutInstrumentNestedInput
@@ -38611,7 +34816,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38646,7 +34851,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
@@ -38656,7 +34861,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38734,7 +34939,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
@@ -38745,7 +34950,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutSuperseded_byInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -38797,7 +35002,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
@@ -38808,7 +35013,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutSupersedesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -38859,7 +35064,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     lots?: LotCreateNestedManyWithoutInstrumentInput
@@ -38869,7 +35074,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutCorporate_actionsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -38913,7 +35118,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     lots?: LotUpdateManyWithoutInstrumentNestedInput
@@ -38923,7 +35128,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutCorporate_actionsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -38947,7 +35152,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
     transactions?: TransactionCreateNestedManyWithoutAccountInput
     position_snapshots?: PositionSnapshotCreateNestedManyWithoutAccountInput
@@ -38956,7 +35161,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateWithoutLotsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -38984,7 +35189,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
@@ -38994,7 +35199,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutLotsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -39033,7 +35238,7 @@ export namespace Prisma {
     is_correction?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTransactionsInput
+    user: UserCreateNestedOneWithoutTransactionsInput
     account: AccountCreateNestedOneWithoutTransactionsInput
     instrument?: InstrumentCreateNestedOneWithoutTransactionsInput
     import_batch?: ImportBatchCreateNestedOneWithoutTransactionsInput
@@ -39044,7 +35249,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedCreateWithoutOpened_lotsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -39091,7 +35296,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
     position_snapshots?: PositionSnapshotUpdateManyWithoutAccountNestedInput
@@ -39100,7 +35305,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateWithoutLotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -39134,7 +35339,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
@@ -39144,7 +35349,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutLotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39189,7 +35394,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
@@ -39200,7 +35405,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutOpened_lotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -39231,7 +35436,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
     transactions?: TransactionCreateNestedManyWithoutAccountInput
     lots?: LotCreateNestedManyWithoutAccountInput
@@ -39240,7 +35445,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateWithoutPosition_snapshotsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -39268,7 +35473,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
@@ -39278,7 +35483,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutPosition_snapshotsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -39318,7 +35523,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
     lots?: LotUpdateManyWithoutAccountNestedInput
@@ -39327,7 +35532,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateWithoutPosition_snapshotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -39361,7 +35566,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
@@ -39371,7 +35576,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutPosition_snapshotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39399,7 +35604,7 @@ export namespace Prisma {
     is_custom?: boolean
     created_at?: Date | string
     updated_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutCustom_instrumentsInput
+    user?: UserCreateNestedOneWithoutCustom_instrumentsInput
     staged_transactions?: StagedTransactionCreateNestedManyWithoutResolved_instrumentInput
     transactions?: TransactionCreateNestedManyWithoutInstrumentInput
     corporate_actions?: CorporateActionCreateNestedManyWithoutInstrumentInput
@@ -39409,7 +35614,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedCreateWithoutPrice_snapshotsInput = {
     id?: string
-    org_uuid?: string | null
+    user_uuid?: string | null
     isin?: string | null
     ticker?: string | null
     name?: string | null
@@ -39453,7 +35658,7 @@ export namespace Prisma {
     is_custom?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutCustom_instrumentsNestedInput
+    user?: UserUpdateOneWithoutCustom_instrumentsNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
     transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
     corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
@@ -39463,7 +35668,7 @@ export namespace Prisma {
 
   export type InstrumentUncheckedUpdateWithoutPrice_snapshotsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     isin?: NullableStringFieldUpdateOperationsInput | string | null
     ticker?: NullableStringFieldUpdateOperationsInput | string | null
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39480,41 +35685,41 @@ export namespace Prisma {
     position_snapshots?: PositionSnapshotUncheckedUpdateManyWithoutInstrumentNestedInput
   }
 
-  export type OrganizationCreateWithoutTax_year_computationsInput = {
+  export type UserCreateWithoutTax_year_computationsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenCreateNestedManyWithoutUserInput
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationUncheckedCreateWithoutTax_year_computationsInput = {
+  export type UserUncheckedCreateWithoutTax_year_computationsInput = {
     id?: string
-    name: string
-    base_currency?: string
+    email: string
+    phone?: string | null
+    password: string
+    role: $Enums.AuthRole
     created_at?: Date | string
     updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-    audit_logs?: AuditLogUncheckedCreateNestedManyWithoutOrganizationInput
+    password_reset_tokens?: PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutUserInput
+    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutUserInput
+    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type OrganizationCreateOrConnectWithoutTax_year_computationsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutTax_year_computationsInput, OrganizationUncheckedCreateWithoutTax_year_computationsInput>
+  export type UserCreateOrConnectWithoutTax_year_computationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTax_year_computationsInput, UserUncheckedCreateWithoutTax_year_computationsInput>
   }
 
   export type AccountCreateWithoutTax_year_computationsInput = {
@@ -39524,7 +35729,7 @@ export namespace Prisma {
     jurisdiction: string
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutAccountsInput
+    user: UserCreateNestedOneWithoutAccountsInput
     import_batches?: ImportBatchCreateNestedManyWithoutAccountInput
     transactions?: TransactionCreateNestedManyWithoutAccountInput
     lots?: LotCreateNestedManyWithoutAccountInput
@@ -39533,7 +35738,7 @@ export namespace Prisma {
 
   export type AccountUncheckedCreateWithoutTax_year_computationsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     name: string
     currency: string
     jurisdiction: string
@@ -39576,47 +35781,47 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type OrganizationUpsertWithoutTax_year_computationsInput = {
-    update: XOR<OrganizationUpdateWithoutTax_year_computationsInput, OrganizationUncheckedUpdateWithoutTax_year_computationsInput>
-    create: XOR<OrganizationCreateWithoutTax_year_computationsInput, OrganizationUncheckedCreateWithoutTax_year_computationsInput>
-    where?: OrganizationWhereInput
+  export type UserUpsertWithoutTax_year_computationsInput = {
+    update: XOR<UserUpdateWithoutTax_year_computationsInput, UserUncheckedUpdateWithoutTax_year_computationsInput>
+    create: XOR<UserCreateWithoutTax_year_computationsInput, UserUncheckedCreateWithoutTax_year_computationsInput>
+    where?: UserWhereInput
   }
 
-  export type OrganizationUpdateToOneWithWhereWithoutTax_year_computationsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutTax_year_computationsInput, OrganizationUncheckedUpdateWithoutTax_year_computationsInput>
+  export type UserUpdateToOneWithWhereWithoutTax_year_computationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTax_year_computationsInput, UserUncheckedUpdateWithoutTax_year_computationsInput>
   }
 
-  export type OrganizationUpdateWithoutTax_year_computationsInput = {
+  export type UserUpdateWithoutTax_year_computationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUpdateManyWithoutUserNestedInput
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
   }
 
-  export type OrganizationUncheckedUpdateWithoutTax_year_computationsInput = {
+  export type UserUncheckedUpdateWithoutTax_year_computationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumAuthRoleFieldUpdateOperationsInput | $Enums.AuthRole
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    audit_logs?: AuditLogUncheckedUpdateManyWithoutOrganizationNestedInput
+    password_reset_tokens?: PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutUserNestedInput
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutUserNestedInput
+    custom_instruments?: InstrumentUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountUpsertWithoutTax_year_computationsInput = {
@@ -39637,7 +35842,7 @@ export namespace Prisma {
     jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutAccountsNestedInput
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
     import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
     transactions?: TransactionUpdateManyWithoutAccountNestedInput
     lots?: LotUpdateManyWithoutAccountNestedInput
@@ -39646,7 +35851,7 @@ export namespace Prisma {
 
   export type AccountUncheckedUpdateWithoutTax_year_computationsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     currency?: StringFieldUpdateOperationsInput | string
     jurisdiction?: StringFieldUpdateOperationsInput | string
@@ -39686,13 +35891,13 @@ export namespace Prisma {
     finalized_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
-    organization: OrganizationCreateNestedOneWithoutTax_year_computationsInput
+    user: UserCreateNestedOneWithoutTax_year_computationsInput
     account?: AccountCreateNestedOneWithoutTax_year_computationsInput
   }
 
   export type TaxYearComputationUncheckedCreateWithoutTax_formsInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid?: string | null
     country_code: string
     tax_year: number
@@ -39722,7 +35927,6 @@ export namespace Prisma {
     type?: $Enums.DocumentType
     category?: $Enums.DocumentCategory
     created_at?: Date | string
-    organization?: OrganizationCreateNestedOneWithoutDocumentsInput
     import_batch?: ImportBatchCreateNestedOneWithoutDocumentsInput
     source_for_import_batches?: ImportBatchCreateNestedManyWithoutSource_documentInput
   }
@@ -39730,7 +35934,6 @@ export namespace Prisma {
   export type DocumentUncheckedCreateWithoutTax_formsInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     import_batch_uuid?: string | null
     filename: string
     mimetype: string
@@ -39771,13 +35974,13 @@ export namespace Prisma {
     finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTax_year_computationsNestedInput
+    user?: UserUpdateOneRequiredWithoutTax_year_computationsNestedInput
     account?: AccountUpdateOneWithoutTax_year_computationsNestedInput
   }
 
   export type TaxYearComputationUncheckedUpdateWithoutTax_formsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     country_code?: StringFieldUpdateOperationsInput | string
     tax_year?: IntFieldUpdateOperationsInput | number
@@ -39813,7 +36016,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutDocumentsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutDocumentsNestedInput
     source_for_import_batches?: ImportBatchUpdateManyWithoutSource_documentNestedInput
   }
@@ -39821,7 +36023,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateWithoutTax_formsInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
@@ -39834,86 +36035,6 @@ export namespace Prisma {
     source_for_import_batches?: ImportBatchUncheckedUpdateManyWithoutSource_documentNestedInput
   }
 
-  export type OrganizationCreateWithoutAudit_logsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationUncheckedCreateWithoutAudit_logsInput = {
-    id?: string
-    name: string
-    base_currency?: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    memberships?: MembershipUncheckedCreateNestedManyWithoutOrganizationInput
-    accounts?: AccountUncheckedCreateNestedManyWithoutOrganizationInput
-    mapping_templates?: MappingTemplateUncheckedCreateNestedManyWithoutOrganizationInput
-    import_batches?: ImportBatchUncheckedCreateNestedManyWithoutOrganizationInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutOrganizationInput
-    custom_instruments?: InstrumentUncheckedCreateNestedManyWithoutOrganizationInput
-    tax_year_computations?: TaxYearComputationUncheckedCreateNestedManyWithoutOrganizationInput
-    documents?: DocumentUncheckedCreateNestedManyWithoutOrganizationInput
-  }
-
-  export type OrganizationCreateOrConnectWithoutAudit_logsInput = {
-    where: OrganizationWhereUniqueInput
-    create: XOR<OrganizationCreateWithoutAudit_logsInput, OrganizationUncheckedCreateWithoutAudit_logsInput>
-  }
-
-  export type OrganizationUpsertWithoutAudit_logsInput = {
-    update: XOR<OrganizationUpdateWithoutAudit_logsInput, OrganizationUncheckedUpdateWithoutAudit_logsInput>
-    create: XOR<OrganizationCreateWithoutAudit_logsInput, OrganizationUncheckedCreateWithoutAudit_logsInput>
-    where?: OrganizationWhereInput
-  }
-
-  export type OrganizationUpdateToOneWithWhereWithoutAudit_logsInput = {
-    where?: OrganizationWhereInput
-    data: XOR<OrganizationUpdateWithoutAudit_logsInput, OrganizationUncheckedUpdateWithoutAudit_logsInput>
-  }
-
-  export type OrganizationUpdateWithoutAudit_logsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUpdateManyWithoutOrganizationNestedInput
-  }
-
-  export type OrganizationUncheckedUpdateWithoutAudit_logsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    base_currency?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    memberships?: MembershipUncheckedUpdateManyWithoutOrganizationNestedInput
-    accounts?: AccountUncheckedUpdateManyWithoutOrganizationNestedInput
-    mapping_templates?: MappingTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutOrganizationNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutOrganizationNestedInput
-    custom_instruments?: InstrumentUncheckedUpdateManyWithoutOrganizationNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutOrganizationNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutOrganizationNestedInput
-  }
-
   export type PasswordResetTokenCreateManyUserInput = {
     id?: string
     token_hash: string
@@ -39922,12 +36043,86 @@ export namespace Prisma {
     created_at?: Date | string
   }
 
-  export type MembershipCreateManyUserInput = {
+  export type AccountCreateManyUserInput = {
     id?: string
-    org_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
+    name: string
+    currency: string
+    jurisdiction: string
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type MappingTemplateCreateManyUserInput = {
+    id?: string
+    name: string
+    file_type: $Enums.SourceFileType
+    detection_signature: JsonNullValueInput | InputJsonValue
+    column_mapping: JsonNullValueInput | InputJsonValue
+    version?: number
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type ImportBatchCreateManyUserInput = {
+    id?: string
+    account_uuid: string
+    source_document_uuid: string
+    mapping_template_uuid?: string | null
+    status?: $Enums.ImportBatchStatus
+    error_summary?: string | null
+    committed_at?: Date | string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type InstrumentCreateManyUserInput = {
+    id?: string
+    isin?: string | null
+    ticker?: string | null
+    name?: string | null
+    asset_class?: $Enums.AssetClass
+    currency: string
+    exchange?: string | null
+    is_custom?: boolean
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type TransactionCreateManyUserInput = {
+    id?: string
+    account_uuid: string
+    instrument_uuid?: string | null
+    type: $Enums.TransactionType
+    trade_date: Date | string
+    settlement_date?: Date | string | null
+    quantity?: Decimal | DecimalJsLike | number | string | null
+    price?: Decimal | DecimalJsLike | number | string | null
+    amount: Decimal | DecimalJsLike | number | string
+    fee?: Decimal | DecimalJsLike | number | string
+    tax_withheld?: Decimal | DecimalJsLike | number | string
+    currency: string
+    fx_rate?: Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
+    broker_ref?: string | null
+    import_batch_uuid?: string | null
+    source_staged_transaction_uuid?: string | null
+    is_correction?: boolean
+    supersedes_uuid?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+  }
+
+  export type TaxYearComputationCreateManyUserInput = {
+    id?: string
+    account_uuid?: string | null
+    country_code: string
+    tax_year: number
+    cost_basis_method?: $Enums.CostBasisMethod
+    status?: $Enums.TaxComputationStatus
+    version?: number
+    result: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash: string
+    finalized_at?: Date | string | null
     created_at?: Date | string
     updated_at?: Date | string
   }
@@ -39956,39 +36151,297 @@ export namespace Prisma {
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MembershipUpdateWithoutUserInput = {
+  export type AccountUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutMembershipsNestedInput
+    import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
+    transactions?: TransactionUpdateManyWithoutAccountNestedInput
+    lots?: LotUpdateManyWithoutAccountNestedInput
+    position_snapshots?: PositionSnapshotUpdateManyWithoutAccountNestedInput
+    tax_year_computations?: TaxYearComputationUpdateManyWithoutAccountNestedInput
   }
 
-  export type MembershipUncheckedUpdateWithoutUserInput = {
+  export type AccountUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    jurisdiction?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutAccountNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutAccountNestedInput
+    lots?: LotUncheckedUpdateManyWithoutAccountNestedInput
+    position_snapshots?: PositionSnapshotUncheckedUpdateManyWithoutAccountNestedInput
+    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutAccountNestedInput
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    currency?: StringFieldUpdateOperationsInput | string
+    jurisdiction?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MembershipUncheckedUpdateManyWithoutUserInput = {
+  export type MappingTemplateUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
+    detection_signature?: JsonNullValueInput | InputJsonValue
+    column_mapping?: JsonNullValueInput | InputJsonValue
+    version?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    import_batches?: ImportBatchUpdateManyWithoutMapping_templateNestedInput
+  }
+
+  export type MappingTemplateUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
+    detection_signature?: JsonNullValueInput | InputJsonValue
+    column_mapping?: JsonNullValueInput | InputJsonValue
+    version?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    import_batches?: ImportBatchUncheckedUpdateManyWithoutMapping_templateNestedInput
+  }
+
+  export type MappingTemplateUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
+    detection_signature?: JsonNullValueInput | InputJsonValue
+    column_mapping?: JsonNullValueInput | InputJsonValue
+    version?: IntFieldUpdateOperationsInput | number
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImportBatchUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
+    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
+    source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
+    mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
+    staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
+    transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
+    documents?: DocumentUpdateManyWithoutImport_batchNestedInput
+  }
+
+  export type ImportBatchUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: StringFieldUpdateOperationsInput | string
+    source_document_uuid?: StringFieldUpdateOperationsInput | string
+    mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
+    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
+    documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
+  }
+
+  export type ImportBatchUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: StringFieldUpdateOperationsInput | string
+    source_document_uuid?: StringFieldUpdateOperationsInput | string
+    mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
+    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
+    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InstrumentUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isin?: NullableStringFieldUpdateOperationsInput | string | null
+    ticker?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
+    currency?: StringFieldUpdateOperationsInput | string
+    exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    is_custom?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
+    transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
+    corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
+    lots?: LotUpdateManyWithoutInstrumentNestedInput
+    position_snapshots?: PositionSnapshotUpdateManyWithoutInstrumentNestedInput
+    price_snapshots?: PriceSnapshotUpdateManyWithoutInstrumentNestedInput
+  }
+
+  export type InstrumentUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isin?: NullableStringFieldUpdateOperationsInput | string | null
+    ticker?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
+    currency?: StringFieldUpdateOperationsInput | string
+    exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    is_custom?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutResolved_instrumentNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutInstrumentNestedInput
+    corporate_actions?: CorporateActionUncheckedUpdateManyWithoutInstrumentNestedInput
+    lots?: LotUncheckedUpdateManyWithoutInstrumentNestedInput
+    position_snapshots?: PositionSnapshotUncheckedUpdateManyWithoutInstrumentNestedInput
+    price_snapshots?: PriceSnapshotUncheckedUpdateManyWithoutInstrumentNestedInput
+  }
+
+  export type InstrumentUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isin?: NullableStringFieldUpdateOperationsInput | string | null
+    ticker?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
+    currency?: StringFieldUpdateOperationsInput | string
+    exchange?: NullableStringFieldUpdateOperationsInput | string | null
+    is_custom?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
+    is_correction?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
+    instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
+    import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
+    source_staged_transaction?: StagedTransactionUpdateOneWithoutCommitted_transactionNestedInput
+    supersedes?: TransactionUpdateOneWithoutSuperseded_byNestedInput
+    superseded_by?: TransactionUpdateOneWithoutSupersedesNestedInput
+    opened_lots?: LotUpdateManyWithoutOpen_transactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: StringFieldUpdateOperationsInput | string
+    instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    source_staged_transaction_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    is_correction?: BoolFieldUpdateOperationsInput | boolean
+    supersedes_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    superseded_by?: TransactionUncheckedUpdateOneWithoutSupersedesNestedInput
+    opened_lots?: LotUncheckedUpdateManyWithoutOpen_transactionNestedInput
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: StringFieldUpdateOperationsInput | string
+    instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
+    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    source_staged_transaction_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    is_correction?: BoolFieldUpdateOperationsInput | boolean
+    supersedes_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaxYearComputationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    country_code?: StringFieldUpdateOperationsInput | string
+    tax_year?: IntFieldUpdateOperationsInput | number
+    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
+    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
+    version?: IntFieldUpdateOperationsInput | number
+    result?: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
+    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    account?: AccountUpdateOneWithoutTax_year_computationsNestedInput
+    tax_forms?: TaxFormUpdateManyWithoutTax_year_computationNestedInput
+  }
+
+  export type TaxYearComputationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    country_code?: StringFieldUpdateOperationsInput | string
+    tax_year?: IntFieldUpdateOperationsInput | number
+    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
+    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
+    version?: IntFieldUpdateOperationsInput | number
+    result?: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
+    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    tax_forms?: TaxFormUncheckedUpdateManyWithoutTax_year_computationNestedInput
+  }
+
+  export type TaxYearComputationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
+    country_code?: StringFieldUpdateOperationsInput | string
+    tax_year?: IntFieldUpdateOperationsInput | number
+    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
+    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
+    version?: IntFieldUpdateOperationsInput | number
+    result?: JsonNullValueInput | InputJsonValue
+    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
+    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ImportBatchCreateManySource_documentInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     mapping_template_uuid?: string | null
     status?: $Enums.ImportBatchStatus
@@ -40013,7 +36466,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
@@ -40023,7 +36476,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutSource_documentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40038,7 +36491,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateManyWithoutSource_documentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40072,525 +36525,9 @@ export namespace Prisma {
     generated_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type MembershipCreateManyOrganizationInput = {
-    id?: string
-    user_uuid: string
-    role?: $Enums.MembershipRole
-    invited_at?: Date | string
-    accepted_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type AccountCreateManyOrganizationInput = {
-    id?: string
-    name: string
-    currency: string
-    jurisdiction: string
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type MappingTemplateCreateManyOrganizationInput = {
-    id?: string
-    name: string
-    file_type: $Enums.SourceFileType
-    detection_signature: JsonNullValueInput | InputJsonValue
-    column_mapping: JsonNullValueInput | InputJsonValue
-    version?: number
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type ImportBatchCreateManyOrganizationInput = {
-    id?: string
-    account_uuid: string
-    source_document_uuid: string
-    mapping_template_uuid?: string | null
-    status?: $Enums.ImportBatchStatus
-    error_summary?: string | null
-    committed_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type TransactionCreateManyOrganizationInput = {
-    id?: string
-    account_uuid: string
-    instrument_uuid?: string | null
-    type: $Enums.TransactionType
-    trade_date: Date | string
-    settlement_date?: Date | string | null
-    quantity?: Decimal | DecimalJsLike | number | string | null
-    price?: Decimal | DecimalJsLike | number | string | null
-    amount: Decimal | DecimalJsLike | number | string
-    fee?: Decimal | DecimalJsLike | number | string
-    tax_withheld?: Decimal | DecimalJsLike | number | string
-    currency: string
-    fx_rate?: Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: Decimal | DecimalJsLike | number | string | null
-    broker_ref?: string | null
-    import_batch_uuid?: string | null
-    source_staged_transaction_uuid?: string | null
-    is_correction?: boolean
-    supersedes_uuid?: string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type InstrumentCreateManyOrganizationInput = {
-    id?: string
-    isin?: string | null
-    ticker?: string | null
-    name?: string | null
-    asset_class?: $Enums.AssetClass
-    currency: string
-    exchange?: string | null
-    is_custom?: boolean
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type TaxYearComputationCreateManyOrganizationInput = {
-    id?: string
-    account_uuid?: string | null
-    country_code: string
-    tax_year: number
-    cost_basis_method?: $Enums.CostBasisMethod
-    status?: $Enums.TaxComputationStatus
-    version?: number
-    result: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash: string
-    finalized_at?: Date | string | null
-    created_at?: Date | string
-    updated_at?: Date | string
-  }
-
-  export type DocumentCreateManyOrganizationInput = {
-    id?: string
-    user_uuid: string
-    import_batch_uuid?: string | null
-    filename: string
-    mimetype: string
-    size: number
-    url: string
-    path: string
-    type?: $Enums.DocumentType
-    category?: $Enums.DocumentCategory
-    created_at?: Date | string
-  }
-
-  export type AuditLogCreateManyOrganizationInput = {
-    id?: string
-    user_uuid?: string | null
-    entity_type: string
-    entity_uuid: string
-    action: $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: Date | string
-  }
-
-  export type MembershipUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutMembershipsNestedInput
-  }
-
-  export type MembershipUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MembershipUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    role?: EnumMembershipRoleFieldUpdateOperationsInput | $Enums.MembershipRole
-    invited_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    accepted_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AccountUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    currency?: StringFieldUpdateOperationsInput | string
-    jurisdiction?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    import_batches?: ImportBatchUpdateManyWithoutAccountNestedInput
-    transactions?: TransactionUpdateManyWithoutAccountNestedInput
-    lots?: LotUpdateManyWithoutAccountNestedInput
-    position_snapshots?: PositionSnapshotUpdateManyWithoutAccountNestedInput
-    tax_year_computations?: TaxYearComputationUpdateManyWithoutAccountNestedInput
-  }
-
-  export type AccountUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    currency?: StringFieldUpdateOperationsInput | string
-    jurisdiction?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutAccountNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutAccountNestedInput
-    lots?: LotUncheckedUpdateManyWithoutAccountNestedInput
-    position_snapshots?: PositionSnapshotUncheckedUpdateManyWithoutAccountNestedInput
-    tax_year_computations?: TaxYearComputationUncheckedUpdateManyWithoutAccountNestedInput
-  }
-
-  export type AccountUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    currency?: StringFieldUpdateOperationsInput | string
-    jurisdiction?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type MappingTemplateUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
-    detection_signature?: JsonNullValueInput | InputJsonValue
-    column_mapping?: JsonNullValueInput | InputJsonValue
-    version?: IntFieldUpdateOperationsInput | number
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    import_batches?: ImportBatchUpdateManyWithoutMapping_templateNestedInput
-  }
-
-  export type MappingTemplateUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
-    detection_signature?: JsonNullValueInput | InputJsonValue
-    column_mapping?: JsonNullValueInput | InputJsonValue
-    version?: IntFieldUpdateOperationsInput | number
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    import_batches?: ImportBatchUncheckedUpdateManyWithoutMapping_templateNestedInput
-  }
-
-  export type MappingTemplateUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    file_type?: EnumSourceFileTypeFieldUpdateOperationsInput | $Enums.SourceFileType
-    detection_signature?: JsonNullValueInput | InputJsonValue
-    column_mapping?: JsonNullValueInput | InputJsonValue
-    version?: IntFieldUpdateOperationsInput | number
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImportBatchUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
-    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
-    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
-    source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
-    mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
-    staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
-    transactions?: TransactionUpdateManyWithoutImport_batchNestedInput
-    documents?: DocumentUpdateManyWithoutImport_batchNestedInput
-  }
-
-  export type ImportBatchUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: StringFieldUpdateOperationsInput | string
-    source_document_uuid?: StringFieldUpdateOperationsInput | string
-    mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
-    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
-    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutImport_batchNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutImport_batchNestedInput
-    documents?: DocumentUncheckedUpdateManyWithoutImport_batchNestedInput
-  }
-
-  export type ImportBatchUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: StringFieldUpdateOperationsInput | string
-    source_document_uuid?: StringFieldUpdateOperationsInput | string
-    mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
-    error_summary?: NullableStringFieldUpdateOperationsInput | string | null
-    committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TransactionUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
-    is_correction?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
-    instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
-    import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
-    source_staged_transaction?: StagedTransactionUpdateOneWithoutCommitted_transactionNestedInput
-    supersedes?: TransactionUpdateOneWithoutSuperseded_byNestedInput
-    superseded_by?: TransactionUpdateOneWithoutSupersedesNestedInput
-    opened_lots?: LotUpdateManyWithoutOpen_transactionNestedInput
-  }
-
-  export type TransactionUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: StringFieldUpdateOperationsInput | string
-    instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
-    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    source_staged_transaction_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    is_correction?: BoolFieldUpdateOperationsInput | boolean
-    supersedes_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    superseded_by?: TransactionUncheckedUpdateOneWithoutSupersedesNestedInput
-    opened_lots?: LotUncheckedUpdateManyWithoutOpen_transactionNestedInput
-  }
-
-  export type TransactionUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: StringFieldUpdateOperationsInput | string
-    instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
-    settlement_date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    quantity?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    price?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    fee?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax_withheld?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    fx_rate?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    amount_base_currency?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    broker_ref?: NullableStringFieldUpdateOperationsInput | string | null
-    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    source_staged_transaction_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    is_correction?: BoolFieldUpdateOperationsInput | boolean
-    supersedes_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type InstrumentUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    isin?: NullableStringFieldUpdateOperationsInput | string | null
-    ticker?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
-    currency?: StringFieldUpdateOperationsInput | string
-    exchange?: NullableStringFieldUpdateOperationsInput | string | null
-    is_custom?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    staged_transactions?: StagedTransactionUpdateManyWithoutResolved_instrumentNestedInput
-    transactions?: TransactionUpdateManyWithoutInstrumentNestedInput
-    corporate_actions?: CorporateActionUpdateManyWithoutInstrumentNestedInput
-    lots?: LotUpdateManyWithoutInstrumentNestedInput
-    position_snapshots?: PositionSnapshotUpdateManyWithoutInstrumentNestedInput
-    price_snapshots?: PriceSnapshotUpdateManyWithoutInstrumentNestedInput
-  }
-
-  export type InstrumentUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    isin?: NullableStringFieldUpdateOperationsInput | string | null
-    ticker?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
-    currency?: StringFieldUpdateOperationsInput | string
-    exchange?: NullableStringFieldUpdateOperationsInput | string | null
-    is_custom?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    staged_transactions?: StagedTransactionUncheckedUpdateManyWithoutResolved_instrumentNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutInstrumentNestedInput
-    corporate_actions?: CorporateActionUncheckedUpdateManyWithoutInstrumentNestedInput
-    lots?: LotUncheckedUpdateManyWithoutInstrumentNestedInput
-    position_snapshots?: PositionSnapshotUncheckedUpdateManyWithoutInstrumentNestedInput
-    price_snapshots?: PriceSnapshotUncheckedUpdateManyWithoutInstrumentNestedInput
-  }
-
-  export type InstrumentUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    isin?: NullableStringFieldUpdateOperationsInput | string | null
-    ticker?: NullableStringFieldUpdateOperationsInput | string | null
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    asset_class?: EnumAssetClassFieldUpdateOperationsInput | $Enums.AssetClass
-    currency?: StringFieldUpdateOperationsInput | string
-    exchange?: NullableStringFieldUpdateOperationsInput | string | null
-    is_custom?: BoolFieldUpdateOperationsInput | boolean
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TaxYearComputationUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    country_code?: StringFieldUpdateOperationsInput | string
-    tax_year?: IntFieldUpdateOperationsInput | number
-    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
-    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
-    version?: IntFieldUpdateOperationsInput | number
-    result?: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
-    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    account?: AccountUpdateOneWithoutTax_year_computationsNestedInput
-    tax_forms?: TaxFormUpdateManyWithoutTax_year_computationNestedInput
-  }
-
-  export type TaxYearComputationUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    country_code?: StringFieldUpdateOperationsInput | string
-    tax_year?: IntFieldUpdateOperationsInput | number
-    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
-    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
-    version?: IntFieldUpdateOperationsInput | number
-    result?: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
-    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    tax_forms?: TaxFormUncheckedUpdateManyWithoutTax_year_computationNestedInput
-  }
-
-  export type TaxYearComputationUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    account_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    country_code?: StringFieldUpdateOperationsInput | string
-    tax_year?: IntFieldUpdateOperationsInput | number
-    cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
-    status?: EnumTaxComputationStatusFieldUpdateOperationsInput | $Enums.TaxComputationStatus
-    version?: IntFieldUpdateOperationsInput | number
-    result?: JsonNullValueInput | InputJsonValue
-    input_snapshot_hash?: StringFieldUpdateOperationsInput | string
-    finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type DocumentUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-    category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    import_batch?: ImportBatchUpdateOneWithoutDocumentsNestedInput
-    source_for_import_batches?: ImportBatchUpdateManyWithoutSource_documentNestedInput
-    tax_forms?: TaxFormUpdateManyWithoutDocumentNestedInput
-  }
-
-  export type DocumentUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-    category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    source_for_import_batches?: ImportBatchUncheckedUpdateManyWithoutSource_documentNestedInput
-    tax_forms?: TaxFormUncheckedUpdateManyWithoutDocumentNestedInput
-  }
-
-  export type DocumentUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: StringFieldUpdateOperationsInput | string
-    import_batch_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    filename?: StringFieldUpdateOperationsInput | string
-    mimetype?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    url?: StringFieldUpdateOperationsInput | string
-    path?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-    category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    entity_type?: StringFieldUpdateOperationsInput | string
-    entity_uuid?: StringFieldUpdateOperationsInput | string
-    action?: EnumAuditActionFieldUpdateOperationsInput | $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUncheckedUpdateWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    entity_type?: StringFieldUpdateOperationsInput | string
-    entity_uuid?: StringFieldUpdateOperationsInput | string
-    action?: EnumAuditActionFieldUpdateOperationsInput | $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUncheckedUpdateManyWithoutOrganizationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    user_uuid?: NullableStringFieldUpdateOperationsInput | string | null
-    entity_type?: StringFieldUpdateOperationsInput | string
-    entity_uuid?: StringFieldUpdateOperationsInput | string
-    action?: EnumAuditActionFieldUpdateOperationsInput | $Enums.AuditAction
-    before?: NullableJsonNullValueInput | InputJsonValue
-    after?: NullableJsonNullValueInput | InputJsonValue
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ImportBatchCreateManyAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     source_document_uuid: string
     mapping_template_uuid?: string | null
     status?: $Enums.ImportBatchStatus
@@ -40602,7 +36539,7 @@ export namespace Prisma {
 
   export type TransactionCreateManyAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
     trade_date: Date | string
@@ -40648,7 +36585,7 @@ export namespace Prisma {
 
   export type TaxYearComputationCreateManyAccountInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     country_code: string
     tax_year: number
     cost_basis_method?: $Enums.CostBasisMethod
@@ -40668,7 +36605,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     mapping_template?: MappingTemplateUpdateOneWithoutImport_batchesNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
@@ -40678,7 +36615,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40693,7 +36630,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateManyWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     mapping_template_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40720,7 +36657,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
     source_staged_transaction?: StagedTransactionUpdateOneWithoutCommitted_transactionNestedInput
@@ -40731,7 +36668,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40757,7 +36694,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateManyWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40857,13 +36794,13 @@ export namespace Prisma {
     finalized_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTax_year_computationsNestedInput
+    user?: UserUpdateOneRequiredWithoutTax_year_computationsNestedInput
     tax_forms?: TaxFormUpdateManyWithoutTax_year_computationNestedInput
   }
 
   export type TaxYearComputationUncheckedUpdateWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
     tax_year?: IntFieldUpdateOperationsInput | number
     cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
@@ -40879,7 +36816,7 @@ export namespace Prisma {
 
   export type TaxYearComputationUncheckedUpdateManyWithoutAccountInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     country_code?: StringFieldUpdateOperationsInput | string
     tax_year?: IntFieldUpdateOperationsInput | number
     cost_basis_method?: EnumCostBasisMethodFieldUpdateOperationsInput | $Enums.CostBasisMethod
@@ -40894,7 +36831,7 @@ export namespace Prisma {
 
   export type ImportBatchCreateManyMapping_templateInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     source_document_uuid: string
     status?: $Enums.ImportBatchStatus
@@ -40911,7 +36848,7 @@ export namespace Prisma {
     committed_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutImport_batchesNestedInput
+    user?: UserUpdateOneRequiredWithoutImport_batchesNestedInput
     account?: AccountUpdateOneRequiredWithoutImport_batchesNestedInput
     source_document?: DocumentUpdateOneRequiredWithoutSource_for_import_batchesNestedInput
     staged_transactions?: StagedTransactionUpdateManyWithoutImport_batchNestedInput
@@ -40921,7 +36858,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateWithoutMapping_templateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40936,7 +36873,7 @@ export namespace Prisma {
 
   export type ImportBatchUncheckedUpdateManyWithoutMapping_templateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     source_document_uuid?: StringFieldUpdateOperationsInput | string
     status?: EnumImportBatchStatusFieldUpdateOperationsInput | $Enums.ImportBatchStatus
@@ -40960,7 +36897,7 @@ export namespace Prisma {
 
   export type TransactionCreateManyImport_batchInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     instrument_uuid?: string | null
     type: $Enums.TransactionType
@@ -40985,7 +36922,6 @@ export namespace Prisma {
   export type DocumentCreateManyImport_batchInput = {
     id?: string
     user_uuid: string
-    org_uuid?: string | null
     filename: string
     mimetype: string
     size: number
@@ -41051,7 +36987,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     instrument?: InstrumentUpdateOneWithoutTransactionsNestedInput
     source_staged_transaction?: StagedTransactionUpdateOneWithoutCommitted_transactionNestedInput
@@ -41062,7 +36998,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutImport_batchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -41088,7 +37024,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateManyWithoutImport_batchInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     instrument_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
@@ -41121,7 +37057,6 @@ export namespace Prisma {
     type?: EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
     category?: EnumDocumentCategoryFieldUpdateOperationsInput | $Enums.DocumentCategory
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneWithoutDocumentsNestedInput
     source_for_import_batches?: ImportBatchUpdateManyWithoutSource_documentNestedInput
     tax_forms?: TaxFormUpdateManyWithoutDocumentNestedInput
   }
@@ -41129,7 +37064,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateWithoutImport_batchInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -41145,7 +37079,6 @@ export namespace Prisma {
   export type DocumentUncheckedUpdateManyWithoutImport_batchInput = {
     id?: StringFieldUpdateOperationsInput | string
     user_uuid?: StringFieldUpdateOperationsInput | string
-    org_uuid?: NullableStringFieldUpdateOperationsInput | string | null
     filename?: StringFieldUpdateOperationsInput | string
     mimetype?: StringFieldUpdateOperationsInput | string
     size?: IntFieldUpdateOperationsInput | number
@@ -41170,7 +37103,7 @@ export namespace Prisma {
 
   export type TransactionCreateManyInstrumentInput = {
     id?: string
-    org_uuid: string
+    user_uuid: string
     account_uuid: string
     type: $Enums.TransactionType
     trade_date: Date | string
@@ -41287,7 +37220,7 @@ export namespace Prisma {
     is_correction?: BoolFieldUpdateOperationsInput | boolean
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    organization?: OrganizationUpdateOneRequiredWithoutTransactionsNestedInput
+    user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
     account?: AccountUpdateOneRequiredWithoutTransactionsNestedInput
     import_batch?: ImportBatchUpdateOneWithoutTransactionsNestedInput
     source_staged_transaction?: StagedTransactionUpdateOneWithoutCommitted_transactionNestedInput
@@ -41298,7 +37231,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateWithoutInstrumentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     trade_date?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41324,7 +37257,7 @@ export namespace Prisma {
 
   export type TransactionUncheckedUpdateManyWithoutInstrumentInput = {
     id?: StringFieldUpdateOperationsInput | string
-    org_uuid?: StringFieldUpdateOperationsInput | string
+    user_uuid?: StringFieldUpdateOperationsInput | string
     account_uuid?: StringFieldUpdateOperationsInput | string
     type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
     trade_date?: DateTimeFieldUpdateOperationsInput | Date | string

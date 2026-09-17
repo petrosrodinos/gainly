@@ -7,7 +7,7 @@ See `PRODUCT.md` for the pitch/roadmap and `docs/Product_Specification.md` for f
 Nothing here replaces the existing scaffold — it's extended.
 
 **Backend (`api/`)** — NestJS 11 + Prisma 7 + PostgreSQL, already providing:
-- Auth (`api/src/modules/auth/`): JWT, email/password, password reset — extended so registration also provisions a personal Organization.
+- Auth (`api/src/modules/auth/`): JWT, email/password, password reset.
 - `api/src/core/databases/prisma/`, `api/src/core/databases/redis/`: DB and cache access, reused as-is.
 - `api/src/core/queues/` (BullMQ + bull-board): reused for import processing and recomputation jobs; new queue name constants added to `queues.constants.ts`.
 - `api/src/integrations/storage/gcs/`: GCS file storage, reused for statement uploads and generated reports/forms; new folder keys added to `gcs-folders.config.ts`.
@@ -19,15 +19,13 @@ Nothing here replaces the existing scaffold — it's extended.
 
 **New pieces this product adds:** the investment domain data model, the statement ingestion pipeline, the tax engine, and the dashboards/reports built on top of them.
 
-## 2. Multi-Tenancy
+## 2. Data Isolation
 
-**Decision: row-level isolation via `org_id`, not schema-per-tenant.**
+**Decision: row-level isolation via `user_id`, no tenant layer.**
 
-Every domain table (except the shared `Instrument` catalog) carries an `org_id`. Isolation is enforced in two layers:
-1. **Application layer** — a Prisma Client Extension (or a request-scoped repository base) that automatically injects the current request's `org_id` into every query, so individual services can't forget to scope a query.
-2. **Database layer (defense in depth)** — Postgres Row-Level Security policies keyed on a session variable (`SET app.current_org_id`) set per request, so even a bug that bypasses the application-layer scoping still can't leak cross-org data.
-
-*Why not schema-per-tenant:* it gives a clean "drop a schema to delete a tenant" story, but multiplies migration and connection-pooling overhead per tenant — the wrong tradeoff here, since this product expects many individual-investor orgs rather than a handful of large enterprise tenants, and the existing scaffold is already a single shared schema.
+There is no organization/tenant concept — every domain table (except shared reference data like the global `Instrument` catalog and market-data tables) carries a `user_id` directly. Isolation is enforced in two layers:
+1. **Application layer** — a Prisma Client Extension (or a request-scoped repository base) that automatically injects the current request's `user_id` into every query, so individual services can't forget to scope a query.
+2. **Database layer (defense in depth)** — Postgres Row-Level Security policies keyed on a session variable (`SET app.current_user_id`) set per request, so even a bug that bypasses the application-layer scoping still can't leak another user's data.
 
 ## 3. Domain Data Model
 
@@ -35,31 +33,29 @@ Extends `api/prisma/schema.prisma` (currently just `User`, `PasswordResetToken`,
 
 | Model | Purpose | Key fields |
 |---|---|---|
-| `Organization` | Tenant | name, base_currency, default jurisdictions |
-| `Membership` | User↔Org with role | org_id, user_id, role (`OWNER/ADMIN/MEMBER/ACCOUNTANT_READONLY`) |
-| `Account` | A portfolio within an org | org_id, name, currency, jurisdiction |
-| `MappingTemplate` | Reusable "columns → canonical fields" definition | org_id (nullable = global), file_type, detection_signature, column_mapping |
-| `ImportBatch` | One upload/processing run | org_id, account_id, status, source Document, error_summary |
+| `Account` | A user's portfolio | user_id, name, currency, jurisdiction |
+| `MappingTemplate` | Reusable "columns → canonical fields" definition | user_id (nullable = global), file_type, detection_signature, column_mapping |
+| `ImportBatch` | One upload/processing run | user_id, account_id, status, source Document, error_summary |
 | `StagedTransaction` | Pre-commit parsed row | import_batch_id, raw_data, mapped_data, status, validation_errors |
 | `Instrument` | Shared security catalog | isin (nullable), ticker, name, asset_class, currency |
-| `Transaction` | The immutable ledger | org_id, account_id, instrument_id, type, dates, quantity/price/amount/fee (Decimal), currency, fx_rate, broker_ref, `supersedes_id` |
+| `Transaction` | The immutable ledger | user_id, account_id, instrument_id, type, dates, quantity/price/amount/fee (Decimal), currency, fx_rate, broker_ref, `supersedes_id` |
 | `CorporateAction` | Split/merger/spin-off events | instrument_id, type, effective_date, ratio |
 | `Lot` | Explicit cost-basis lot for FIFO/LIFO/avg-cost | account_id, instrument_id, open_transaction_id, quantity_remaining, cost_basis_per_unit |
 | `PositionSnapshot` | Computed/cached holdings (never source of truth) | recomputed by background jobs |
 | `PriceSnapshot` / `FxRateSnapshot` | Valuation & conversion data | instrument/currency, date, rate/price, source |
 | `TaxJurisdictionModule` | Registry of available country rule modules | country_code, version, is_active, default cost-basis method |
-| `TaxYearComputation` | A year's tax result for an account/org | country_code, tax_year, status (`DRAFT/FINALIZED`), result JSON, versioned |
+| `TaxYearComputation` | A year's tax result for an account | country_code, tax_year, status (`DRAFT/FINALIZED`), result JSON, versioned |
 | `TaxForm` | Generated filing output | tax_year_computation_id, form_type, document_id, format |
-| `Document` (extended) | Reuse existing model | + org_uuid, optional import_batch_id, category (STATEMENT/TAX_FORM/REPORT/...) |
-| `AuditLog` | Append-only mutation trail | org_id, user_id, entity_type/id, action, before/after JSON |
+| `Document` (extended) | Reuse existing model | + user_uuid, optional import_batch_id, category (STATEMENT/TAX_FORM/REPORT/...) |
+| `AuditLog` | Append-only mutation trail | user_id, entity_type/id, action, before/after JSON |
 
 **Immutability rule:** `Transaction` rows are never `UPDATE`d or `DELETE`d after commit — a correction is inserted as a new row linked via `supersedes_id`. `TaxYearComputation` follows the same versioning idea once `FINALIZED`.
 
 ## 4. Statement Ingestion Pipeline
 
-1. **Upload** — frontend reuses `app/src/components/ui/file-upload.tsx`; file streams to GCS under an org-scoped path (`orgs/{orgId}/imports/{batchId}/{filename}`), new `GcsFolders` keys (`imports`, `reports`, `tax-forms`) added alongside the existing `documents`/`avatars`/`uploads`. A `Document` row records the raw file.
+1. **Upload** — frontend reuses `app/src/components/ui/file-upload.tsx`; file streams to GCS under a user-scoped path (`users/{userId}/imports/{batchId}/{filename}`), new `GcsFolders` keys (`imports`, `reports`, `tax-forms`) added alongside the existing `documents`/`avatars`/`uploads`. A `Document` row records the raw file.
 2. **`ImportBatch` created** (`UPLOADED`) → job enqueued on a new `import-processing` BullMQ queue, processed by a new `api/src/modules/imports/` module (visible in bull-board automatically, same infra as existing queues).
-3. **Format/broker detection** — the processor fingerprints the file (sheet names + header row for spreadsheets; text signature for PDFs) against `MappingTemplate`s (org-specific checked before global). A confident match auto-assigns the template; no match → `NEEDS_MAPPING`, and the user is walked through a mapping wizard whose result is saved as a new reusable template.
+3. **Format/broker detection** — the processor fingerprints the file (sheet names + header row for spreadsheets; text signature for PDFs) against `MappingTemplate`s (user-specific checked before global). A confident match auto-assigns the template; no match → `NEEDS_MAPPING`, and the user is walked through a mapping wizard whose result is saved as a new reusable template.
 4. **Parsing strategy per file type** (one `ParserStrategy` interface, one implementation per type):
    - **XLS/XLSX/CSV** — a sheet/column-mapping engine driven by the template's JSON config (`sheet → column → canonical field`, with per-column transforms for dates, decimals, sign conventions). The first built-in global template targets exactly the format in `docs/report-2025.xlsx` (`ExecTrades`/`SecIncome` sheets).
    - **PDF** (v1) — text/table extraction first; if a layout mapping template exists, use it; otherwise fall back to AI-assisted structured extraction via `AiService.generateTextWithSchema`, given a Zod schema shaped like the canonical transaction row.
@@ -93,11 +89,11 @@ interface TaxJurisdictionRuleModule {
 
 ## 6. Module/Folder Layout
 
-**`api/src/modules/`** (new): `organizations/`, `accounts/`, `instruments/`, `imports/` (+ `imports/processors/`), `transactions/`, `positions/`, `corporate-actions/`, `tax-engine/` (core + `jurisdictions/{lt,...}/` + `computations/` + `forms/`), `market-data/`, `reports/`, `audit-log/`, `documents/` (promoting `Document` from a bare Prisma model to a real org-scoped module), `admin/` (import triage, mapping-template curation, AI-usage dashboard). Existing `auth/` gains org auto-provisioning on register; existing `integrations/ai/` gains a statement-extraction prompt/schema helper.
+**`api/src/modules/`** (new): `accounts/`, `instruments/`, `imports/` (+ `imports/processors/`), `transactions/`, `positions/`, `corporate-actions/`, `tax-engine/` (core + `jurisdictions/{lt,...}/` + `computations/` + `forms/`), `market-data/`, `reports/`, `audit-log/`, `documents/` (promoting `Document` from a bare Prisma model to a real user-scoped module), `admin/` (import triage, mapping-template curation, AI-usage dashboard). Existing `integrations/ai/` gains a statement-extraction prompt/schema helper.
 
-**`app/src/features/`** (new): `organizations/`, `accounts/`, `imports/` (upload wizard, mapping editor, staged-row review), `transactions/`, `instruments/`, `positions/`, `dashboard/`, `tax/` (year selector, computation results, form generation, finalize), `reports/`, `documents/`, `admin/*`.
+**`app/src/features/`** (new): `accounts/`, `imports/` (upload wizard, mapping editor, staged-row review), `transactions/`, `instruments/`, `positions/`, `dashboard/`, `tax/` (year selector, computation results, form generation, finalize), `reports/`, `documents/`, `admin/*`.
 
-**`app/src/pages/`** (new routes): `/app/dashboard`, `/app/accounts`, `/app/imports`, `/app/imports/:batchId/review`, `/app/transactions`, `/app/holdings`, `/app/tax/:year`, `/app/reports`, `/app/documents`, `/admin/imports`, `/admin/organizations`.
+**`app/src/pages/`** (new routes): `/app/dashboard`, `/app/accounts`, `/app/imports`, `/app/imports/:batchId/review`, `/app/transactions`, `/app/holdings`, `/app/tax/:year`, `/app/reports`, `/app/documents`, `/admin/imports`.
 
 ## 7. Frontend Charting
 
@@ -111,4 +107,4 @@ interface TaxJurisdictionRuleModule {
 - **Ambiguity handling:** low-confidence rows always route to `NEEDS_REVIEW`/`NEEDS_MAPPING` with a specific reason; batches support partial commit; the admin triage view aggregates failure patterns across users to improve global mapping templates over time.
 - **Idempotency:** import-commit is safe to retry (BullMQ job retries) without producing duplicate transactions.
 - **Dates:** trade_date and settlement_date are tracked separately; a jurisdiction's tax year is a property of its rule module, not assumed to be the calendar year globally.
-- **AI usage:** per-org rate limits/quotas on AI-assisted extraction, reusing the AI module's existing cost-tracking utility (`api/src/integrations/ai/utils/ai-cost.ts`).
+- **AI usage:** per-user rate limits/quotas on AI-assisted extraction, reusing the AI module's existing cost-tracking utility (`api/src/integrations/ai/utils/ai-cost.ts`).

@@ -15,13 +15,10 @@ invest-tax lets an investor upload the statements they already receive from thei
 
 **Out of scope for v1:** billing/subscriptions, live broker API sync, image/scan (OCR) ingestion, any hardcoded per-broker integration, more than one active tax jurisdiction module (the *architecture* supports multiple from day one; the MVP *ships* one, fully correct, plus the scaffolding to add more).
 
-## 2. Accounts & Organizations
+## 2. Accounts
 
-- A user registers and automatically gets a personal **Organization** — every user belongs to at least one org; this is what makes the product multi-tenant from the start rather than bolted on later.
-- An org has **Membership**s with roles: `OWNER`, `ADMIN`, `MEMBER`, `ACCOUNTANT_READONLY` (the last for inviting a tax preparer or advisor with read-only cross-account visibility).
-- Invites are sent by email (reusing existing notification infra) and accepted into an existing or new user account.
-- An org has a **base currency** and one or more **default tax jurisdictions**, used to pre-select conversions and available tax modules for its accounts.
-- Within an org, a user can create multiple **Accounts** (portfolios) — e.g. one per broker, or one per family member — each with its own currency and jurisdiction.
+- A user registers directly — there is no separate tenant/organization layer; all data is owned by the user's own account.
+- A user can create multiple **Accounts** (portfolios) — e.g. one per broker — each with its own **base currency** and **jurisdiction**, used to pre-select conversions and available tax modules.
 
 ## 3. Statement Ingestion
 
@@ -29,7 +26,7 @@ invest-tax lets an investor upload the statements they already receive from thei
 
 **Flow:**
 1. User uploads one or more files to an Account.
-2. The system fingerprints each file (sheet/column headers for spreadsheets, text signature for PDFs) against a library of **mapping templates** — reusable definitions of "these columns/positions mean these canonical fields." Global templates ship with the product (starting with the format demonstrated by `docs/report-2025.xlsx`'s `ExecTrades`/`SecIncome` sheets); org-specific templates can be created when no match is found.
+2. The system fingerprints each file (sheet/column headers for spreadsheets, text signature for PDFs) against a library of **mapping templates** — reusable definitions of "these columns/positions mean these canonical fields." Global templates ship with the product (starting with the format demonstrated by `docs/report-2025.xlsx`'s `ExecTrades`/`SecIncome` sheets); user-specific templates can be created when no match is found.
 3. If a confident match is found, the file is parsed automatically. If not, the user is guided through a mapping wizard to define (and save, for reuse) a new template.
 4. Parsed rows are **staged**, not committed — the user sees a review table with every row, its parsed interpretation, and any validation problems (unresolvable instrument, ambiguous date format, missing required field, likely duplicate).
 5. The user corrects, accepts, or rejects staged rows (including re-resolving an instrument, fixing a mis-mapped column for the whole batch, or re-running the parse after adjusting the mapping).
@@ -45,7 +42,7 @@ invest-tax lets an investor upload the statements they already receive from thei
 - **Holdings/positions** are always *computed* from the ledger (never hand-edited or treated as a source of truth), so they're guaranteed consistent with the transaction history.
 - **Cost-basis methods:** FIFO is the default and always available. Average-cost is offered as a selectable alternative. LIFO is offered only where the account's tax jurisdiction explicitly permits it. The method is chosen per account and applied consistently to all its lot matching.
 - **Corporate actions** (splits, mergers, spin-offs) adjust historical lots and quantities correctly rather than requiring the user to manually re-enter positions.
-- **Multi-currency:** transactions are recorded in their native currency; the system also tracks the account's/org's base-currency-converted amounts using historical FX rates, and separately reports FX gain/loss where a jurisdiction taxes it.
+- **Multi-currency:** transactions are recorded in their native currency; the system also tracks the account's base-currency-converted amounts using historical FX rates, and separately reports FX gain/loss where a jurisdiction taxes it.
 
 ## 5. Statistics & Diagrams
 
@@ -61,14 +58,14 @@ invest-tax lets an investor upload the statements they already receive from thei
 
 - **PDF portfolio report** — holdings, allocation, and performance summary for a chosen period.
 - **Tax summary** — both a human-readable PDF and a machine-readable CSV/JSON, per tax year, derived from that year's tax computation.
-- **Transaction ledger CSV** — full export of an account's or org's transaction history.
+- **Transaction ledger CSV** — full export of an account's transaction history.
 - **Realized gains/losses schedule CSV** — usable on its own by a tax preparer, independent of the built-in filing flow.
 - **Full data export/backup** — a self-service, on-demand archive of everything a user has stored (transactions, documents, computations), covering both data-portability requests and basic user trust ("I can always get my data out").
 
 ## 7. Tax Engine
 
 - Tax rules are implemented per country as pluggable modules behind a shared engine (see `DESIGN.MD` §5 for the technical interface). Each module encodes: which cost-basis methods it allows and its default, how gains/losses and income are classified and aggregated, allowances/exemptions, and loss carryforward rules.
-- A **tax-year computation** takes an account's (or org's) transactions for a year and produces: realized gains/losses (per disposal, with acquire/dispose dates, proceeds, cost basis, and holding period), dividend and interest income totals, FX gain/loss, available withholding-tax credits, allowances applied, loss carryforward used/remaining, and an estimated total tax liability.
+- A **tax-year computation** takes an account's transactions for a year and produces: realized gains/losses (per disposal, with acquire/dispose dates, proceeds, cost basis, and holding period), dividend and interest income totals, FX gain/loss, available withholding-tax credits, allowances applied, loss carryforward used/remaining, and an estimated total tax liability.
 - Computations are **versioned**: a computation starts as `DRAFT`, can be recalculated freely as underlying data changes, and becomes `FINALIZED` (locked) when the user files it — any later change to source data produces a new draft version rather than silently altering a filed result.
 - **Tax form generation** turns a finalized (or draft, for preview) computation into an actual exportable form, via a declarative per-country/per-form template — adding a new form or country does not require changing the computation engine itself.
 
@@ -79,7 +76,7 @@ invest-tax lets an investor upload the statements they already receive from thei
 
 ## 9. Security, Privacy & Compliance
 
-- Strict tenant isolation: a user only ever sees data belonging to organizations they're a member of.
+- Strict data isolation: a user only ever sees their own data.
 - Every domain mutation (imports, corrections, tax-year finalization, admin actions) is captured in an append-only audit log.
 - The transaction ledger is immutable by design (§4) — this is both a trust property and an audit requirement.
 - Self-service export and account/data deletion, in line with data-portability and right-to-erasure expectations for financial personal data.

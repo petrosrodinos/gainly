@@ -38,13 +38,6 @@ enum DocumentCategory {
   REPORT
 }
 
-enum MembershipRole {
-  OWNER
-  ADMIN
-  MEMBER
-  ACCOUNTANT_READONLY
-}
-
 enum SourceFileType {
   XLS
   XLSX
@@ -150,7 +143,12 @@ model User {
   updated_at DateTime @updatedAt
 
   password_reset_tokens PasswordResetToken[]
-  memberships           Membership[]
+  accounts              Account[]
+  mapping_templates     MappingTemplate[]
+  import_batches        ImportBatch[]
+  custom_instruments    Instrument[]
+  transactions          Transaction[]
+  tax_year_computations TaxYearComputation[]
 
   @@index([email])
   @@index([phone])
@@ -176,7 +174,6 @@ model PasswordResetToken {
 model Document {
   id                String           @id @default(uuid())
   user_uuid         String
-  org_uuid          String?
   import_batch_uuid String?
   filename          String
   mimetype          String
@@ -187,68 +184,27 @@ model Document {
   category          DocumentCategory @default(GENERAL)
   created_at        DateTime         @default(now())
 
-  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
-  import_batch ImportBatch?  @relation("ImportBatchDocuments", fields: [import_batch_uuid], references: [id], onDelete: SetNull)
+  import_batch ImportBatch? @relation("ImportBatchDocuments", fields: [import_batch_uuid], references: [id], onDelete: SetNull)
 
   source_for_import_batches ImportBatch[] @relation("ImportBatchSourceDocument")
   tax_forms                 TaxForm[]
 
   @@index([user_uuid])
-  @@index([org_uuid])
   @@index([import_batch_uuid])
   @@index([id])
   @@map("documents")
 }
 
-model Organization {
-  id            String   @id @default(uuid())
-  name          String
-  base_currency String   @default("USD")
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  memberships           Membership[]
-  accounts              Account[]
-  mapping_templates     MappingTemplate[]
-  import_batches        ImportBatch[]
-  transactions          Transaction[]
-  custom_instruments    Instrument[]
-  tax_year_computations TaxYearComputation[]
-  documents             Document[]
-  audit_logs            AuditLog[]
-
-  @@index([id])
-  @@map("organizations")
-}
-
-model Membership {
-  id          String         @id @default(uuid())
-  org_uuid    String
-  user_uuid   String
-  role        MembershipRole @default(MEMBER)
-  invited_at  DateTime       @default(now())
-  accepted_at DateTime?
-  created_at  DateTime       @default(now())
-  updated_at  DateTime       @updatedAt
-
-  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
-  user         User         @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
-
-  @@unique([org_uuid, user_uuid])
-  @@index([user_uuid])
-  @@map("memberships")
-}
-
 model Account {
   id           String   @id @default(uuid())
-  org_uuid     String
+  user_uuid    String
   name         String
   currency     String
   jurisdiction String
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user User @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
 
   import_batches        ImportBatch[]
   transactions          Transaction[]
@@ -256,13 +212,13 @@ model Account {
   position_snapshots    PositionSnapshot[]
   tax_year_computations TaxYearComputation[]
 
-  @@index([org_uuid])
+  @@index([user_uuid])
   @@map("accounts")
 }
 
 model MappingTemplate {
   id                  String         @id @default(uuid())
-  org_uuid            String?
+  user_uuid           String?
   name                String
   file_type           SourceFileType
   detection_signature Json
@@ -271,18 +227,18 @@ model MappingTemplate {
   created_at          DateTime       @default(now())
   updated_at          DateTime       @updatedAt
 
-  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
 
   import_batches ImportBatch[]
 
-  @@index([org_uuid])
+  @@index([user_uuid])
   @@index([file_type])
   @@map("mapping_templates")
 }
 
 model ImportBatch {
   id                    String            @id @default(uuid())
-  org_uuid              String
+  user_uuid             String
   account_uuid          String
   source_document_uuid  String
   mapping_template_uuid String?
@@ -292,7 +248,7 @@ model ImportBatch {
   created_at            DateTime          @default(now())
   updated_at            DateTime          @updatedAt
 
-  organization     Organization     @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user             User             @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
   account          Account          @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
   source_document  Document         @relation("ImportBatchSourceDocument", fields: [source_document_uuid], references: [id], onDelete: Restrict)
   mapping_template MappingTemplate? @relation(fields: [mapping_template_uuid], references: [id], onDelete: SetNull)
@@ -301,7 +257,7 @@ model ImportBatch {
   transactions        Transaction[]
   documents           Document[]          @relation("ImportBatchDocuments")
 
-  @@index([org_uuid])
+  @@index([user_uuid])
   @@index([account_uuid])
   @@index([status])
   @@map("import_batches")
@@ -331,7 +287,7 @@ model StagedTransaction {
 
 model Instrument {
   id          String     @id @default(uuid())
-  org_uuid    String?
+  user_uuid   String?
   isin        String?
   ticker      String?
   name        String?
@@ -342,7 +298,7 @@ model Instrument {
   created_at  DateTime   @default(now())
   updated_at  DateTime   @updatedAt
 
-  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user User? @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
 
   staged_transactions StagedTransaction[]
   transactions        Transaction[]
@@ -352,14 +308,14 @@ model Instrument {
   price_snapshots     PriceSnapshot[]
 
   @@unique([isin])
-  @@index([org_uuid])
+  @@index([user_uuid])
   @@index([ticker])
   @@map("instruments")
 }
 
 model Transaction {
   id                             String          @id @default(uuid())
-  org_uuid                       String
+  user_uuid                      String
   account_uuid                   String
   instrument_uuid                String?
   type                           TransactionType
@@ -381,7 +337,7 @@ model Transaction {
   created_at                     DateTime        @default(now())
   updated_at                     DateTime        @updatedAt
 
-  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
   account      Account      @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
   instrument   Instrument?  @relation(fields: [instrument_uuid], references: [id], onDelete: SetNull)
   import_batch ImportBatch? @relation(fields: [import_batch_uuid], references: [id], onDelete: SetNull)
@@ -393,7 +349,7 @@ model Transaction {
 
   opened_lots Lot[]
 
-  @@index([org_uuid])
+  @@index([user_uuid])
   @@index([account_uuid])
   @@index([instrument_uuid])
   @@index([trade_date])
@@ -498,7 +454,7 @@ model TaxJurisdictionModule {
 
 model TaxYearComputation {
   id                  String               @id @default(uuid())
-  org_uuid            String
+  user_uuid           String
   account_uuid        String?
   country_code        String
   tax_year            Int
@@ -511,12 +467,12 @@ model TaxYearComputation {
   created_at          DateTime             @default(now())
   updated_at          DateTime             @updatedAt
 
-  organization Organization @relation(fields: [org_uuid], references: [id], onDelete: Cascade)
-  account      Account?     @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
+  user    User     @relation(fields: [user_uuid], references: [id], onDelete: Cascade)
+  account Account? @relation(fields: [account_uuid], references: [id], onDelete: Cascade)
 
   tax_forms TaxForm[]
 
-  @@index([org_uuid, account_uuid, country_code, tax_year])
+  @@index([user_uuid, account_uuid, country_code, tax_year])
   @@map("tax_year_computations")
 }
 
@@ -537,7 +493,6 @@ model TaxForm {
 
 model AuditLog {
   id          String      @id @default(uuid())
-  org_uuid    String?
   user_uuid   String?
   entity_type String
   entity_uuid String
@@ -546,9 +501,6 @@ model AuditLog {
   after       Json?
   created_at  DateTime    @default(now())
 
-  organization Organization? @relation(fields: [org_uuid], references: [id], onDelete: SetNull)
-
-  @@index([org_uuid])
   @@index([entity_type, entity_uuid])
   @@index([created_at])
   @@map("audit_logs")

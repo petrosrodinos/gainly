@@ -142,7 +142,6 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
 exports.Prisma.DocumentScalarFieldEnum = {
   id: 'id',
   user_uuid: 'user_uuid',
-  org_uuid: 'org_uuid',
   import_batch_uuid: 'import_batch_uuid',
   filename: 'filename',
   mimetype: 'mimetype',
@@ -154,28 +153,9 @@ exports.Prisma.DocumentScalarFieldEnum = {
   created_at: 'created_at'
 };
 
-exports.Prisma.OrganizationScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  base_currency: 'base_currency',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
-exports.Prisma.MembershipScalarFieldEnum = {
-  id: 'id',
-  org_uuid: 'org_uuid',
-  user_uuid: 'user_uuid',
-  role: 'role',
-  invited_at: 'invited_at',
-  accepted_at: 'accepted_at',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
-};
-
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   name: 'name',
   currency: 'currency',
   jurisdiction: 'jurisdiction',
@@ -185,7 +165,7 @@ exports.Prisma.AccountScalarFieldEnum = {
 
 exports.Prisma.MappingTemplateScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   name: 'name',
   file_type: 'file_type',
   detection_signature: 'detection_signature',
@@ -197,7 +177,7 @@ exports.Prisma.MappingTemplateScalarFieldEnum = {
 
 exports.Prisma.ImportBatchScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   account_uuid: 'account_uuid',
   source_document_uuid: 'source_document_uuid',
   mapping_template_uuid: 'mapping_template_uuid',
@@ -223,7 +203,7 @@ exports.Prisma.StagedTransactionScalarFieldEnum = {
 
 exports.Prisma.InstrumentScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   isin: 'isin',
   ticker: 'ticker',
   name: 'name',
@@ -237,7 +217,7 @@ exports.Prisma.InstrumentScalarFieldEnum = {
 
 exports.Prisma.TransactionScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   account_uuid: 'account_uuid',
   instrument_uuid: 'instrument_uuid',
   type: 'type',
@@ -328,7 +308,7 @@ exports.Prisma.TaxJurisdictionModuleScalarFieldEnum = {
 
 exports.Prisma.TaxYearComputationScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
+  user_uuid: 'user_uuid',
   account_uuid: 'account_uuid',
   country_code: 'country_code',
   tax_year: 'tax_year',
@@ -353,7 +333,6 @@ exports.Prisma.TaxFormScalarFieldEnum = {
 
 exports.Prisma.AuditLogScalarFieldEnum = {
   id: 'id',
-  org_uuid: 'org_uuid',
   user_uuid: 'user_uuid',
   entity_type: 'entity_type',
   entity_uuid: 'entity_uuid',
@@ -415,13 +394,6 @@ exports.DocumentCategory = exports.$Enums.DocumentCategory = {
   STATEMENT: 'STATEMENT',
   TAX_FORM: 'TAX_FORM',
   REPORT: 'REPORT'
-};
-
-exports.MembershipRole = exports.$Enums.MembershipRole = {
-  OWNER: 'OWNER',
-  ADMIN: 'ADMIN',
-  MEMBER: 'MEMBER',
-  ACCOUNTANT_READONLY: 'ACCOUNTANT_READONLY'
 };
 
 exports.SourceFileType = exports.$Enums.SourceFileType = {
@@ -522,8 +494,6 @@ exports.Prisma.ModelName = {
   User: 'User',
   PasswordResetToken: 'PasswordResetToken',
   Document: 'Document',
-  Organization: 'Organization',
-  Membership: 'Membership',
   Account: 'Account',
   MappingTemplate: 'MappingTemplate',
   ImportBatch: 'ImportBatch',

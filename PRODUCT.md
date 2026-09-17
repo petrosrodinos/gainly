@@ -2,7 +2,7 @@
 
 ## What it is
 
-invest-tax is a multi-tenant SaaS that turns the statements investors already get from their brokers — PDF, XLS/XLSX, CSV, and eventually scanned images — into a single, trustworthy source of truth for their portfolio: normalized transactions, computed holdings, portfolio statistics and diagrams, exportable reports, and country-specific investment-tax forms.
+invest-tax is a SaaS that turns the statements investors already get from their brokers — PDF, XLS/XLSX, CSV, and eventually scanned images — into a single, trustworthy source of truth for their portfolio: normalized transactions, computed holdings, portfolio statistics and diagrams, exportable reports, and country-specific investment-tax forms.
 
 ## Who it's for
 
@@ -10,7 +10,7 @@ Individual investors who hold accounts across multiple brokers/platforms and nee
 - see their real, consolidated portfolio in one place instead of piecing it together from broker apps and spreadsheets, and
 - correctly compute and file capital-gains / investment-income taxes, without redoing the same manual reconciliation every year.
 
-Each investor's data lives in its own **organization** (a personal org is created automatically at signup), which is what makes this a real multi-tenant product rather than a single-user tool — an org can later add family members, a bookkeeper, or an accountant as members with different roles.
+Each investor's data — accounts, transactions, documents — is owned directly by their user account, with no shared tenant in between.
 
 ## Core value props
 
@@ -23,7 +23,7 @@ Each investor's data lives in its own **organization** (a personal org is create
 
 See `docs/Product_Specification.md` for full detail on each of these.
 
-- **Accounts & organizations** — orgs, membership roles, invites, per-org base currency and jurisdiction defaults.
+- **Accounts** — per-user accounts, each with its own base currency and jurisdiction defaults.
 - **Statement ingestion** — upload PDF/XLS/CSV, automatic format detection via mapping templates, staged review and correction, dedup, partial-success handling, safe re-import.
 - **Portfolio & holdings** — accounts, instruments, the transaction ledger, lot-based cost basis (FIFO/avg-cost/LIFO where allowed), corporate actions, multi-currency.
 - **Statistics & diagrams** — portfolio value over time, allocation breakdowns, realized vs. unrealized gains, dividend/interest income, tax-liability estimates, performance vs. benchmark.
